@@ -1,0 +1,27 @@
+{
+    "name": "maximo/adresse",
+    "description": "Mise à jour d'adresse d'un client*",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stolaric Geoffroy",
+            "email": "geoffroy.stolaric@maximo.fr"
+        }
+    ],
+    "require": {
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "nyholm/psr7": "^1.5",
+        "sensio/framework-extra-bundle": "^6.2",
+        "guzzlehttp/guzzle": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Maximo\\Adresse\\":  "src/"
+        }
+    }
+}
+
+

@@ -1,0 +1,8 @@
+services:
+
+  Maximo\Adresse\Controller\AdresseController:
+    arguments: [
+        '@Symfony\Component\DependencyInjection\ContainerInterface'
+    ]
+    tags:
+      - { name: controller.service_arguments }

@@ -1,0 +1,11 @@
+parameters:
+  logs:
+    dossier: "%kernel.project_dir%/Logs"
+  #panier:  '%env(json:file:resolve:PANIER_PARAMS)%'
+  #bareme:
+  #  debug:
+  #    points: false
+  #    frais: false
+
+
+

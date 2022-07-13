@@ -1,0 +1,50 @@
+{# templates/index.html.twig #}
+{% extends '@MaximoAdresse/base.html.twig' %}
+
+{% block title %}Maximo - Adresse{% endblock %}
+
+ {% block css %}
+
+     {{ encore_entry_link_tags('adresse') }}
+
+ {% endblock %}
+
+{% block body %}
+
+{% block header %} {% endblock %}
+
+
+    <div id="app_body" class="screen_part_bottom">
+        <div class="container-fluid">
+
+            {% block haut %}
+                <div class="row">
+                    <div class="col">
+                        <div class="text-center">
+                            <img src="{{asset('bundles/maximopanier/img/maximo-logotype.png') }}" />
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                <br />
+            {% endblock %}
+
+            {% block forminput %}
+            {% endblock %}
+
+            <div>
+                <div class="col">
+                {% block adresse %}{% endblock %}
+                </div>
+            </div>
+            {% block bas %}{% endblock %}
+        </div>
+    </div>
+
+
+{% block js %}
+    {{ encore_entry_script_tags('adresse') }}
+{% endblock %}
+
+
+{% endblock %}
