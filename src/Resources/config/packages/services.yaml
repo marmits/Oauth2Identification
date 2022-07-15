@@ -1,8 +1,47 @@
 services:
 
+  _instanceof:
+    Maximo\Adresse\Interfaces\ProviderInterface:
+      tags: ['maximo.adresse_provider']
+
+
+  Maximo\Adresse\Service\ProviderService:
+    arguments:
+      - !tagged_iterator maximo.adresse_provider
+      - '@Psr\Log\LoggerInterface'
+      - '@Maximo\ApiConnector\Api\CentralConnector'
+      - adresse_params: '%maximo_adresse%'
+
+  Maximo\Adresse\Provider\CentralProvider:
+
   Maximo\Adresse\Controller\AdresseController:
     arguments: [
-        '@Symfony\Component\DependencyInjection\ContainerInterface'
+        '@Symfony\Component\DependencyInjection\ContainerInterface',
+        '@Maximo\Adresse\Service\ProviderService'
+    ]
+    tags:
+      - { name: controller.service_arguments }
+
+  Maximo\Adresse\Controller\LoadAdresse:
+    arguments: [
+        '@Symfony\Component\DependencyInjection\ContainerInterface',
+        '@Maximo\Adresse\Service\ProviderService'
+    ]
+    tags:
+      - { name: controller.service_arguments }
+
+  Maximo\Adresse\Controller\ClientController:
+    arguments: [
+        '@Symfony\Component\DependencyInjection\ContainerInterface',
+        '@Maximo\Adresse\Service\ProviderService'
+    ]
+    tags:
+      - { name: controller.service_arguments }
+
+  Maximo\Adresse\Controller\AttributsController:
+    arguments: [
+        '@Symfony\Component\DependencyInjection\ContainerInterface',
+        '@Maximo\Adresse\Service\ProviderService'
     ]
     tags:
       - { name: controller.service_arguments }

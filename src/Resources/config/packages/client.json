@@ -1,0 +1,23 @@
+{
+  "identite":
+  {
+    "numeroClient":"2103185",
+    "civilite" : "Mr",
+    "nom" : "mercury",
+    "prenom": "freddy"
+  },
+  "adresse":{
+    "clehabitat": "2",
+    "codeacces": "0",
+    "codepostal": "91130",
+    "complementadresse": "PORTE 127",
+    "complementnumvoie": " ",
+    "email": "",
+    "habitat": "APPARTEMENT",
+    "lieudit": "",
+    "nomvoie": "RUE ALBERT REMY",
+    "numvoie": "0043",
+    "ville": "RIS ORANGIS"
+  }
+}
+

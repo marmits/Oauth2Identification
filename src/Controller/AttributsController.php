@@ -18,36 +18,33 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Maximo\Adresse\Service\ProviderService;
 
+
 /**
  *
  */
-class AdresseController extends AbstractController
+class AttributsController extends AbstractController
 {
 
-    protected $provider;
+    private ProviderService $providerService;
+    private $provider;
     /**
      * @param ContainerInterface $container
-     * @param ProviderService $provider
+     * @param ProviderService $providerService
      */
     public function __construct(ContainerInterface $container, ProviderService $providerService)
     {
         $this->container = $container;
         $this->provider = $providerService->execute($providerService->getTypeProvider());
-
-
     }
 
     /**
-     *
-     * @Route("/bundle_adresse", name="bundle_adresse")
      * @param Request $request
-     * @return Response
+     * @return JsonResponse
+     * @Route("/clientcentral/informations/adresseAtrtibuts", name="get_central_adresse_attributs", options={"expose"=true}, methods={"GET"})
      */
-    public function index(Request $request): Response
+    public function addresseAttributs(Request $request): JsonResponse
     {
-        return $this->render('@MaximoAdresse/default.html.twig', [
-            'test' => 'test'
-        ]);
+        return $this->provider->getAttributsListe();
     }
 
 }

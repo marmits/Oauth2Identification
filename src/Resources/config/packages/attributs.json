@@ -1,0 +1,426 @@
+{
+	"attributs":
+	[
+		{
+			"valeur": "Appartement",
+			"type": "alphanum",
+			"type_ligne" : "compidcli",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Ascenseur",
+			"type": "alphanum",
+			"type_ligne" : "compidcli",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Boîte aux lettres",
+			"type": "alphanum",
+			"type_ligne" : "compidcli",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Chez",
+			"type": "alphanum",
+			"type_ligne" : "compidcli",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Couloir",
+			"type": "alphanum",
+			"type_ligne" : "compidcli",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Escalier",
+			"type": "alphanum",
+			"type_ligne" : "compidcli",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Etage",
+			"type": "alphanum",
+			"type_ligne" : "compidcli",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Porte",
+			"type": "alphanum",
+			"type_ligne" : "compidcli",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+
+		{
+			"valeur": "Actipole",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Allée",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Bâtiment",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Centre",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Cité",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Clos",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Domaine",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Ecole",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Entrée",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Foyer",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Hameau",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "HLM",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Immeuble",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Impasse",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Lotissement",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Parc",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Pavillon",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Quai",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Quartier",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Résidence",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Tour",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Villa",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "ZA",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Zac",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "ZI",
+			"type": "alphanum",
+			"type_ligne" : "compadr",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+
+
+		{
+			"valeur": "Texte libre",
+			"type": "alphanum",
+			"type_ligne" : "autreinfo",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Code accès",
+			"type": "alphanum",
+			"type_ligne" : "autreinfo",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Interphone",
+			"type": "alphanum",
+			"type_ligne" : "autreinfo",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Portail",
+			"type": "alphanum",
+			"type_ligne" : "autreinfo",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		},
+		{
+			"valeur": "Portillon",
+			"type": "alphanum",
+			"type_ligne" : "autreinfo",
+			"contrainte": {
+				"minmax":{
+					"min":"1",
+					"max":"10"
+				}
+			}
+		}
+	]
+}

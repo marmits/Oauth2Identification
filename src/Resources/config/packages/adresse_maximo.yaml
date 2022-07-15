@@ -1,2 +1,10 @@
 parameters:
-
+  maximo_adresse:
+    provider: 'central'
+    input_default:
+      currentClientId: '6922739'
+    debug:
+      file_client: '%env(json:file:resolve:CLIENT_JSON_FILE)%'
+      file_attributs: '%env(json:file:resolve:ATTRIBUTS_ADRESSE_JSON_FILE)%'
+    options:
+      enable_json_file: true
