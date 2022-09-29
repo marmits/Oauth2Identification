@@ -10,6 +10,7 @@ services:
       - !tagged_iterator maximo.adresse_provider
       - '@Psr\Log\LoggerInterface'
       - '@Maximo\ApiConnector\Api\CentralConnector'
+      - '@Maximo\ApiConnector\Api\Api76310Connector'
       - adresse_params: '%maximo_adresse%'
 
   Maximo\Adresse\Provider\CentralProvider:

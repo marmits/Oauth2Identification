@@ -26,17 +26,15 @@
                         </div>
                     </div>
                 </div>
+            {% endblock %}
                 <br />
-            {% endblock %}
-
-            {% block forminput %}
-            {% endblock %}
-
-            <div>
-                <div class="col">
-                {% block adresse %}{% endblock %}
+                <div class="row">
+                    <div class="col">
+                    {% block adresse %}
+                        {% block forminput %}{% endblock %}
+                    {% endblock %}
+                    </div>
                 </div>
-            </div>
             {% block bas %}{% endblock %}
         </div>
     </div>

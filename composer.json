@@ -10,18 +10,37 @@
         }
     ],
     "require": {
+        "php": ">=7.4.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
         "nyholm/psr7": "^1.5",
         "sensio/framework-extra-bundle": "^6.2",
-        "guzzlehttp/guzzle": "^7.4"
+        "doctrine/annotations": "^1.13",
+        "symfony/event-dispatcher": "5.4.*",
+        "guzzlehttp/guzzle": "^7.4",
+        "friendsofsymfony/jsrouting-bundle": "^2.8",
+        "symfony/webpack-encore-bundle": "^1.14",
+        "symfony/asset": "5.4.*",
+        "symfony/yaml": "*",
+        "maximo/apiconnector": "*@dev",
+        "maximo/interfacegraphique": "*@dev"
     },
     "autoload": {
         "psr-4": {
             "Maximo\\Adresse\\":  "src/"
         }
-    }
+    },
+    "repositories": [
+      {
+        "type": "vcs",
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoApiConnector.git"
+      },
+      {
+        "type": "vcs",
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoInterfaceGraphique.git"
+      }
+    ]
 }
 
 

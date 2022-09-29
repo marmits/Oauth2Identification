@@ -11,12 +11,15 @@ class Client {
         this.numeroClient = null;
 
         this.identite = {
-          id                  :null,
           civilite            :null,
           nom                 :null,
-          prenom              :null
+          prenom              :null,
+          numeroClient        : this.getNumCli()
         };
-        this.adresse = {}
+
+        this.adresse = {};
+        this.attributs = {};
+
     }
 
 
@@ -49,21 +52,35 @@ class Client {
       return this;
     }
 
-    getGetAdresse()
+    getAdresse()
     {
       return this.adresse;
     }
 
+    setAttributs(value)
+    {
+      this.attributs = value;
+      return this;
+    }
+
+    getAttributs()
+    {
+      return this.attributs;
+    }
+
 
     // Retourne les informations générale d'un client
-    async getInformation()
+    async getInformations(criteres)
     {
+
+        let numcli = criteres.currentClientId;
+        let type_adresse = criteres.type_adresse;
         let that = this;
         return new Promise(function(resolve,reject) {
-
             $.ajax({
                 url: Routing.generate("get_central_information_client",{
-                    numcli: that.numeroClient
+                    numcli: numcli,
+                    type_adresse: type_adresse
                 }),
                 data: {
                     columns: [
@@ -72,19 +89,24 @@ class Client {
                 },
                 method: "POST",
                 success: function(data){
-                    that.identite.numeroClient = data.typeclient;
-                    that.identite.civilite = data.typeclient;
-                    that.identite.nom = data.typeetablissement;
-                    that.identite.prenom = data.paniermoyenepi26;
-                    return resolve(data);
-
-                },
+                    if(data.error.erreur === true){
+                      reject(data.error);
+                    } else {
+                      that.setNumCli(data.identite.numeroClient);
+                      that.setIdentite(data.identite);
+                      that.setAdresse(data.adresse);
+                      that.setAttributs(data.attributs);
+                      return resolve(data);
+                    }
+                    },
                 error: function(){
                     return reject("Impossible de charger les informations du client.");
                 }
             });
         });
     }
+
+   
 }
 
 export default Client;

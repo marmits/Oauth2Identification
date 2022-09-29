@@ -10,44 +10,80 @@ const routes = require('../../../../../../../public/js/fos_js_routes.json');
 const Routing = require('../../../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js');
 Routing.setRoutingData(routes);
 
-
-import { Tooltip, Toast, Popover } from 'bootstrap';
+import { Tooltip, Toast, Popover} from 'bootstrap';
 
 
 import {
   loadingStart,loadingChangeText,onProgressChange,loadingChangeProgressPercent,loadingStop
 } from '../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/loader';
+import Infos from "./Infos";
+import Identite from "./Identite";
+import Attributs from "./Attributs";
 import Adresse from "./Adresse";
+import Update from "./Update";
 import utils_display from './utils.js';
-import { tools } from '../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/tools.js';
-import ContextCommande from "../../../../../panier/src/Resources/public/js/ContexteCommande";
+import { tools } from '../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/Tools.js';
+import {parse} from "../../../../../../../public/bundles/maximopanier/js/handlebars-v4.2.0";
 
 
+
+var deepCompare = function(arg1, arg2){
+  if (Object.prototype.toString.call(arg1) === Object.prototype.toString.call(arg2)){
+    if (Object.prototype.toString.call(arg1) === '[object Object]' || Object.prototype.toString.call(arg1) === '[object Array]' ){
+      if (Object.keys(arg1).length !== Object.keys(arg2).length ){
+        return false;
+      }
+      return (Object.keys(arg1).every(function(key){
+        return deepCompare(arg1[key],arg2[key]);
+      }));
+    }
+    return (arg1===arg2);
+  }
+  return false;
+}
+var convertObject = function(object){
+  let array = [];
+  for (const [key, value] of object) {
+    array.push(key);
+  }
+  return array;
+}
 
 class Main {
 
   constructor() {
-    this.appBodyDivHolderElement    = $("#app_body");
+    if(tools !== undefined) {
+      window.adresse = tools;
+      tools.setSource('adresse');
+      adresse.debug();
+    }
+    this.appBodyDivHolderElement = $("#app_side_script");
     this.nameAdresse = null;
     this.adresse = null;
+    this.blocs = null;
+    this.identite = null;
+    this.infos = null;
+    this.update = null;
+    this.eventBuilderAttrtibuts = null;
     this.client = null;
-    this.attributs = null;
+    this.attributsparam = null;
     this.params_input = {};
     this.datas = {
-      "infos" : {
-        'params_input':{},
-        'client': {
-          'identite':{},
-          'adresse':{}
-        },
-        'attributs':{}
-      }
-    };
 
+    };
     this.ApiConnectorParams ={
 
     };
+    /* ###########################################################  */
 
+    this.setDatas = function(value){
+      this.datas = value;
+      return this;
+    }
+
+    this.getDatas = function() {
+      return this.datas;
+    }
 
     this.setApiConnectorParams = function(params){
       this.ApiConnectorParams = params;
@@ -63,7 +99,6 @@ class Main {
       return this;
     }
 
-
     this.getNameAdresse = function() {
       return this.nameAdresse;
     }
@@ -73,9 +108,45 @@ class Main {
       return this;
     }
 
+    this.setAttributs = function(attributs){
+      this.attributs = attributs;
+      return this;
+    }
+
+    this.getAttributs = function(){
+      return this.attributs;
+    }
+
+    this.setIdentite = function(blocs){
+      this.identite= blocs;
+      return this;
+    }
+
+    this.getIdentite = function(){
+      return this.identite;
+    }
+
+    this.setInfos = function(blocs){
+      this.infos= blocs;
+      return this;
+    }
+
+    this.getInfos = function(){
+      return this.infos;
+    }
+
     this.setAdresse = function(adresse){
       this.adresse = adresse;
       return this;
+    }
+
+    this.setUpdate = function(update){
+      this.update = update;
+      return this;
+    }
+
+    this.getUpdate = function(){
+      return this.update;
     }
 
     this.getAdresse = function(){
@@ -91,22 +162,21 @@ class Main {
       return this.client;
     }
 
-    this.setAttributs = function(attributs){
-      this.attributs = attributs;
+    this.setAttributsParam = function(attributs){
+      this.attributsparam = attributs;
       return this;
     }
 
-    this.getAttributs = function(){
-      return this.attributs;
+    this.getAttributsParam = function(){
+      return this.attributsparam;
     }
 
     this.getParamsInput = function(){
-      return  this.params_input;
+      return this.params_input;
     }
 
-    this.getDatas = function() {
-      return this.datas;
-    }
+
+    /* ###########################################################  */
 
     this.create = function (nom, input) {
 
@@ -116,46 +186,72 @@ class Main {
       window.addEventListener ? addEventListener("load", that.init(), false) : window.attachEvent ? attachEvent("onload", that.init()) : (onload = that.init());
     };
 
-
     this.saveTo = async function(result){
+
       let that = this;
       let res = new Promise(function (resolve, reject) {
         if (tools !== undefined) {
-          that.datas.params_input = that.getParamsInput();
 
           if(result.datas_client != undefined) {
-            that.datas.infos.client.identite = result.datas_client.identite;
-            that.datas.infos.client.adresse = result.datas_client.adresse;
+            that.getAttributs().setClient(result.datas_client);
+            that.getAttributs().setAttributsClients(result.datas_client.adresse.attributs);
+            that.getIdentite().setDatasIdentite(that.getClient().getIdentite());
+
+            that.getInfos().setEnableInfos(that.getDatas().blocs.infos.enabled_infos);
+            let infosForBLoc = {
+              "type_adresse" : result.datas_client.adresse.type_adresse,
+              "etablissement" : result.datas_client.adresse.ruetourep.etablissement,
+              "type_etablissement": result.datas_client.adresse.ruetourep.type_etablissement,
+              "numtou": result.datas_client.adresse.ruetourep.numtou,
+              "numrep": result.datas_client.adresse.ruetourep.numrep
+            };
+            that.getInfos().setTitre(that.getDatas().blocs.infos.titre);
+            that.getInfos().setDatasInfos(infosForBLoc);
+            that.getAdresse().setAdresseClient(result.datas_client.adresse);
           }
+
           if(result.datas_attributs != undefined) {
-            that.datas.infos.attributs = result.datas_attributs.attributs;
-            that.getAdresse().setAttributs(result.datas_attributs.attributs);
+            that.getDatas().infos.blocs_attributs = result.datas_attributs.blocs;
+            that.getAttributs().setAttributs(result.datas_attributs.blocs);
+            that.getAdresse().setComplementNumeroDatas(that.getDatas().complement_numero);
+            that.getAdresse().setTypeVoieDatas(that.getDatas().type_voie);
           }
 
-          tools.setDatas(that.datas);
-          window.debug  = tools;
-
-          resolve("save to debug console OK");
+          resolve("save to OK");
         } else {
-          reject("failed saveTo tools undefined");
+          reject("failed tools undefined");
         }
       });
       return res;
     }
 
     this.chargeDataFromJson = async function(parameters) {
-
+      let exeption = {
+        "erreur":"",
+        "titre":"",
+        "message":""
+      };
       let res = new Promise(function (resolve, reject) {
         $.ajax({
           method: "GET",
           url: Routing.generate("context_adresse",
-            {paramsInput : parameters}
+            {paramsInput : JSON.stringify(parameters)}
           ),
           beforeSend : function() {
             loadingStart($("body"),"Chargement de l'interface ...");
           },
           success: function (data) {
-            resolve(data);
+
+            if(data.erreur === true){
+              exeption = {
+                "erreur":data.erreur,
+                "titre":data.erreur_titre,
+                "message":data.erreur_message
+              };
+              reject(exeption);
+            } else {
+              resolve(data);
+            }
           },
           error: function (e) {
             console.log(e);
@@ -166,36 +262,48 @@ class Main {
       return res;
     }
 
+
+    this.resetForms = async function(){
+      let that = this;
+      return await new Promise(function(resolve,reject) {
+        that.appBodyDivHolderElement.find("div").html("");
+        resolve("ok resetForms");
+      });
+    }
+
+    this.validFrom = async function(){
+      let that = this;
+      console.log(that.appBodyDivHolderElement);
+      that.appBodyDivHolderElement.find("div.update").addClass("show");
+    }
+
     this.setInit = async function(params){
       let that = this;
       let res = new Promise(function (resolve, reject) {
 
-        that.datas.infos = {};
-        that.currentClientId = params.currentClientId;
+        that.setDatas(that.getParamsInput());
+        that.getDatas().infos = {};
         that.setClient(new Client());
         that.getClient().setNumCli(that.currentClientId);
-        that.setAttributs(params.attributs)
-
-        that.setApiConnectorParams(params.ApiConnectorParams);
+        that.setInfos(new Infos());
+        that.getInfos().setEnabled(params.blocs.infos.enabled);
+        that.setIdentite(new Identite);
+        that.getIdentite().setEnabled(params.blocs.identite.enabled);
+        that.setAttributs(new Attributs());
         that.setAdresse(new Adresse());
-        that.getAdresse().panierElementView = $("div#adresse");
+        that.setUpdate(new Update());
 
         if (tools !== undefined) {
           let config = {
             'client':that.getClient(),
-            'attributs' : that.getAttributs()
+            'attributs' : that.getAttributsParam()
           };
 
-          that.datas.infos.client = that.getClient();
-          window.adresse  = tools;
+          that.getDatas().infos.client = that.getClient();
+
         }
 
-        if((that.getAdresse() !== undefined) && (that.getAdresse() !== undefined)){
-          resolve("chargement OK");
-        }
-        else{
-          reject("failed setInit")
-        }
+        resolve("setInit OK");
 
       });
       return res;
@@ -203,82 +311,197 @@ class Main {
 
 
 
-
     this.init = function () {
+        let that = this;
+        let erreur_titre = "Erreur Chargement des données";
 
-      let that = this;
-      let chargeDataJson = that.chargeDataFromJson(that.getParamsInput());
-
-
-      let datas_client = {
-        'datas_client': {}
-      };
-      let datas_attributs = {
-        'datas_attributs': {}
-      };
-
-
-      let setInit = chargeDataJson.then((params) => {
-
-        that.setParamsInput(params);
-        return that.setInit(params)
-      });
-
-      let clientInfos = setInit.then((retourInit) => {
-        return that.getClient().getInformation()
-      });
-
-      let saveClientInfos = clientInfos.then((datasClient) => {
-        datas_client = {
-          'datas_client': datasClient
+        let datas_client = {
+          'datas_client': {}
         };
-        return that.saveTo(datas_client)
-      });
-
-      let attributsListe = saveClientInfos.then((message) => {
-        return that.getAdresse().getAdresseListeAttributs()
-      });
-
-      let saveAtrtibutsListe = attributsListe.then((datasAttributsListe) => {
-        datas_attributs = {
-          'datas_attributs': datasAttributsListe
+        let datas_attributs = {
+          'datas_attributs': {}
         };
-        return that.saveTo(datas_attributs)
-      });
 
+        let chargeDataJson = that.chargeDataFromJson(that.getParamsInput());
 
-
-      let promises = [
-        chargeDataJson,
-        setInit,
-        clientInfos,
-        saveClientInfos,
-        attributsListe,
-        saveAtrtibutsListe
-      ];
-
-      Promise.all(promises)
-        .then((retour) => {
-          const event = new CustomEvent("adresseLoaded", {
-            detail: {
-              retour: "INIT OK ... => adresse.debug()",
-              infos : "Les éléments sont chargés et prêts à être utlisés",
-              datas : that.getDatas()
-            }
-          });
-          document.dispatchEvent(event);
-          loadingStop($('body'));
-        })
-        .catch((e) => {
-          console.log("init a échoué !");
-          console.log(e);
-          loadingStop($('body'));
-          utils_display.modal.display('Erreur Chargement des données ', 'Erreur.</br>' + e + '</br>');
-
+        let setInit = chargeDataJson.then((params) => {
+          that.setParamsInput(params);
+          return that.setInit(params);
         });
+
+        let clientInfos = setInit.then((retourInit) => {
+          return that.getClient().getInformations(that.getParamsInput())
+        });
+
+        let saveClientInfos = clientInfos.then((datasClient) => {
+          datas_client = {
+            'datas_client': datasClient
+          };
+          return that.saveTo(datas_client);
+        });
+
+        let attributsListe = saveClientInfos.then((message) => {
+          return that.getAttributs().getAdresseListeAttributs()
+        });
+
+        let saveAttributsListe = attributsListe.then((datasAttributsListe) => {
+          datas_attributs = {
+            'datas_attributs': datasAttributsListe
+          };
+          return that.saveTo(datas_attributs);
+        });
+
+        let resetForms = saveAttributsListe.then((message) => {
+          return that.resetForms();
+        });
+
+        let chargeBlocsInfos = resetForms.then((data) => {
+          return that.getInfos().chargeBlocsInfos()
+            .then(() => {
+              return that.getInfos().loadEventsInfos();
+            });
+        });
+
+        let chargeBlocsIdentite = chargeBlocsInfos.then((data) => {
+          return that.getIdentite().chargeBlocsIdentite(that.getClient().getIdentite());
+        });
+
+        let addEventIdentite = chargeBlocsIdentite.then((data) => {
+          let that = this;
+          that.getIdentite().buildEvent();
+        });
+
+        let chargeBlocsAdresse = addEventIdentite.then((data) => {
+          return that.getAdresse().chargeBlocsAdresse();
+        });
+
+        let addEventAdresse = chargeBlocsAdresse.then((data) => {
+          let that = this;
+          that.getAdresse().buildEvent();
+        });
+
+        let chargeBlocsAttributs = addEventAdresse.then((data) => {
+          return that.getAttributs().chargeBlocsAttributs(that.getDatas().infos.blocs_attributs);
+        });
+
+        let addEventBlocs = chargeBlocsAttributs.then((data) => {
+          let that = this;
+          that.getAttributs().buildEvent();
+        });
+
+        let chargeBlocsUpdate = addEventAdresse.then((data) => {
+          return that.getUpdate().chargeBlocsUpdate(that.getAttributs(), that.getAdresse());
+        });
+
+        let addEventUpdate = chargeBlocsUpdate.then((data) => {
+          let that = this;
+          that.getUpdate().buildEvent();
+        });
+
+        let promises = [
+          chargeDataJson,
+          setInit,
+          clientInfos,
+          saveClientInfos,
+          attributsListe,
+          saveAttributsListe,
+          resetForms,
+          chargeBlocsInfos,
+          chargeBlocsIdentite,
+          addEventIdentite,
+          chargeBlocsAdresse,
+          addEventAdresse,
+          chargeBlocsAttributs,
+          addEventBlocs,
+          chargeBlocsUpdate,
+          addEventUpdate
+        ];
+
+        Promise.all(promises)
+          .then((retour) => {
+
+            const event = new CustomEvent("adresseLoaded", {
+              detail: {
+                retour: "INIT OK ... => tape debuger in console",
+                infos: "Les éléments sont chargés et prêts à être utlisés",
+                datas: that.getDatas()
+              }
+            });
+            document.dispatchEvent(event);
+
+
+            if(tools !== undefined) {
+              tools.setDatas(that.getDatas());
+              window.debuger  = tools.getDatas();
+
+            }
+
+
+
+
+
+
+            $(document).off("refresh_attributs");
+            $(document).on("refresh_attributs", function(e, value){
+              that.getDatas().infos.client.update_attributs = true;
+              $(document).trigger("setDatasOutput", that.getDatas().infos.client);
+            });
+
+            $(document).off("nouvelle_adresse");
+            $(document).on("nouvelle_adresse", function(e, value) {
+
+              if(value !== undefined) {
+                  that.getAttributs().setClientCadrs(value.cadrs);
+                  if (that.getAdresse().getContext() !== "init") {
+                    that.getDatas().infos.client.new_adresse = value;
+
+                  }
+              }
+            });
+
+            $(document).trigger("setDatasOutput", that.getDatas().infos.client);
+
+            loadingStop($('body'));
+
+          })
+          .catch((e) => {
+            console.log("init a échoué !");
+            let description = e;
+            if(e.erreur !== undefined){
+              erreur_titre = e.titre;
+              description = e.message;
+            }
+
+            loadingStop($('body'));
+
+            let message = '<i class=\'fa fa-exclamation-triangle text-danger\'></i> Erreur.</br>' + description + '.</br>';
+            //utils_display.modal.display(erreur_titre, message);
+            that.resetForms();
+
+            utils_display.modal.display(
+              "<i class=\"fa fa-unlink\"></i> " + erreur_titre,
+              message,
+              [
+                {
+                  id: 1,
+                  libelle: '<i class="fa fa-power-off"></i> ',
+                  classes: ['btn', 'btn-danger'],
+                  callback: (modal) => {
+                    modal.modal('hide');
+                    console.log(e);
+                  }
+                }
+              ],
+              {
+                closable: true
+              }
+            );
+          });
+
     };
 
   };
+
 
   static getInstance() {
     return Main;

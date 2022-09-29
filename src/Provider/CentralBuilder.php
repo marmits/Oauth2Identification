@@ -21,19 +21,12 @@ class CentralBuilder extends AbstractBuilder
      */
     public function __construct(LoggerInterface $logger, CentralConnector $apiConnector, array $adresse_params)
     {
-        $this->setNumClient($adresse_params['adresse_params']['input_default']['currentClientId']);
-        parent::__construct($logger,  $apiConnector, $adresse_params);
+
+        $options['central_connector_enable_debug'] = $apiConnector->getEnableDebug();
+        $this->setConfigApiConnector($adresse_params, $options);
+
+
+        parent::__construct($logger,  $apiConnector,  $this->getConfigApiConnector());
     }
-
-    /**
-     * @param array $params
-     */
-    public function setConfigApiConnector(array $params): AbstractBuilder{
-        $ApiConnectorParams = [];
-        return $this;
-    }
-
     
-    
-
 }

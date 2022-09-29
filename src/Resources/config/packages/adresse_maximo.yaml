@@ -1,10 +1,34 @@
 parameters:
   maximo_adresse:
     provider: 'central'
-    input_default:
-      currentClientId: '6922739'
-    debug:
-      file_client: '%env(json:file:resolve:CLIENT_JSON_FILE)%'
-      file_attributs: '%env(json:file:resolve:ATTRIBUTS_ADRESSE_JSON_FILE)%'
-    options:
-      enable_json_file: true
+    blocs:
+      infos:
+        enabled: true
+        name: 'Informations'
+        order: 1
+        enabled_infos: true
+        titre: ''
+      identite:
+        enabled: true
+        name: 'Identité'
+        order: 2
+      compidcli:
+        enabled: false
+        name: 'Complément Identité Client'
+        order: 3
+      compadr:
+        enabled: true
+        name: 'Complément Adresse'
+        order: 4
+      autreinfo:
+        enabled: false
+        name: 'Autres informations'
+        order: 5
+    zone_ouverte:
+      authorize: true #pour ruetoutrep is_interdit = 0
+
+    api76310:
+      prod: false #defini le parametre prod de Api76310Connector (prod, preprod)
+
+
+

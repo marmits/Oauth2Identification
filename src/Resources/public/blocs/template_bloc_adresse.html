@@ -1,0 +1,97 @@
+<div class="card bloc">
+    <div class="card-header">
+        <i class="fa fa-map-marker"></i>
+        <span class="titre"> </span>
+    </div>
+
+    <div class="card-body">
+        <div class="adresse-container-api blocAdresse form-row">
+            <div class="row-custom mb-1 align-items-end form-group">
+
+                <div class="col-lg-1">
+                    <label for="adresse">Adresse</label>
+                </div>
+
+                <div class="col-lg select">
+                    <input class="form-control form-control-sm" id="inputsaisie" placeholder="" value="">
+                    <input type="hidden" id="validAdresse" placeholder="" value="">
+                </div>
+            </div>
+
+            <div class="row-custom mb-1 align-items-end form-group">
+                <div id="adresse76310List" class="list-group"></div>
+            </div>
+
+            <div class="row-custom mb-1 align-items-end form-group swapmode">
+                <div class="col-lg">
+                    <button id="mode" type="button" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="" data-original-title="">
+                        je ne trouve pas mon adresse
+                    </button>
+                </div>
+            </div>
+
+
+            <form>
+                <div class="row-custom mb-1 align-items-end form-group">
+                    <div class="col-lg-1 select">
+                        <label for="cp">CP</label>
+                        <input class="form-control form-control-sm" id="cp" minlength="5" maxlength="5">
+                    </div>
+                    <div class="col-lg">
+                        <label for="ville">Ville</label>
+                        <select class="form-control form-control-sm select2" id="ville">
+                            <option value="" selected="selected">...</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1">
+                        <label for="cedex">Cedex</label>
+                        <input class="form-control form-control-sm" id="cedex" placeholder="" value="">
+                    </div>
+                </div>
+
+                <div class="row-custom mb-1 align-items-end form-group">
+                    <div class="col-lg-1">
+                        <label for="numero">Numéro</label>
+                        <input class="form-control form-control-sm" id="numero" placeholder="" value="">
+                    </div>
+                    <div class="col-lg-1 select">
+                        <label for="comp_numero">compl. numéro</label>
+                        <select class="form-control form-control-sm" id="comp_numero">
+                            <option value="" selected="selected">...</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <label for="type_voie">Type de voie</label>
+                        <select class="form-control form-control-sm" id="type_voie">
+                            <option value="" selected="selected">...</option>
+                        </select>
+                    </div>
+                    <div class="col-lg">
+                        <label for="libelle_voie">Libellé voie</label>
+                        <select class="form-control form-control-sm" id="libelle_voie">
+                            <option value="" selected="selected">...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row-custom mb-1 align-items-end form-group">
+                    <div class="col-lg-6">
+                        <label for="lieu_dit">Lieu dit/Boîte postale</label>
+                        <input class="form-control form-control-sm" id="lieu_dit" placeholder="" value="">
+                    </div>
+                </div>
+
+
+            </form>
+
+        </div>
+    </div>
+    <div class="card-footer text-muted ligne">
+
+
+    </div>
+    <div class="card-footer text-muted ligneAdresse">
+
+
+    </div>
+</div>

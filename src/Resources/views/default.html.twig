@@ -12,22 +12,73 @@
         </div>
     </div>
 {% endblock %}
+ {% block haut %}{% endblock %}
 
-{% block forminput %}
 
-    <div class="row">
-        <div class="col-sm">
-            <label for="numcli">Num Cli</label>
-            <input type="text" id="numcli" name="numcli" title="Numéro client" value="" required="" tabindex="1" autocomplete="off">
-            <button type="button" class="btn btn-primary" id="chargeadresse" content="Charger Adresse">Charger</button>
-        </div>
-    </div>
-    <br>
-{% endblock %}
 
 {% block adresse %}
 
-    <div id="adresse" style="overflow: hidden auto;"></div>
+<div class="app_body_adresse">
+    {% block forminput %}
 
-    <div id="app-modal-container"></div>
+        <div class="row input">
+            <div class="col-sm">
+                <form>
+                    <div class="row mb-1 align-items-end form-group">
+                        <div class="col-lg-3">
+                            <label for="numcli">Numéro Client</label>
+                            <input type="text" id="numcli" name="numcli" title="Numéro client" value="" required="" tabindex="1" autocomplete="off">
+                            <button type="submit" class="btn btn-primary" id="chargeadresse" content="Charger Adresse">Charger</button>
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="type_adresse">Adresse Type</label>
+                            <select class="form-control-sm select2" id="type_adresse">
+                                <option value="1">Livraison</option>
+                                <option value="2">Facturation</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    {% endblock %}
+
+    <div id="app_body_wrapper">
+        <div id="app_side_script" class="adresse">
+
+
+                <div id="blocsInfos" style="overflow: hidden auto;">
+
+                </div>
+
+                <br>
+                <div id="blocsIdentite" style="overflow: hidden auto;">
+
+                </div>
+
+                <div id="blocsAttributs" style="overflow: hidden auto;">
+
+                </div>
+
+
+                 <div id="blocsAdresse" style="overflow: hidden auto;">
+
+                </div>
+
+                <div id="blocsUpdate">
+
+                </div>
+
+        </div>
+
+
+
+    </div>
+
+
+
+</div>
+
+<div id="app-modal-container"> </div>
 {% endblock %}

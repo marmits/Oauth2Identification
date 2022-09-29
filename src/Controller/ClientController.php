@@ -40,14 +40,14 @@ class ClientController extends AbstractController
     /**
      * @param Request $request
      * @param $numcli
+     * @param $type_adresse
      * @return JsonResponse
-     * @Route("/clientcentral/informations/{numcli}/informationClient", name="get_central_information_client", options={"expose"=true}, methods={"POST"})
+     * @Route("/clientcentral/informations/{numcli}/{type_adresse}/informationClient", name="get_central_information_client", options={"expose"=true}, methods={"POST"})
      */
-    public function informationClient(Request $request, $numcli): JsonResponse
+    public function informationClient(Request $request, $numcli, $type_adresse): JsonResponse
     {
-        
         $columns = $request->request->get('columns');
-        return $this->provider->getClientInformation($numcli, $columns);
+        return $this->provider->getClientInformation($numcli,$type_adresse, $columns);
     }
 
 }

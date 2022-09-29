@@ -35,7 +35,8 @@ class LoadAdresse extends AdresseController
     public function configAdresse(Request $request): JsonResponse
     {
         if(($request->get('paramsInput') !== null) && (!empty($request->get('paramsInput')))){
-            return new JsonResponse($this->provider->LoadDatasForJs($request->get('paramsInput')), 200);
+            $paramsInput = json_decode($request->get('paramsInput'), true);
+            return JsonResponse::fromJsonString(json_encode($this->provider->LoadDatasForJs($paramsInput)), 200);
         }
 
     }
