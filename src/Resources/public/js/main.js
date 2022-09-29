@@ -23,7 +23,7 @@ import Adresse from "./Adresse";
 import Update from "./Update";
 import utils_display from './utils.js';
 import { tools } from '../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/Tools.js';
-import {parse} from "../../../../../../../public/bundles/maximopanier/js/handlebars-v4.2.0";
+import {parse} from "../../../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/handlebars-v4.2.0.js";
 
 
 

@@ -1,7 +1,7 @@
 import Routing from "../../../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js";
 import {loadingStart} from "../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/loader";
 import utils_display from './utils.js';
-import {parse} from "../../../../../../../public/bundles/maximopanier/js/handlebars-v4.2.0";
+import {parse} from "../../../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/handlebars-v4.2.0.js";
 
 const select2 = require('./select2/select2.full.min.js');
 
