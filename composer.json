@@ -3,6 +3,7 @@
     "description": "Mise à jour d'adresse d'un client*",
     "type": "symfony-bundle",
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Stolaric Geoffroy",
@@ -34,11 +35,15 @@
     "repositories": [
       {
         "type": "vcs",
-        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoApiConnector.git"
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoApiConnector.git",
+        "branches-path": "branches",
+        "tags-path": "tags"
       },
       {
         "type": "vcs",
-        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoInterfaceGraphique.git"
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoInterfaceGraphique.git",
+        "branches-path": "branches",
+        "tags-path": "tags"
       }
     ]
 }
