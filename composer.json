@@ -2,8 +2,7 @@
     "name": "maximo/adresse",
     "description": "Mise à jour d'adresse d'un client*",
     "type": "symfony-bundle",
-    "license": "MIT",
-    "minimum-stability": "dev",
+    "license": "MIT",    
     "authors": [
         {
             "name": "Stolaric Geoffroy",
@@ -23,11 +22,12 @@
         "friendsofsymfony/jsrouting-bundle": "^2.8",
         "symfony/webpack-encore-bundle": "^1.14",
         "symfony/asset": "5.4.*",
-        "symfony/yaml": "*"
-    },
-    "require-dev": {
+        "symfony/yaml": "*",
         "maximo/apiconnector": "*@dev",
         "maximo/interfacegraphique": "*@dev"
+    },
+    "require-dev": {
+
     },
     "autoload": {
         "psr-4": {
@@ -37,15 +37,11 @@
     "repositories": [
       {
         "type": "vcs",
-        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoApiConnector.git",
-        "branches-path": "branches",
-        "tags-path": "tags"
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoApiConnector.git"
       },
       {
         "type": "vcs",
-        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoInterfaceGraphique.git",
-        "branches-path": "branches",
-        "tags-path": "tags"
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoInterfaceGraphique.git"
       }
     ]
 }
