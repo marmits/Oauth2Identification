@@ -24,8 +24,8 @@
         "symfony/webpack-encore-bundle": "^1.14",
         "symfony/asset": "5.4.*",
         "symfony/yaml": "*",
-        "maximo/apiconnector": "*@dev",
-        "maximo/interfacegraphique": "*@dev"
+        "maximo/apiconnector": "dev-master",
+        "maximo/interfacegraphique": "dev-master"
     },
     "autoload": {
         "psr-4": {
