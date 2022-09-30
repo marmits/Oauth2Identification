@@ -6,6 +6,31 @@ Compatabilité >= symfony 5.4
 [maximo/apiconnector](http://gitlab.maximo.fr:81/dev/projets-web/commun/MaximoApiConnector)  
 [maximo/interfacegraphique](http://gitlab.maximo.fr:81/dev/projets-web/commun/MaximoInterfaceGraphique)
 
+
+### COMPOSER
+ajouter dans le projet:
+```
+"minimum-stability": "dev",
+"prefer-stable": false,
+"require": {
+    "maximo/adresse": "*@dev", 
+},
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoBlocAdresse.git"
+    },
+    {
+        "type": "vcs",
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoApiConnector.git"
+    },
+    {
+        "type": "vcs",
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoInterfaceGraphique.git"
+    }
+]
+```
+
 ## INSTALL NODES ou YARN ou les 2
 1. MODULES -> Jquery et bootstrap
 
