@@ -23,11 +23,11 @@
         "friendsofsymfony/jsrouting-bundle": "^2.8",
         "symfony/webpack-encore-bundle": "^1.14",
         "symfony/asset": "5.4.*",
-        "symfony/yaml": "*"        
+        "symfony/yaml": "*"
     },
     "require-dev": {
-        "maximo/apiconnector": "dev-master@dev",
-        "maximo/interfacegraphique": "dev-master@dev"
+        "maximo/apiconnector": "*@dev",
+        "maximo/interfacegraphique": "*@dev"
     },
     "autoload": {
         "psr-4": {
