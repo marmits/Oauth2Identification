@@ -33,7 +33,17 @@
         "psr-4": {
             "Maximo\\Adresse\\":  "src/"
         }
-    }
+    },
+     "repositories": [
+      {
+        "type": "vcs",
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoApiConnector.git"
+      },
+      {
+        "type": "vcs",
+        "url": "git@gitlab.maximo.fr:dev/projets-web/commun/MaximoInterfaceGraphique.git"
+      }
+    ]
 }
 
 
