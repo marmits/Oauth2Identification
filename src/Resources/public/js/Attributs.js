@@ -4,8 +4,6 @@ const routes = require('../../../../../../../public/js/fos_js_routes.json');
 const Routing = require('../../../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min');
 Routing.setRoutingData(routes);
 
-import utils_display from './utils.js';
-
 import {
   loadingStart,loadingChangeText,onProgressChange,loadingChangeProgressPercent,loadingStop
 } from '../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/loader';

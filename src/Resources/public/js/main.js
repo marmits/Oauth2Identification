@@ -21,11 +21,9 @@ import Identite from "./Identite";
 import Attributs from "./Attributs";
 import Adresse from "./Adresse";
 import Update from "./Update";
-import utils_display from './utils.js';
+import utils_display from '../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/utils.js';
 import { tools } from '../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/Tools.js';
-import {parse} from "../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/handlebars-v4.2.0.js";
-
-
+import {parse} from "../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/handlebars.js";
 
 var deepCompare = function(arg1, arg2){
   if (Object.prototype.toString.call(arg1) === Object.prototype.toString.call(arg2)){
@@ -52,11 +50,13 @@ var convertObject = function(object){
 class Main {
 
   constructor() {
+    this.utils_display = new utils_display();
     if(tools !== undefined) {
       window.adresse = tools;
       tools.setSource('adresse');
       adresse.debug();
     }
+
     this.appBodyDivHolderElement = $("#app_side_script");
     this.nameAdresse = null;
     this.adresse = null;
@@ -478,7 +478,7 @@ class Main {
             //utils_display.modal.display(erreur_titre, message);
             that.resetForms();
 
-            utils_display.modal.display(
+            this.utils_display.utils.modal.display(
               "<i class=\"fa fa-unlink\"></i> " + erreur_titre,
               message,
               [

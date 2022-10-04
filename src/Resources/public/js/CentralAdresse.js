@@ -1,14 +1,14 @@
 import Routing from "../../../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js";
 import {loadingStart} from "../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/loader";
-import utils_display from './utils.js';
-import {parse} from "../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/handlebars-v4.2.0.js";
+import utils_display from '../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/utils.js';
+import {parse} from "../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/handlebars.js";
 
 const select2 = require('./select2/select2.full.min.js');
 
 class CentralAdresse {
 
   constructor(params) {
-
+    this.utils_display = new utils_display();
     this.list_complement_numero = {};
     this.list_type_voie = {};
 
@@ -284,7 +284,7 @@ class CentralAdresse {
           resolve(default_ligne);
         })
         .catch((e) => {
-          utils_display.modal.display(e.titre, e.message);
+          that.utils_display.utils.modal.display(e.titre, e.message);
           reject(e);
         });
 
@@ -356,8 +356,6 @@ class CentralAdresse {
       that.comp_numeroElement.on("change", function (e) {
         e.preventDefault();
         e.stopPropagation();
-
-
 
       });
       resolve();
@@ -524,7 +522,7 @@ class CentralAdresse {
       if(result.isNumero === false) {
         that.setNumero(null);
         that.numeroElement.val("");
-        utils_display.modal.display('<i class=\"fa fa-exclamation-circle\"></i> Erreur Chargement des données', '<i class=\'fa fa-exclamation-triangle text-danger\'></i> ' + result.messageError + '</br>');
+        that.utils_display.utils.modal.display('<i class=\"fa fa-exclamation-circle\"></i> Erreur Chargement des données', '<i class=\'fa fa-exclamation-triangle text-danger\'></i> ' + result.messageError + '</br>');
       }
       resolve(result);
     });
@@ -592,7 +590,7 @@ class CentralAdresse {
         result.isCodePostal = true;
       }
       if(result.isCodePostal === false) {
-        utils_display.modal.display('<i class=\"fa fa-exclamation-circle\"></i> Erreur Chargement des données', '<i class=\'fa fa-exclamation-triangle text-danger\'></i> ' + result.messageError + '</br>');
+        that.utils_display.utils.modal.display('<i class=\"fa fa-exclamation-circle\"></i> Erreur Chargement des données', '<i class=\'fa fa-exclamation-triangle text-danger\'></i> ' + result.messageError + '</br>');
       }
       resolve(result);
     });

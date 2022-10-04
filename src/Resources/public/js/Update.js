@@ -1,8 +1,15 @@
-import utils_display from './utils.js';
+
+import utils_display from '../../../../../interfacegraphique/src/Resources/public/themes/callcenter/js/utils.js';
+import Adresse from "./Adresse";
+
+
 
 class Update {
 
+
     constructor() {
+      this.utils_display = new utils_display();
+
       this.template_bloc_update= "bundles/maximoadresse/blocs/template_bloc_update.html";
       this.elementBlocs = $("#blocsUpdate");
       this.eventBuilderUpdate = new CustomEvent('buildUpdate', {
@@ -89,7 +96,7 @@ class Update {
           }
         }
 
-        utils_display.modal.display(
+        this.utils_display.utils.modal.display(
           "<i class='fa fa-exclamation-circle'></i> Information",
           message,
           [
