@@ -8,7 +8,8 @@ const select2 = require('./select2/select2.full.min.js');
 class CentralAdresse {
 
   constructor(params) {
-    this.utils_display = new utils_display();
+    this.utils_display = new utils_display("/bundles/maximoadresse/");
+    
     this.list_complement_numero = {};
     this.list_type_voie = {};
 

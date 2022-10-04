@@ -8,7 +8,8 @@ class Update {
 
 
     constructor() {
-      this.utils_display = new utils_display();
+      this.utils_display = new utils_display("/bundles/maximoadresse/");
+      
 
       this.template_bloc_update= "bundles/maximoadresse/blocs/template_bloc_update.html";
       this.elementBlocs = $("#blocsUpdate");

@@ -50,7 +50,9 @@ var convertObject = function(object){
 class Main {
 
   constructor() {
-    this.utils_display = new utils_display();
+    this.utils_display = new utils_display("/bundles/maximoadresse/");
+
+
     if(tools !== undefined) {
       window.adresse = tools;
       tools.setSource('adresse');
