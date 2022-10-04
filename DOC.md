@@ -123,6 +123,7 @@ Encore
 
     .addEntry('adresse', './assets/adresse.js')
 
+    /*
     .copyFiles({
       from: './vendor/maximo/adresse/src/Resources/public/blocs',
       to: 'blocs/[path][name].[ext]'
@@ -142,6 +143,8 @@ Encore
       from: './vendor/maximo/interfacegraphique/src/Resources/public/themes/callcenter/css',
       to: 'css/[path][name].[ext]'
     })
+    
+    */
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     //.enableStimulusBridge('./assets/controllers.json')
@@ -204,7 +207,11 @@ Encore
       path: './.env'
     }))
 ;
-module.exports = Encore.getWebpackConfig();
+const config = Encore.getWebpackConfig();
+config.resolve.symlinks = false;
+
+module.exports = config;
+
 ```
 
 
