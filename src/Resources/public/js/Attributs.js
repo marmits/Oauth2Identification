@@ -21,8 +21,8 @@ class Attributs {
       this.divBlocsAttributs = [];
       this.elementBlocs = $("#blocsAttributs");
       this.elementAdresse= $("#blocsAdresse");
-      this.template_bloc_attributs = "build/blocs/template_bloc_attributs.html";
-      this.template_bloc_ligne_attributs = "build/blocs/template_bloc_ligne_attributs.html";
+      this.template_bloc_attributs = "bundles/maximoadresse/blocs/template_bloc_attributs.html";
+      this.template_bloc_ligne_attributs = "bundles/maximoadresse/blocs/template_bloc_ligne_attributs.html";
       this.datasAttributs = {};
       this.clientCadrs = "";
 

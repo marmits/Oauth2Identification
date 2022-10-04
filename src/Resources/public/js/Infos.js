@@ -13,7 +13,8 @@ import {
 class Infos {
 
     constructor() {
-      this.template_bloc_infos= "build/blocs/template_bloc_infos.html";
+      this.template_bloc_infos= "bundles/maximoadresse/blocs/template_bloc_infos.html";
+
       this.divBlocInfos = null;
       this.enabled = false;
       this.enabled_infos = false;

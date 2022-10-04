@@ -3,9 +3,9 @@
 //import assetsFolder from "../templates";
 
 //import test from '../templates/defaultTextModal.html';
-const modalTemplate = '/build/templates/defaultTextModal.html';
+const modalTemplate = '/bundles/maximoadresse/templates/defaultTextModal.html';
 
-const assetsFolder = '/build/';
+const assetsFolder = '/bundles/maximoadresse/';
 
 import modal from 'bootstrap/js/src/modal';
 import tooltip from 'bootstrap/js/src/tooltip';

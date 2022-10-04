@@ -13,7 +13,7 @@ import {
 class Identite {
 
     constructor() {
-      this.template_bloc_identite= "build/blocs/template_bloc_identite.html";
+      this.template_bloc_identite= "bundles/maximoadresse/blocs/template_bloc_identite.html";
       this.divBlocIdentite = null;
       this.enabled = false;
       this.elementBlocs = $("#blocsIdentite");

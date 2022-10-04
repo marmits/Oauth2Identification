@@ -3,7 +3,7 @@ import utils_display from './utils.js';
 class Update {
 
     constructor() {
-      this.template_bloc_update= "build/blocs/template_bloc_update.html";
+      this.template_bloc_update= "bundles/maximoadresse/blocs/template_bloc_update.html";
       this.elementBlocs = $("#blocsUpdate");
       this.eventBuilderUpdate = new CustomEvent('buildUpdate', {
         detail: {

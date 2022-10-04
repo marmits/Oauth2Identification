@@ -14,7 +14,7 @@ import {
 class Adresse {
 
     constructor() {
-      this.template_bloc_adresse= "build/blocs/template_bloc_adresse.html";
+      this.template_bloc_adresse= "bundles/maximoadresse/blocs/template_bloc_adresse.html";
       this.divBlocAdresse = null;
       this.elementBlocs = $("#blocsAdresse");
       this.mode = null;
