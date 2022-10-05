@@ -1,6 +1,6 @@
 {
     "name": "maximo/adresse",
-    "description": "Mise à jour d'adresse d'un client*",
+    "description": "Mise à jour d'adresse d'un client* symfony ^5.4.*",
     "type": "symfony-bundle",
     "license": "MIT",        
     "authors": [
@@ -15,14 +15,13 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "nyholm/psr7": "^1.5",
+        "symfony/apache-pack": "^1.0",
         "sensio/framework-extra-bundle": "^6.2",
         "doctrine/annotations": "^1.13",
         "symfony/event-dispatcher": "5.4.*",
         "guzzlehttp/guzzle": "^7.4",
         "friendsofsymfony/jsrouting-bundle": "^2.8",
         "symfony/webpack-encore-bundle": "^1.14",
-        "symfony/asset": "5.4.*",
-        "symfony/yaml": "*",
         "maximo/apiconnector": "*@dev",
         "maximo/interfacegraphique": "*@dev"
     },
