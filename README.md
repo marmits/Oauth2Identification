@@ -14,3 +14,6 @@ Compatabilité >= symfony 5.4
 
 ### EXEMPLES projet
 [test](http://gitlab.maximo.fr:81/dev/projets-web/test/PanierBlocAdresse)
+
+### UPDATE
+[CHANGELOG](http://gitlab.maximo.fr:81/dev/projets-web/commun/MaximoBlocAdresse/-/blob/master/CHANGELOG.md)
