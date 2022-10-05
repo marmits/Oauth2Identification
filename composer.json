@@ -23,7 +23,7 @@
         "friendsofsymfony/jsrouting-bundle": "^2.8",
         "symfony/webpack-encore-bundle": "^1.14",
         "maximo/apiconnector": "v1.0-rc1@dev",
-        "maximo/interfacegraphique": "*@dev"
+        "maximo/interfacegraphique": "v1.0-rc1@dev"
     },
     "require-dev": {
 
