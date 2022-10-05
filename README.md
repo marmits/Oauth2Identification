@@ -10,3 +10,7 @@ Compatabilité >= symfony 5.4
 ### DOCUMENTATON 
 
 [DOC.md](http://gitlab.maximo.fr:81/dev/projets-web/commun/MaximoBlocAdresse/-/blob/master/DOC.md)
+
+
+### EXEMPLES projet
+[test](http://gitlab.maximo.fr:81/dev/projets-web/test/PanierBlocAdresse)
