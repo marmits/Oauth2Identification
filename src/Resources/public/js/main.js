@@ -50,15 +50,12 @@ var convertObject = function(object){
 class Main {
 
   constructor() {
-    this.utils_display = new utils_display("/bundles/maximoadresse/");
-
-
+    this.utils_display = new utils_display("/bundles/maximointerfacegraphique/themes/callcenter/");
     if(tools !== undefined) {
       window.adresse = tools;
       tools.setSource('adresse');
       adresse.debug();
     }
-
     this.appBodyDivHolderElement = $("#app_side_script");
     this.nameAdresse = null;
     this.adresse = null;

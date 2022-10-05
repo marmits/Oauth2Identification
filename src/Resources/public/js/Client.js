@@ -9,17 +9,14 @@ class Client {
     constructor()
     {
         this.numeroClient = null;
-
         this.identite = {
           civilite            :null,
           nom                 :null,
           prenom              :null,
           numeroClient        : this.getNumCli()
         };
-
         this.adresse = {};
         this.attributs = {};
-
     }
 
 

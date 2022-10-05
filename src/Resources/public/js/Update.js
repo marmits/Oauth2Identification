@@ -8,9 +8,7 @@ class Update {
 
 
     constructor() {
-      this.utils_display = new utils_display("/bundles/maximoadresse/");
-      
-
+      this.utils_display = new utils_display("/bundles/maximointerfacegraphique/themes/callcenter/");
       this.template_bloc_update= "bundles/maximoadresse/blocs/template_bloc_update.html";
       this.elementBlocs = $("#blocsUpdate");
       this.eventBuilderUpdate = new CustomEvent('buildUpdate', {
