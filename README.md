@@ -1,8 +1,21 @@
-## iINSTALLATION
+## INSTALLATION
+
+### BUNDLES
+[thephpleague/oauth2-client](https://github.com/thephpleague/oauth2-client)  
+[thephpleague/oauth2-google](https://github.com/thephpleague/oauth2-google)  
+[google openid-connect](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters)
+
 
 ### SYMFONY
 ```
 symfony new appli --version="5.4.*"
+```
+
+### COMPOSER
+```
+"require": {
+    "marmits/googleidentification": "*@dev",
+}
 ```
 
 ### jsrouting-bundle
@@ -10,7 +23,6 @@ symfony new appli --version="5.4.*"
 bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
 ```
 ### package.json
-yarn install
 
 ``` 
    {
@@ -51,3 +63,10 @@ marmits.js => import '../vendor/marmits/googleidentification/src/Resources/publi
 .enableSassLoader()
 
 ``` 
+- yarn install
+
+- composer update
+
+### UPDATE
+
+[changelog](https://github.com/marmits/googleidentification/blob/main/CHANGELOG.md)

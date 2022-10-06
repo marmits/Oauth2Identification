@@ -9,6 +9,14 @@
 {% block body %}
 <h1> into bundle </h1>
 
+
+    <div>
+        <h2>Parameters</h2>
+        <p>{{ dump(googleProvider) }} %}</p>
+        <hr>
+        <a href="{{ path('getaccesstoken') }}">getaccesstoken</a>
+    </div>
+
     {% block javascripts %}
         {{ encore_entry_script_tags('marmits') }}
     {% endblock %}

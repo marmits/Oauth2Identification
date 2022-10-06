@@ -1,2 +1,10 @@
 parameters:
-  google:
+  google_client:
+    client_id: "311520434632-h6or5jud7fupd5f6fnipblitca0ppql7.apps.googleusercontent.com"
+    project_id: "oauth-247511"
+    auth_uri: "https://accounts.google.com/o/oauth2/auth"
+    token_uri: "https://oauth2.googleapis.com/token"
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
+    client_secret: "wIyVdOgE0UUsKkvAbyYesTIW"
+    redirect_uris: [ "https://www.marmits.com/oauth/googleauth/redirection.php" ]
+    javascript_origins: [ "https://www.marmits.com" ]

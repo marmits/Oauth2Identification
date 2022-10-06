@@ -3,8 +3,15 @@ services:
 
   Marmits\GoogleIdentification\Controller\IndexController:
     arguments: [
-        '@Symfony\Component\DependencyInjection\ContainerInterface'
+        '@Symfony\Component\DependencyInjection\ContainerInterface',
+        '@Symfony\Component\HttpFoundation\Session\SessionInterface',
+        '@Marmits\GoogleIdentification\Services\GoogleProvider'
     ]
     tags:
       - { name: controller.service_arguments }
+
+
+  Marmits\GoogleIdentification\Services\GoogleProvider:
+    arguments:
+      - googleclient_params: '%google_client%'
 
