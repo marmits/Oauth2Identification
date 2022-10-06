@@ -7,15 +7,29 @@
  {% endblock %}
 
 {% block body %}
-<h1> into bundle </h1>
 
 
-    <div>
-        <h2>Parameters</h2>
-        <p>{{ dump(googleProvider) }} %}</p>
-        <hr>
-        <a href="{{ path('getaccesstoken') }}">getaccesstoken</a>
+<div class="container-fluid">
+    <h1> into bundle </h1>
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Parameters</h2>
+            <p>{{ dump(googleProvider) }} %}</p>
+            <hr>
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <a class="btn btn-warning" href="{{ path('getaccesstoken') }}" role="button">getaccesstoken</a>
+            </div>
+            <hr>
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                <button type="button" class="btn btn-danger">Left</button>
+                <button type="button" class="btn btn-warning">Middle</button>
+                <button type="button" class="btn btn-success">Right</button>
+            </div>
+        </div>
     </div>
+</div>
+
+
 
     {% block javascripts %}
         {{ encore_entry_script_tags('marmits') }}

@@ -25,20 +25,14 @@ bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.j
 ### package.json
 
 ``` 
-   {
+{
     "devDependencies": {
         "@babel/core": "^7.17.0",
-        "@babel/preset-env": "^7.16.0",
+        "@babel/preset-env": "^7.19.3",
         "@hotwired/stimulus": "^3.0.0",
+        "@popperjs/core": "^2.11.6",
         "@symfony/stimulus-bridge": "^3.2.0",
-        "@symfony/webpack-encore": "^2.1.0",
-        "core-js": "^3.23.0",
-        "regenerator-runtime": "^0.13.9",
-        "sass": "^1.55.0",
-        "sass-loader": "^12.6.0",
-        "webpack": "^5.74.0",
-        "webpack-cli": "^4.10.0",
-        "webpack-notifier": "^1.15.0"
+        "@symfony/webpack-encore": "^2.1.0"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -47,8 +41,20 @@ bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.j
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
+    },
+    "dependencies": {
+        "bootstrap": "^5.2.2",
+        "core-js": "^3.25.5",
+        "jquery": "^3.6.1",
+        "regenerator-runtime": "^0.13.9",
+        "sass": "^1.55.0",
+        "sass-loader": "12.0.0",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^4.10.0",
+        "webpack-notifier": "^1.15.0"
     }
 }
+
 
 ```
 
@@ -60,6 +66,7 @@ add marmits.js => import '../vendor/marmits/googleidentification/src/Resources/p
 ### webpack.config.js
 ``` 
 .addEntry('marmits', './assets/marmits.js')
+.autoProvidejQuery()
 .enableSassLoader()
 
 ``` 
