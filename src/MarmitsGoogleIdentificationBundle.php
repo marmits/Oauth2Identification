@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Maximo\Adresse;
+namespace Marmits\GoogleIdentification;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  *
  */
-class MaximoAdresseBundle extends Bundle
+class MarmitsGoogleIdentificationBundle extends Bundle
 {
     public function __construct(){
         date_default_timezone_set('Europe/Paris');

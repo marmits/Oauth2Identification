@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Maximo\Adresse\DependencyInjection;
+namespace Marmits\GoogleIdentification\DependencyInjection;
 
 use Exception;
 use InvalidArgumentException;
@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  *
  */
-class MaximoAdresseExtension extends Extension implements PrependExtensionInterface
+class MarmitsGoogleIdentificationExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * Allow an extension to prepend the extension configurations.
@@ -39,7 +39,7 @@ class MaximoAdresseExtension extends Extension implements PrependExtensionInterf
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config/packages');
         $loader = new YamlFileLoader($container, $fileLocator);
-        $loader->load('adresse_maximo.yaml');
+        $loader->load('marmits_google.yaml');
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config/packages');
         $loader = new YamlFileLoader($container, $fileLocator);

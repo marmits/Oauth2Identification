@@ -1,84 +1,17 @@
-{% extends '@MaximoAdresse/index.html.twig' %}
+{% extends '@MarmitsGoogleIdentification/index.html.twig' %}
 
+ {% block css %}
 
-{% block header %}
-    <div id="app_header">
-        <div class="row">
+     {{ encore_entry_link_tags('marmits') }}
 
-                <div class="col">
+ {% endblock %}
 
-                </div>
+{% block body %}
+<h1> into bundle </h1>
 
-        </div>
-    </div>
-{% endblock %}
- {% block haut %}{% endblock %}
-
-
-
-{% block adresse %}
-
-<div class="app_body_adresse">
-    {% block forminput %}
-
-        <div class="row input">
-            <div class="col-sm">
-                <form>
-                    <div class="row mb-1 align-items-end form-group">
-                        <div class="col-lg-3">
-                            <label for="numcli">Numéro Client</label>
-                            <input type="text" id="numcli" name="numcli" title="Numéro client" value="" required="" tabindex="1" autocomplete="off">
-                            <button type="submit" class="btn btn-primary" id="chargeadresse" content="Charger Adresse">Charger</button>
-                        </div>
-                        <div class="col-lg-2">
-                            <label for="type_adresse">Adresse Type</label>
-                            <select class="form-control-sm select2" id="type_adresse">
-                                <option value="1">Livraison</option>
-                                <option value="2">Facturation</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
+    {% block javascripts %}
+        {{ encore_entry_script_tags('marmits') }}
     {% endblock %}
 
-    <div id="app_body_wrapper">
-        <div id="app_side_script" class="adresse">
-
-
-                <div id="blocsInfos" style="overflow: hidden auto;">
-
-                </div>
-
-                <br>
-                <div id="blocsIdentite" style="overflow: hidden auto;">
-
-                </div>
-
-                <div id="blocsAttributs" style="overflow: hidden auto;">
-
-                </div>
-
-
-                 <div id="blocsAdresse" style="overflow: hidden auto;">
-
-                </div>
-
-                <div id="blocsUpdate">
-
-                </div>
-
-        </div>
-
-
-
-    </div>
-
-
-
-</div>
-
-<div id="app-modal-container"> </div>
 {% endblock %}
+

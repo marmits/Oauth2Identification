@@ -1,9 +1,8 @@
 <?php
 
-namespace Maximo\Adresse\Controller;
+namespace Marmits\GoogleIdentification\Controller;
 
 use Exception;
-use GuzzleHttp\Exception\GuzzleException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,35 +15,42 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-use Maximo\Adresse\Service\ProviderService;
 
 
 /**
  *
  */
-class AttributsController extends AbstractController
+class IndexController extends AbstractController
 {
 
-    private ProviderService $providerService;
-    private $provider;
+    protected $provider;
+    protected $api76310Connector;
+    protected $apiCentralConnector;
+
     /**
      * @param ContainerInterface $container
-     * @param ProviderService $providerService
      */
-    public function __construct(ContainerInterface $container, ProviderService $providerService)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->provider = $providerService->execute($providerService->getTypeProvider());
     }
 
     /**
+     *
+     * @Route("/bundle_index", name="bundle_index")
      * @param Request $request
-     * @return JsonResponse
-     * @Route("/clientcentral/informations/adresseAtrtibuts", name="get_central_adresse_attributs", options={"expose"=true}, methods={"GET"})
+     * @return Response
      */
-    public function addresseAttributs(Request $request): JsonResponse
+    public function index(Request $request): Response
     {
-        return $this->provider->getAttributsListe();
+        return $this->render('@MarmitsGoogleIdentification/default.html.twig', [
+            'test' => 'test'
+        ]);
     }
+
+
+
+    
+    
 
 }
