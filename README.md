@@ -54,7 +54,7 @@ bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.j
 
 ### assets
 ``` 
-marmits.js => import '../vendor/marmits/googleidentification/src/Resources/public/css/marmitsgoogle.scss';
+add marmits.js => import '../vendor/marmits/googleidentification/src/Resources/public/css/marmitsgoogle.scss';
 ``` 
 
 ### webpack.config.js
@@ -66,6 +66,12 @@ marmits.js => import '../vendor/marmits/googleidentification/src/Resources/publi
 - yarn install
 
 - composer update
+
+### Commandes generate static file WEBPACK
+``` 
+yarn encore dev
+npm run watch (live)
+``` 
 
 ### UPDATE
 
