@@ -37,7 +37,7 @@ class GoogleProvider
             'clientId'     => $this->params['googleclient_params']['client_id'],
             'clientSecret' => $this->params['googleclient_params']['client_secret'],
             'redirectUri'  => $this->params['googleclient_params']['redirect_uris'],
-            'hostedDomain' => $this->params['googleclient_params']['javascript_origins']
+            'hostedDomain' => $this->params['googleclient_params']['google_origins']
         ]);
 
     }
