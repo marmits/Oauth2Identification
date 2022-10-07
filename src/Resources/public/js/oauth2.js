@@ -8,7 +8,7 @@ class Oauth2 {
         this.divprivate = $("div.private");
         this.getSaveAccessToken()
         .then((result) => {
-            if(result.email !== ""){
+            if(result.email !== undefined){
                 this.userEmail = result.email;
                 this.BuildFormPrivate();
             }
