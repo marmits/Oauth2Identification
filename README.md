@@ -16,6 +16,18 @@ symfony new appli --version="5.4.*"
 "require": {
     "marmits/googleidentification": "*@dev",
 }
+
+,s
+"repositories": [
+        {
+            "type": "path",
+            "url": "../../Bundles/Marmits/GoogleIdentification",
+            "options": {
+                "symlink": true
+            }
+
+        }
+]
 ```
 
 ### jsrouting-bundle
