@@ -1,0 +1,47 @@
+{
+    "name": "marmits/googleidentification",
+    "description": "Client Google Identification",
+    "type": "symfony-bundle",
+    "license": "MIT",        
+    "authors": [
+        {
+            "name": "Stolaric Geoffroy",
+            "email": "geoffroy.stolaric@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3 || ^8.0",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "ext-json": "*",
+        "nyholm/psr7": "^1.5",
+        "symfony/console": "5.4.*",
+        "symfony/dotenv": "5.4.*",
+        "symfony/flex": "^1.17|^2",
+        "symfony/framework-bundle": "5.4.*",
+        "symfony/runtime": "5.4.*",
+        "symfony/asset": "5.4.*",
+        "symfony/twig-bundle": "5.4.*",
+        "symfony/apache-pack": "^1.0",
+        "symfony/http-client": "5.4.*",
+        "symfony/web-profiler-bundle": "5.4.*",
+        "sensio/framework-extra-bundle": "^6.2",
+        "doctrine/annotations": "^1.13",
+        "symfony/event-dispatcher": "5.4.*",
+        "friendsofsymfony/jsrouting-bundle": "^2.8",
+        "symfony/webpack-encore-bundle": "^1.14",
+        "league/oauth2-client": "^2.0",
+        "league/oauth2-google": "^4.0.0",
+        "league/oauth2-github": "^3.0"
+    },
+    "require-dev": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Marmits\\GoogleIdentification\\":  "src/"
+        }
+    }
+}
+
+

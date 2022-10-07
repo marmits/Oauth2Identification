@@ -1,0 +1,69 @@
+{% extends '@MarmitsGoogleIdentification/index.html.twig' %}
+
+ {% block css %}
+
+     {{ encore_entry_link_tags('marmits') }}
+
+ {% endblock %}
+
+{% block body %}
+
+
+
+<div class="container-fluid">
+    <h1> Private Page </h1>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="private">
+            {% if email is defined %}
+
+                    <ul>
+                        {% if accesstoken is defined %}
+                            <li>accesstoken : {{ accesstoken }}</li>
+                        {% endif %}
+
+
+                        {% if accesstoken is defined %}
+                            <li>accesstoken : {{ accesstoken }}</li>
+                        {% endif %}
+                        {% if refreshtoken is defined %}
+                            <li>refreshtoken : {{ refreshtoken }}</li>
+                        {% endif %}
+
+                        {% if expiredin is defined %}
+                            <li>expiredin : {{ expiredin }}</li>
+                        {% endif %}
+
+                        {% if expired is defined %}
+                            <li>expired : {{ expired }}</li>
+                        {% endif %}
+
+                        {% if name is defined %}
+                            <li>name : {{ name }}</li>
+                        {% endif %}
+
+
+                         <li class="email">email : {{ email }}</li>
+
+
+                    </ul>
+
+
+
+            {% else %}
+                <div class="alert alert-danger" role="alert">
+                    NOT CONNECTED
+                </div>
+
+
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('marmits') }}
+    {% endblock %}
+
+{% endblock %}
+

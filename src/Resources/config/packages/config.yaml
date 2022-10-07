@@ -1,0 +1,7 @@
+parameters:
+  logs:
+    dossier: "%kernel.project_dir%/Logs"
+
+
+
+
