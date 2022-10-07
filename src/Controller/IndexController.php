@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Marmits\GoogleIdentification\Services\GoogleProvider;
 use Marmits\GoogleIdentification\Services\GithubProvider;
+use League\OAuth2\Client\Provider\GoogleUser;
+use League\OAuth2\Client\Provider\GithubResourceOwner;
 
 
 /**
@@ -150,23 +152,25 @@ class IndexController extends AbstractController
 
             // Optional: Now you have a token you can look up a users profile data
             try {
-
+                $res = [];
                 // We got an access token, let's now get the owner details
                 $ownerDetails = $this->googleProvider->getInstance()->getResourceOwner($accessToken);
+                if($ownerDetails instanceof GoogleUser){
+                    // Use these details to create a new profile
+                    if(isset($accessToken->getValues()['id_token'])){
+                        $id_token = $accessToken->getValues()['id_token'];
+                    }
 
-                // Use these details to create a new profile
-                if(isset($accessToken->getValues()['id_token'])){
-                    $id_token = $accessToken->getValues()['id_token'];
+                    $res = [
+                        'accesstoken' => $accessToken->getToken(),
+                        'refreshtoken' => $accessToken->getRefreshToken(),
+                        'expiredin' => $accessToken->getExpires(),
+                        'expired' => $accessToken->hasExpired() ,
+                        'id_token'=> $id_token,
+                        'firstName' => $ownerDetails->getFirstName()
+                    ];
                 }
 
-                $res = [
-                    'accesstoken' => $accessToken->getToken(),
-                    'refreshtoken' => $accessToken->getRefreshToken(),
-                    'expiredin' => $accessToken->getExpires(),
-                    'expired' => $accessToken->hasExpired() ,
-                    'id_token'=> $id_token,
-                    'firstName' => $ownerDetails->getFirstName()
-                ];
                 return new jsonResponse($res, 200);
 
             } catch (IdentityProviderException $e) {
@@ -229,14 +233,15 @@ class IndexController extends AbstractController
 
                 // We got an access token, let's now get the owner details
                 $ownerDetails = $this->githubProvider->getInstance()->getResourceOwner($accessToken);
-
-                $this->session->set('access',
-                    [
-                        'accesstoken' => $accessToken->getToken(),
-                        'refreshtoken' => $accessToken->getRefreshToken(),
-                        'email' => $ownerDetails->getEmail()
-                    ]
-                );
+                if($ownerDetails instanceof GithubResourceOwner){
+                    $this->session->set('access',
+                        [
+                            'accesstoken' => $accessToken->getToken(),
+                            'refreshtoken' => $accessToken->getRefreshToken(),
+                            'email' => $ownerDetails->getEmail()
+                        ]
+                    );
+                }
 
                 header('Location: ' . 'bundle_privat');
                 exit;

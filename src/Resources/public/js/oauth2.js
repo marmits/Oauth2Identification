@@ -10,7 +10,21 @@ class Oauth2 {
         .then((result) => {
             if(result.email !== undefined){
                 this.userEmail = result.email;
+
+                //chargement des users bdd
+                // chargement du code compliqué
+                // verifier que l'utilisateur existe dans la BDD
+
+                // s' il existe
+                // construction du formulaire de saisie code
                 this.BuildFormPrivate();
+                // poste du code saisie
+                // on concatene le code saisie avec le code commliqué en password
+
+                // on check le password 
+                // si check OK on affiche le resultat BDD 
+
+                
             }
         })
         .catch((e) => {
