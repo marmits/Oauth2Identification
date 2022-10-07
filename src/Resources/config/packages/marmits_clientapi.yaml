@@ -8,3 +8,9 @@ parameters:
     client_secret: '%env(GOOGLE_CLIENT_SECRET)%'
     redirect_uris: '%env(GOOGLE_REDIRECT_URIS)%'
     google_origins: '%env(GOOGLE_ORIGINS)%'
+
+  github_client:
+    client_id: '6f9eeb9c4ffe9aacbfdb'
+    client_secret: '72ba1beee2649527a8f42d3b959143ab7a53b0e4'
+    redirect_uris: 'http://googleclient:64640/getaccesstokengithub'
+

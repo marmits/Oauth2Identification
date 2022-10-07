@@ -39,7 +39,7 @@ class MarmitsGoogleIdentificationExtension extends Extension implements PrependE
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config/packages');
         $loader = new YamlFileLoader($container, $fileLocator);
-        $loader->load('marmits_google.yaml');
+        $loader->load('marmits_clientapi.yaml');
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config/packages');
         $loader = new YamlFileLoader($container, $fileLocator);

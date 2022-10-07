@@ -5,7 +5,8 @@ services:
     arguments: [
         '@Symfony\Component\DependencyInjection\ContainerInterface',
         '@Symfony\Component\HttpFoundation\Session\SessionInterface',
-        '@Marmits\GoogleIdentification\Services\GoogleProvider'
+        '@Marmits\GoogleIdentification\Services\GoogleProvider',
+        '@Marmits\GoogleIdentification\Services\GithubProvider'
     ]
     tags:
       - { name: controller.service_arguments }
@@ -14,4 +15,9 @@ services:
   Marmits\GoogleIdentification\Services\GoogleProvider:
     arguments:
       - googleclient_params: '%google_client%'
+
+  Marmits\GoogleIdentification\Services\GithubProvider:
+    arguments:
+      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
+      - githubclient_params: '%github_client%'
 

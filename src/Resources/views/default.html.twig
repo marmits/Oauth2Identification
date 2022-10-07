@@ -13,18 +13,19 @@
     <h1> into bundle </h1>
     <div class="row">
         <div class="col-lg-12">
-            <h2>Parameters</h2>
+            <h2>Parameters Google</h2>
             <p>{{ dump(googleProvider) }} %}</p>
-            <hr>
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <a class="btn btn-warning" href="{{ path('getaccesstoken') }}" role="button">getaccesstoken</a>
+                <a class="btn btn-warning connect_social" href="{{ path('getaccesstokengoogle') }}" role="button">getaccesstokenGoogle</a>
             </div>
             <hr>
+            <h2>Parameters Github</h2>
+            <p>{{ dump(githubProvider) }} %}</p>
             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                <button type="button" class="btn btn-danger">Left</button>
-                <button type="button" class="btn btn-warning">Middle</button>
-                <button type="button" class="btn btn-success">Right</button>
+                <a class="btn btn-warning connect_social" href="{{ path('github_authorize') }}" role="button">github_authorize</a>
             </div>
+            <hr>
+
         </div>
     </div>
 </div>

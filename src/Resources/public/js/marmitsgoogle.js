@@ -8,4 +8,6 @@ require('bootstrap');
 import '../css/marmitsgoogle.scss';
 
 
-export default main;
+import Main from './main.js';
+console.log("==============marmitsgoogle.js===================");
+export default Main;

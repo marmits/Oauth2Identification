@@ -1,9 +1,19 @@
 @import "~bootstrap/scss/bootstrap";
 
 body {
-  background-color: darkblue;
+  background-color: lightgray;
   color:white;
 }
 
+div.private{
+  ul{
+    list-style-type: none;
+    margin:0;
+    padding:1em 0;
+    li{
+      float:none;
+    }
+  }
+}
 
 
