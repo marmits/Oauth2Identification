@@ -7,8 +7,8 @@ services:
         '@Doctrine\Persistence\ManagerRegistry',
     ]
 
-  Marmits\GoogleIdentification\Entity\Datas:
 
+  Marmits\GoogleIdentification\Entity\Datas:
 
   Marmits\GoogleIdentification\Controller\IndexController:
     arguments: [
@@ -26,7 +26,8 @@ services:
         '@service_container',
         '@Symfony\Component\HttpFoundation\RequestStack',
         '@Doctrine\ORM\EntityManagerInterface',
-        '@Marmits\GoogleIdentification\Repository\DatasRepository'
+        '@Marmits\GoogleIdentification\Repository\DatasRepository',
+        '@Marmits\GoogleIdentification\Services\Access'
     ]
     tags:
       - { name: controller.service_arguments }
@@ -40,4 +41,10 @@ services:
     arguments:
       - '@Symfony\Contracts\HttpClient\HttpClientInterface'
       - githubclient_params: '%github_client%'
+
+  Marmits\GoogleIdentification\Services\Access:
+    arguments:
+      - private_params: '%private_access%'
+
+
 

@@ -10,6 +10,8 @@ class Oauth2 {
         this.template_private = "bundles/marmitsgoogleidentification/templates/template_private.html";
         this.template_social_connect = "bundles/marmitsgoogleidentification/templates/template_social_connect.html";
         this.template_bt_logout = "bundles/marmitsgoogleidentification/templates/template_bt_logout.html";
+        this.bouton_connect = null;
+        this.input_password = null;
         this.divprivate = $("div.private");
         this.BuildEventToPrivatDiv();
 
@@ -25,7 +27,6 @@ class Oauth2 {
                 // verifier que l'utilisateur existe dans la BDD
                 this.getIsValidUser()
                 .then((result) => {
-                    console.log(result);
 
                     if(result.code === 200) {
                         reponse.code = result.code;
@@ -98,7 +99,6 @@ class Oauth2 {
                 url: Routing.generate("isvaliduser"),
                 method: "GET",
                 success: function(datas){
-
                     resolve(datas);
                 },
                 error: function(e){
@@ -111,13 +111,20 @@ class Oauth2 {
 
 
 
-    BuildFormPrivate = function(event){
-        let that = this;
-        $('<div>').load(that.template_private, function (response, status, xhr) {
-            let blocDiv = $(xhr.responseText);
-            blocDiv.attr('id', "privateform");
-            that.divprivate.append(blocDiv);
 
+
+    BuildFormPrivate = async function(event){
+        let that = this;
+        return new Promise(function(resolve,reject) {
+            $('<div>').load(that.template_private, function (response, status, xhr) {
+                let blocDiv = $(xhr.responseText);
+                blocDiv.attr('id', "privateform");
+                that.divprivate.append(blocDiv);
+                that.bouton_connect = that.divprivate.find("#privateform").find("button#private_connect");
+                that.input_password = that.divprivate.find("#privateform").find("input#inputPassword");
+                resolve();
+
+            });
         });
     }
 
@@ -160,11 +167,108 @@ class Oauth2 {
         });
 
         that.divprivate.on("access_on", function (e, data) {
-
             that.divprivate.find("div.message").addClass("hidden");
-            that.BuildFormPrivate();
+
+            let BuildFormPrivate =  that.BuildFormPrivate();
+
+            let bindPrivateBtConnect = BuildFormPrivate.then((result) => {
+                return that.bindPrivateBtConnect();
+            });
+
+            let promises = [
+                BuildFormPrivate,
+                bindPrivateBtConnect
+            ];
+
+            Promise.all(promises)
+            .then((retour) => {
+                console.log("ok");
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+
         });
     }
+
+    bindPrivateBtConnect = async function(){
+        let that = this;
+        return new Promise(function(resolve,reject) {
+            that.bouton_connect.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                let checkPrivateAccess = that.checkPrivateAccess();
+
+                let displayPrivate = checkPrivateAccess.then((result) => {
+
+                    return that.displayPrivate(result);
+                });
+
+
+                let promises = [
+                    checkPrivateAccess,
+                    displayPrivate
+                ];
+
+                Promise.all(promises)
+                    .then((retour) => {
+
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
+
+
+            });
+        });
+    }
+
+    checkPrivateAccess = async function(){
+        let that = this;
+        let password = that.input_password.val();
+        let retour = {
+            error:true,
+            message:""
+        };
+
+        return new Promise(function(resolve,reject) {
+            if(password !== "") {
+                $.ajax({
+                    url: Routing.generate("checkprivateaccess"),
+                    method: "POST",
+                    data: {
+                        password: password,
+                    },
+                    success: function (datas) {
+                        retour = datas;
+                        resolve(retour);
+                    },
+                    error: function (e) {
+                        retour.error = true;
+                        retour.message = e;
+                        resolve(e);
+                    }
+                });
+            } else {
+                retour.error = true;
+                retour.message = "Empty password";
+                resolve(retour);
+            }
+        });
+    }
+
+
+    displayPrivate = async function(access) {
+        let that = this;
+        return new Promise(function(resolve,reject) {
+            console.log(access);
+            resolve("display");
+
+        });
+    }
+
+
 
 
 

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\ORM\EntityManagerInterface;
 use Marmits\GoogleIdentification\Entity\Datas;
 use Marmits\GoogleIdentification\Repository\DatasRepository;
+use Marmits\GoogleIdentification\Services\Access;
 
 
 class UserController  extends AbstractController
@@ -20,20 +21,23 @@ class UserController  extends AbstractController
     protected RequestStack $requestStack;
     protected EntityManagerInterface $em;
     protected DatasRepository $repository;
+    protected Access $access;
 
     /**
      * @param ContainerInterface $container
      * @param RequestStack $requestStack
      * @param EntityManagerInterface $em
      * @param DatasRepository $repository
+     * @param Access $access
 
      */
-    public function __construct(ContainerInterface $container, RequestStack $requestStack, EntityManagerInterface $em, DatasRepository $repository)
+    public function __construct(ContainerInterface $container, RequestStack $requestStack, EntityManagerInterface $em, DatasRepository $repository, Access $access)
     {
         $this->container = $container;
         $this->requestStack = $requestStack;
         $this->em = $em;
         $this->repository = $repository;
+        $this->access = $access;
 
     }
 
@@ -64,6 +68,36 @@ class UserController  extends AbstractController
 
     }
 
+    /**
+     *
+     * @Route("/checkprivateaccess", name="checkprivateaccess",options={"expose"=true}, methods={"POST"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checkPrivateAccess(Request $request): JsonResponse
+    {
+        $password = "";
 
+        $result["error"] =  true;
+        $result["message"] = "empty password";
+
+        if($request->request->has("password")) {
+            $password = $request->request->get("password");
+
+            $passwordOk = $this->access->setPassword($password);
+            if($this->access->checkCrediental()){
+                $result["error"] =  false;
+                $result["message"] = "Successfull Login";
+            } else {
+                $result["error"] =  true;
+                $result["message"] = "Bad Login";
+            }
+
+        }
+
+        return new jsonResponse($result, 200);
+
+    }
 
 }

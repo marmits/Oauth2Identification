@@ -112,9 +112,6 @@ class IndexController extends AbstractController
     public function logout(Request $request): Response
     {
 
-        error_log( print_r($_COOKIE, TRUE) );
-
-
         if($this->requestStack->getSession()->has('access')){
             $this->requestStack->getSession()->remove('access');
         }
