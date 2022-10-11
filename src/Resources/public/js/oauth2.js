@@ -25,7 +25,7 @@ class Oauth2 {
                 // verifier que l'utilisateur existe dans la BDD
                 this.getIsValidUser()
                 .then((result) => {
-
+                    console.log(result);
 
                     if(result.code === 200) {
                         reponse.code = result.code;

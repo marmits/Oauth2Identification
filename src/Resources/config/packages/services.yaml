@@ -2,6 +2,12 @@ services:
 
   Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
+  Marmits\GoogleIdentification\Repository\DatasRepository:
+    arguments: [
+        '@Doctrine\Persistence\ManagerRegistry',
+    ]
+
+  Marmits\GoogleIdentification\Entity\Datas:
 
 
   Marmits\GoogleIdentification\Controller\IndexController:
@@ -19,7 +25,8 @@ services:
     arguments: [
         '@service_container',
         '@Symfony\Component\HttpFoundation\RequestStack',
-        '@Doctrine\ORM\EntityManagerInterface'
+        '@Doctrine\ORM\EntityManagerInterface',
+        '@Marmits\GoogleIdentification\Repository\DatasRepository'
     ]
     tags:
       - { name: controller.service_arguments }
