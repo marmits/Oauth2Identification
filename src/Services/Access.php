@@ -1,7 +1,7 @@
 <?php
 namespace Marmits\GoogleIdentification\Services;
 
-use Marmits\GoogleIdentification\Services\User;
+
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 
 class Access
@@ -12,8 +12,7 @@ class Access
 
 
     /**
-     * @param array $private_params
-     * @param User $user
+     * @param array $private_params     
      */
     public function __construct(array $private_params)
     {
