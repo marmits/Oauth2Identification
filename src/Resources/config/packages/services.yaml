@@ -14,8 +14,8 @@ services:
     arguments: [
         '@service_container',
         '@Symfony\Component\HttpFoundation\RequestStack',
-        '@Marmits\GoogleIdentification\Services\GoogleProvider',
-        '@Marmits\GoogleIdentification\Services\GithubProvider'
+        '@Marmits\GoogleIdentification\Providers\GoogleProvider',
+        '@Marmits\GoogleIdentification\Providers\GithubProvider'
     ]
     tags:
       - { name: controller.service_arguments }
@@ -32,11 +32,11 @@ services:
       - { name: controller.service_arguments }
 
 
-  Marmits\GoogleIdentification\Services\GoogleProvider:
+  Marmits\GoogleIdentification\Providers\GoogleProvider:
     arguments:
       - googleclient_params: '%google_client%'
 
-  Marmits\GoogleIdentification\Services\GithubProvider:
+  Marmits\GoogleIdentification\Providers\GithubProvider:
     arguments:
       - '@Symfony\Contracts\HttpClient\HttpClientInterface'
       - githubclient_params: '%github_client%'

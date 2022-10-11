@@ -15,8 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Marmits\GoogleIdentification\Services\GoogleProvider;
-use Marmits\GoogleIdentification\Services\GithubProvider;
+use Marmits\GoogleIdentification\Providers\GoogleProvider;
+use Marmits\GoogleIdentification\Providers\GithubProvider;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\GithubResourceOwner;
 
