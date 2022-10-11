@@ -1,12 +1,25 @@
 services:
 
+  Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
+
+
 
   Marmits\GoogleIdentification\Controller\IndexController:
     arguments: [
-        '@Symfony\Component\DependencyInjection\ContainerInterface',
-        '@Symfony\Component\HttpFoundation\Session\SessionInterface',
+        '@service_container',
+        '@Symfony\Component\HttpFoundation\RequestStack',
         '@Marmits\GoogleIdentification\Services\GoogleProvider',
         '@Marmits\GoogleIdentification\Services\GithubProvider'
+    ]
+    tags:
+      - { name: controller.service_arguments }
+
+
+  Marmits\GoogleIdentification\Controller\UserController:
+    arguments: [
+        '@service_container',
+        '@Symfony\Component\HttpFoundation\RequestStack',
+        '@Doctrine\ORM\EntityManagerInterface'
     ]
     tags:
       - { name: controller.service_arguments }

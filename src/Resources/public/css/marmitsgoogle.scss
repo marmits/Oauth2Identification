@@ -5,6 +5,10 @@ body {
   color:white;
 }
 
+.hidden{
+  display: none !important;
+}
+
 div.private{
   ul{
     list-style-type: none;
