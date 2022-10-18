@@ -15,6 +15,6 @@ parameters:
     redirect_uris: '%env(GITHUB_REDIRECT_URIS)%'
 
   private_access:
-    identifiant: '%env(PRIVATE_INDENTIFIANT)%'
+    identifiant: '%env(PRIVATE_IDENTIFIANT)%'
     password: '%env(PRIVATE_PASSWORD)%'
 
