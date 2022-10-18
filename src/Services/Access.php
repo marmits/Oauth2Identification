@@ -8,6 +8,7 @@ class Access
 {
     protected array $params;
     protected string $password;
+    protected string $identifiant;
 
 
 
@@ -24,6 +25,16 @@ class Access
         return $this;
     }
 
+    public function setIdentifiant(string $val){
+        $this->identifiant = $val;
+        return $this;
+    }
+
+    public function getIdentifiant(){
+        return $this->identifiant;
+    }
+
+
     public function getPassword(){
         return  $this->password;
     }
@@ -33,7 +44,10 @@ class Access
 
         $isValid = false;
         $passwordInput = $this->getPassword();
-        $isValid = $this->VerifPassHash($passwordInput);
+        $identifiantInput = $this->getIdentifiant();
+        if($identifiantInput === $this->getIdentifiantParam()) {
+            $isValid = $this->VerifPassHash($passwordInput);
+        }
         return $isValid;
 
     }
@@ -50,6 +64,10 @@ class Access
 
         return $passwordHasher->verify($hash, $val);
 
+    }
+
+    public function getIdentifiantParam(){
+        return $this->params["private_params"]['identifiant'];
     }
 
 

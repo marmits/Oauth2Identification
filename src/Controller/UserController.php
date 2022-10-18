@@ -70,6 +70,31 @@ class UserController  extends AbstractController
 
     /**
      *
+     * @Route("/setidentifiantappli", name="setidentifiantappli",options={"expose"=true}, methods={"GET"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function setIdentifiantAppli(Request $request): JsonResponse
+    {
+
+
+        $result["error"] =  true;
+        $result["message"] = "bad identifiant";
+        $result["identifiant"] = null;
+        if($this->requestStack->getSession()->has('access')) {
+            $this->requestStack->getSession()->set('identifiant', $this->access->getIdentifiantParam());
+            $result["identifiant"] = $this->requestStack->getSession()->get('identifiant');
+            $result["error"] = false;
+            $result["message"] = "Identifiant correct";
+        }
+
+        return new jsonResponse($result, 200);
+
+    }
+
+    /**
+     *
      * @Route("/checkprivateaccess", name="checkprivateaccess",options={"expose"=true}, methods={"POST"})
      *
      * @param Request $request
@@ -82,18 +107,22 @@ class UserController  extends AbstractController
         $result["error"] =  true;
         $result["message"] = "empty password";
 
-        if($request->request->has("password")) {
+        if($request->request->has("password") && $request->request->has("identifiant") ) {
+            $identifiant = $request->request->get("identifiant");
             $password = $request->request->get("password");
 
-            $passwordOk = $this->access->setPassword($password);
+            $this->access->setIdentifiant($identifiant);
+            $this->access->setPassword($password);
             if($this->access->checkCrediental()){
                 $result["error"] =  false;
                 $result["message"] = "Successfull Login";
+
             } else {
                 $result["error"] =  true;
                 $result["message"] = "Bad Login";
             }
 
+            error_log( print_r($_ENV, TRUE) );
         }
 
         return new jsonResponse($result, 200);

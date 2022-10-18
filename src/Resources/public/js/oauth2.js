@@ -175,9 +175,11 @@ class Oauth2 {
                 return that.bindPrivateBtConnect();
             });
 
+
             let promises = [
                 BuildFormPrivate,
                 bindPrivateBtConnect
+
             ];
 
             Promise.all(promises)
@@ -191,6 +193,27 @@ class Oauth2 {
         });
     }
 
+    setIdentifiantAppli = async function(){
+        let that = this;
+        let retour = {};
+        return new Promise(function(resolve,reject) {
+            $.ajax({
+                url: Routing.generate("setidentifiantappli", {
+
+                }),
+                method: "GET",
+                success: function (datas) {
+                    resolve(datas);
+                },
+                error: function (e) {
+                    retour.error = true;
+                    retour.message = e;
+                    resolve(e);
+                }
+            });
+        });
+    }
+
     bindPrivateBtConnect = async function(){
         let that = this;
         return new Promise(function(resolve,reject) {
@@ -198,7 +221,11 @@ class Oauth2 {
                 e.preventDefault();
                 e.stopPropagation();
 
-                let checkPrivateAccess = that.checkPrivateAccess();
+                let setIdentifiantAppli = that.setIdentifiantAppli();
+
+                let checkPrivateAccess = setIdentifiantAppli.then((result) => {
+                    return that.checkPrivateAccess(result);
+                });
 
                 let displayPrivate = checkPrivateAccess.then((result) => {
 
@@ -206,9 +233,13 @@ class Oauth2 {
                 });
 
 
+
+
                 let promises = [
+                    setIdentifiantAppli,
                     checkPrivateAccess,
-                    displayPrivate
+                    displayPrivate,
+
                 ];
 
                 Promise.all(promises)
@@ -224,7 +255,7 @@ class Oauth2 {
         });
     }
 
-    checkPrivateAccess = async function(){
+    checkPrivateAccess = async function(datasIdentifiant){
         let that = this;
         let password = that.input_password.val();
         let retour = {
@@ -233,27 +264,33 @@ class Oauth2 {
         };
 
         return new Promise(function(resolve,reject) {
-            if(password !== "") {
-                $.ajax({
-                    url: Routing.generate("checkprivateaccess"),
-                    method: "POST",
-                    data: {
-                        password: password,
-                    },
-                    success: function (datas) {
-                        retour = datas;
-                        resolve(retour);
-                    },
-                    error: function (e) {
-                        retour.error = true;
-                        retour.message = e;
-                        resolve(e);
-                    }
-                });
+            if(datasIdentifiant.error === false) {
+                if (password !== "") {
+                    $.ajax({
+                        url: Routing.generate("checkprivateaccess"),
+                        method: "POST",
+                        data: {
+                            identifiant:datasIdentifiant.identifiant,
+                            password: password
+                        },
+                        success: function (datas) {
+                            retour = datas;
+                            resolve(retour);
+                        },
+                        error: function (e) {
+                            retour.error = true;
+                            retour.message = e;
+                            resolve(e);
+                        }
+                    });
+                } else {
+                    retour.error = true;
+                    retour.message = "Empty password";
+                    resolve(retour);
+                }
             } else {
-                retour.error = true;
-                retour.message = "Empty password";
-                resolve(retour);
+                let message = datasIdentifiant.message;
+                reject(message);
             }
         });
     }

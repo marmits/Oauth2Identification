@@ -134,6 +134,51 @@ yarn encore dev
 npm run watch (live)
 ``` 
 
+
+### Secrets
+
+LIST
+``` 
+symfony console secrets:list --reveal 
+
+symfony console secret:generate-keys
+``` 
+ SET
+``` 
+symfony console secrets:set REMEMBER_ME
+
+symfony console secrets:set REMEMBER_ME --prod
+``` 
+
+REMOVE 
+``` 
+symfony console secrets:remove REMEMBER_ME
+``` 
+To improve performance (i.e. avoid decrypting secrets at runtime), you can decrypt your secrets during deployment to the "local" vault:
+``` 
+APP_RUNTIME_ENV=dev php bin/console secrets:decrypt-to-local --force
+``` 
+
+il faut le composant:
+``` 
+composer require paragonie/sodium_compat
+``` 
+**framework.yaml**
+``` 
+secrets:
+    vault_directory: '%kernel.project_dir%/config/secrets/%kernel.environment%'
+``` 
+
+pour forcer les variables de dev en local au lieu de passer par le decryptage
+``` 
+APP_RUNTIME_ENV=dev php bin/console secrets:decrypt-to-local --force
+``` 
+
+ou Dumper les variables d’environnement pour plus de rapidité en développement:
+``` 
+composer dump-env dev
+``` 
+
 ### UPDATE
 
 [changelog](https://github.com/marmits/googleidentification/blob/main/CHANGELOG.md)
