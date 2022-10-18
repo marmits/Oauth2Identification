@@ -12,7 +12,7 @@ class Access
 
 
     /**
-     * @param array $private_params     
+     * @param array $private_params
      */
     public function __construct(array $private_params)
     {
@@ -46,8 +46,9 @@ class Access
         ]);
 
         $passwordHasher = $factory->getPasswordHasher('common');
-        $hash = $passwordHasher->hash($val); // returns a bcrypt hash
-        return $passwordHasher->verify($hash, $this->params["private_params"]['password']);
+        $hash = $passwordHasher->hash($this->params["private_params"]['password']); // returns a bcrypt hash
+
+        return $passwordHasher->verify($hash, $val);
 
     }
 
