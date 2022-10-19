@@ -1,4 +1,5 @@
 @import "~bootstrap/scss/bootstrap";
+$enable-cssgrid: true;
 $main_dark : #3b5998;
 
 
@@ -12,6 +13,7 @@ body {
 }
 
 div.private{
+  text-align: center;
   ul{
     list-style-type: none;
     margin:0;
@@ -19,6 +21,18 @@ div.private{
     li{
       float:none;
     }
+  }
+  div.login{
+    text-align: center;
+    
+  }
+  input#inputPassword{
+   
+    display:inline;
+  }
+
+  button#private_connect, input#inputPassword{
+    width: 14em;
   }
 }
 
