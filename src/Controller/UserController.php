@@ -20,23 +20,23 @@ class UserController  extends AbstractController
 
     protected RequestStack $requestStack;
     protected EntityManagerInterface $em;
-    protected DatasRepository $repository;
+    protected DatasRepository $DatasRepository;
     protected Access $access;
 
     /**
      * @param ContainerInterface $container
      * @param RequestStack $requestStack
      * @param EntityManagerInterface $em
-     * @param DatasRepository $repository
+     * @param DatasRepository $DatasRepository
      * @param Access $access
 
      */
-    public function __construct(ContainerInterface $container, RequestStack $requestStack, EntityManagerInterface $em, DatasRepository $repository, Access $access)
+    public function __construct(ContainerInterface $container, RequestStack $requestStack, EntityManagerInterface $em, DatasRepository $DatasRepository, Access $access)
     {
         $this->container = $container;
         $this->requestStack = $requestStack;
         $this->em = $em;
-        $this->repository = $repository;
+        $this->DatasRepository = $DatasRepository;
         $this->access = $access;
 
     }
@@ -51,20 +51,12 @@ class UserController  extends AbstractController
     public function getIsValidUSer(Request $request): JsonResponse
     {
 
-        $datas = $this->repository->findAll();
-        $count = count($datas);
-        if($count > 0) {
-            if($this->requestStack->getSession()->has('access')){
-                $email_connect = $this->requestStack->getSession()->get('access')["email"];
-                $user =  $this->repository->findOneBy(['email' => $email_connect]);
-                if($user instanceof Datas) {
-                    $contenu = $user->getContenu();
-                    return new jsonResponse(['code' => 200, 'message' => 'Authorized User'], 200);
-                }
-                return new jsonResponse(['code' => 403, 'message' => 'Unauthorized User'], 200);
-            }
+        if ($this->getDatasUser() !== null) {
+            return new jsonResponse(['code' => 200, 'message' => 'Authorized User'], 200);
         }
-        return new jsonResponse(['code'=> 404, 'message' => 'Aucune données'], 200);
+
+        return new jsonResponse(['code'=> 404, 'message' => 'Unauthorized'], 401);
+
 
     }
 
@@ -82,7 +74,7 @@ class UserController  extends AbstractController
         $result["error"] =  true;
         $result["message"] = "bad identifiant";
         $result["identifiant"] = null;
-        if($this->requestStack->getSession()->has('access')) {
+        if ($this->getDatasUser() !== null) {
             $this->requestStack->getSession()->set('identifiant', $this->access->getIdentifiantParam());
             $result["identifiant"] = $this->requestStack->getSession()->get('identifiant');
             $result["error"] = false;
@@ -122,11 +114,25 @@ class UserController  extends AbstractController
                 $result["message"] = "Bad Login";
             }
 
-            error_log( print_r($_ENV, TRUE) );
         }
 
         return new jsonResponse($result, 200);
 
+    }
+
+    private function getDatasUser(){
+        $datas = $this->DatasRepository->findAll();
+        $count = count($datas);
+        if($count > 0) {
+            if($this->requestStack->getSession()->has('access')){
+                $email_connect = $this->requestStack->getSession()->get('access')["email"];
+                $user =  $this->DatasRepository->findOneBy(['email' => $email_connect]);
+                if($user instanceof Datas) {
+                    return $user;
+                }
+            }
+        }
+        return null;
     }
 
 }

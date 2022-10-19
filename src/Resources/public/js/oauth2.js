@@ -2,6 +2,9 @@ const routes = require('../../../../../../../public/js/fos_js_routes.json');
 const Routing = require('../../../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min');
 Routing.setRoutingData(routes);
 
+import {
+    loadingStart,loadingChangeText,onProgressChange,loadingChangeProgressPercent,loadingStop
+} from './loader';
 
 
 class Oauth2 {
@@ -221,6 +224,8 @@ class Oauth2 {
                 e.preventDefault();
                 e.stopPropagation();
 
+                that.animLogin("open");
+
                 let setIdentifiantAppli = that.setIdentifiantAppli();
 
                 let checkPrivateAccess = setIdentifiantAppli.then((result) => {
@@ -233,21 +238,22 @@ class Oauth2 {
                 });
 
 
-
-
                 let promises = [
                     setIdentifiantAppli,
                     checkPrivateAccess,
                     displayPrivate,
-
                 ];
 
                 Promise.all(promises)
                     .then((retour) => {
+                        that.animLogin("close");
+                        resolve(retour);
 
                     })
                     .catch((e) => {
+                        that.animLogin("close");
                         console.error(e);
+                        reject(e);
                     });
 
 
@@ -303,6 +309,17 @@ class Oauth2 {
             resolve("display");
 
         });
+    }
+
+    animLogin = function(action){
+        let that = this;
+        if(action === "open") {
+            loadingStart($("body"), "Login in progress...");
+            that.divprivate.find("form#privateform").addClass("hidden");
+        } else {
+            that.divprivate.find("form#privateform").removeClass("hidden");
+            loadingStop($('body'));
+        }
     }
 
 

@@ -136,6 +136,8 @@ npm run watch (live)
 
 
 ### Secrets
+Mettre un password dans une variable SODIUM et accessible comme une variable d'environnement.  
+Mais non accessible dans `$_ENV`  
 
 LIST
 ``` 
