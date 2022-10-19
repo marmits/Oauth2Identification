@@ -94,29 +94,34 @@ class UserController  extends AbstractController
      */
     public function checkPrivateAccess(Request $request): JsonResponse
     {
-        $password = "";
 
         $result["error"] =  true;
-        $result["message"] = "empty password";
-
-        if($request->request->has("password") && $request->request->has("identifiant") ) {
-            $identifiant = $request->request->get("identifiant");
-            $password = $request->request->get("password");
-
-            $this->access->setIdentifiant($identifiant);
-            $this->access->setPassword($password);
-            if($this->access->checkCrediental()){
-                $result["error"] =  false;
-                $result["message"] = "Successfull Login";
-
+        $result["message"] = "Not identified user";
+        $codeError = 401;
+        if ($this->getDatasUser() !== null) {
+            if ($request->request->has("password") && $request->request->has("identifiant")) {
+                $identifiant = $request->request->get("identifiant");
+                $password = $request->request->get("password");
+                $this->access->setIdentifiant($identifiant);
+                $this->access->setPassword($password);
+                if ($this->access->checkCrediental()) {
+                    $result["error"] = false;
+                    $result["message"] = "Successfull Login";
+                    $codeError = 200;
+                } else {
+                    $result["error"] = true;
+                    $result["message"] = "Bad Login";
+                    $codeError = 403;
+                }
             } else {
-                $result["error"] =  true;
-                $result["message"] = "Bad Login";
+                $result["message"] = "empty password";
+                $codeError = 200;
             }
-
         }
 
-        return new jsonResponse($result, 200);
+        
+
+        return new jsonResponse($result, $codeError);
 
     }
 

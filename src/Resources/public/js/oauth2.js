@@ -232,13 +232,12 @@ class Oauth2 {
 
                 Promise.all(promises)
                     .then((retour) => {
+                        console.log(retour[retour.length - 1].message);
                         that.animLogin({"action":"close", "error":retour[retour.length - 1].error, "message":retour[retour.length - 1].message});
                         resolve(retour);
-
                     })
                     .catch((e) => {
-                        that.animLogin({"action":"close", "error":true, "message":e.toString()});
-                        console.error(e);
+                        that.animLogin({"action":"close", "error":true, "message":e.responseJSON.message});
                         reject(e);
                     });
 
@@ -291,15 +290,13 @@ class Oauth2 {
     displayPrivate = async function(access) {
         let that = this;
         return new Promise(function(resolve,reject) {
-            console.log(access);
             resolve(access);
-
         });
     }
 
     animLogin = function(datas){
         let that = this;
-        console.log(datas);
+
         if(datas.action === "open") {
             loadingStart($("body"), "Login in progress...");
             that.divprivate.find("form#privateform").addClass("hidden");
@@ -320,6 +317,9 @@ class Oauth2 {
             loadingStop($('body'));
         }
     }
+
+
+
 
 
 }
