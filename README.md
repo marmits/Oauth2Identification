@@ -166,6 +166,7 @@ il faut le composant:
 composer require paragonie/sodium_compat
 ``` 
 **framework.yaml**
+par defaut OK normalement (pas besoin de l'ajouter)   
 ``` 
 secrets:
     vault_directory: '%kernel.project_dir%/config/secrets/%kernel.environment%'
@@ -182,5 +183,7 @@ composer dump-env dev
 ``` 
 
 ### UPDATE
+à voir  
+[security csrf form](https://symfony.com/doc/current/security/csrf.html)
 
 [changelog](https://github.com/marmits/googleidentification/blob/main/CHANGELOG.md)
