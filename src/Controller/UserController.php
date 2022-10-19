@@ -70,18 +70,19 @@ class UserController  extends AbstractController
     public function setIdentifiantAppli(Request $request): JsonResponse
     {
 
-
         $result['error'] =  true;
         $result['message'] = "bad identifiant";
         $result['identifiant'] = null;
+        $code_error = 401;
         if ($this->getDatasUser() !== null) {
             $this->requestStack->getSession()->set('identifiant', $this->access->getIdentifiantParam());
             $result['identifiant'] = $this->requestStack->getSession()->get('identifiant');
             $result['error'] = false;
             $result['message'] = "Identifiant correct";
+            $code_error = 200;
         }
 
-        return new jsonResponse($result, 200);
+        return new jsonResponse($result, $code_error);
 
     }
 
