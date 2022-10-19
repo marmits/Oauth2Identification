@@ -17,4 +17,10 @@ parameters:
   private_access:
     identifiant: '%env(PRIVATE_IDENTIFIANT)%'
     password: '%env(PRIVATE_PASSWORD)%'
+  
+  tools: 
+    method: '%env(DECRYPT_DATAS_METHOD)%'
+    password: '%env(DECRYPT_DATAS_PASSWORD)%'
+
+
 

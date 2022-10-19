@@ -4,8 +4,8 @@ $main_dark : #3b5998;
 
 
 body {
-  background-color: lightgray;
-  color:white;
+  background-color: #212529;
+  color:lightgray;
 }
 
 .hidden{
@@ -33,6 +33,10 @@ div.private{
 
   button#private_connect, input#inputPassword{
     width: 14em;
+  }
+
+  div.goodlogincontenu{
+    text-align: left;
   }
 }
 

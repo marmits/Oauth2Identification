@@ -27,7 +27,8 @@ services:
         '@Symfony\Component\HttpFoundation\RequestStack',
         '@Doctrine\ORM\EntityManagerInterface',
         '@Marmits\GoogleIdentification\Repository\DatasRepository',
-        '@Marmits\GoogleIdentification\Services\Access'
+        '@Marmits\GoogleIdentification\Services\Access',
+        '@Marmits\GoogleIdentification\Services\Tools'
     ]
     tags:
       - { name: controller.service_arguments }
@@ -45,6 +46,10 @@ services:
   Marmits\GoogleIdentification\Services\Access:
     arguments:
       - private_params: '%private_access%'
+
+  Marmits\GoogleIdentification\Services\Tools:
+    arguments:
+      - tools_params: '%tools%'
 
 
 
