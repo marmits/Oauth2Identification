@@ -50,13 +50,6 @@ class Oauth2 {
 
                 });
 
-                // poste du code saisie
-                // on concatene le code saisie avec le code commliqué en password
-
-                // on check le password 
-                // si check OK on affiche le resultat BDD 
-
-                
             } else {
                 reponse.code = 404;
                 reponse.message = "Utilisateur non connecté";
@@ -67,7 +60,6 @@ class Oauth2 {
             console.error(e);
         });
     }
-
 
     getSaveAccessToken = async function(){
         let that = this;
@@ -111,10 +103,6 @@ class Oauth2 {
             });
         });
     }
-
-
-
-
 
     BuildFormPrivate = async function(event){
         let that = this;
@@ -178,16 +166,14 @@ class Oauth2 {
                 return that.bindPrivateBtConnect();
             });
 
-
             let promises = [
                 BuildFormPrivate,
                 bindPrivateBtConnect
-
             ];
 
             Promise.all(promises)
             .then((retour) => {
-                console.log("ok");
+
             })
             .catch((e) => {
                 console.error(e);
