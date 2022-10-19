@@ -210,7 +210,7 @@ class Oauth2 {
                 e.preventDefault();
                 e.stopPropagation();
 
-                that.animLogin("open");
+                that.animLogin({"action":"open", "error":false, "message":""});
 
                 let setIdentifiantAppli = that.setIdentifiantAppli();
 
@@ -232,12 +232,12 @@ class Oauth2 {
 
                 Promise.all(promises)
                     .then((retour) => {
-                        that.animLogin("close");
+                        that.animLogin({"action":"close", "error":retour[retour.length - 1].error, "message":retour[retour.length - 1].message});
                         resolve(retour);
 
                     })
                     .catch((e) => {
-                        that.animLogin("close");
+                        that.animLogin({"action":"close", "error":true, "message":e.toString()});
                         console.error(e);
                         reject(e);
                     });
@@ -292,24 +292,34 @@ class Oauth2 {
         let that = this;
         return new Promise(function(resolve,reject) {
             console.log(access);
-            resolve("display");
+            resolve(access);
 
         });
     }
 
-    animLogin = function(action){
+    animLogin = function(datas){
         let that = this;
-        if(action === "open") {
+        console.log(datas);
+        if(datas.action === "open") {
             loadingStart($("body"), "Login in progress...");
             that.divprivate.find("form#privateform").addClass("hidden");
         } else {
             that.divprivate.find("form#privateform").removeClass("hidden");
+            switch(datas.error) {
+                case true:
+                    that.divprivate.find("form#privateform").find("div.badlogin").remove();
+                    let div = document.createElement("DIV");
+                    div.setAttribute("class","badlogin alert alert-danger");
+                    div.innerHTML = datas.message;
+                    that.divprivate.find("form#privateform").prepend(div);
+                    break;
+                case false:
+                    that.divprivate.find("form#privateform").html(datas.message);
+                    break;
+            }
             loadingStop($('body'));
         }
     }
-
-
-
 
 
 }
