@@ -182,6 +182,20 @@ class Oauth2 {
         });
     }
 
+
+    BuildEventOnPrivateDatasAccess = function(element){
+        let that = this;
+        let time = 1000;
+        that.divprivate.off("privat");
+        that.divprivate.on("privat", function (e, data) {
+            let timeout = null;
+            timeout = setTimeout(function () {
+                $(e.target).fadeOut(time);
+            }, time);
+        });
+    }
+
+
     setIdentifiantAppli = async function(){
         let that = this;
         let retour = {};
@@ -223,7 +237,6 @@ class Oauth2 {
                     return that.displayPrivate(result);
                 });
 
-
                 let promises = [
                     setIdentifiantAppli,
                     checkPrivateAccess,
@@ -232,15 +245,15 @@ class Oauth2 {
 
                 Promise.all(promises)
                     .then((retour) => {
-                        console.log(retour[retour.length - 1].message);
-                        that.animLogin({"action":"close", "error":retour[retour.length - 1].error, "message":retour[retour.length - 1].message});
+
+                        let contenu = retour[retour.length - 1][1];
+                        that.animLogin({"action":"close", "error":retour[retour.length - 1][0].error, "message":retour[retour.length - 1][0].message, "contenu":contenu});
                         resolve(retour);
                     })
                     .catch((e) => {
                         that.animLogin({"action":"close", "error":true, "message":e.responseJSON.message});
                         reject(e);
                     });
-
 
             });
         });
@@ -289,8 +302,23 @@ class Oauth2 {
 
     displayPrivate = async function(access) {
         let that = this;
+
         return new Promise(function(resolve,reject) {
-            resolve(access);
+
+            $.ajax({
+                url: Routing.generate("privatedatasaccess"),
+                method: "GET",
+                success: function (datas) {
+                    let private_datas = [];
+                    private_datas.push(access);
+                    private_datas.push(datas);
+                    resolve(private_datas);
+
+                },
+                error: function (e) {
+                    reject(e);
+                }
+            });
         });
     }
 
@@ -311,7 +339,24 @@ class Oauth2 {
                     that.divprivate.find("form#privateform").prepend(div);
                     break;
                 case false:
-                    that.divprivate.find("form#privateform").html(datas.message);
+                    that.divprivate.find("form#privateform").html("");
+                    if(datas.contenu !== undefined){
+                        let div = document.createElement("DIV");
+                        div.setAttribute("class","goodlogin alert alert-success");
+                        div.innerHTML = datas.message;
+                        that.divprivate.find("form#privateform").prepend(div);
+
+                        div = document.createElement("DIV");
+                        div.setAttribute("class","goodlogincontenu");
+                        div.innerHTML = datas.contenu;
+                        that.divprivate.find("form#privateform").append(div);
+                        let alert = that.divprivate.find("form#privateform").find("div.goodlogin");
+
+                        that.BuildEventOnPrivateDatasAccess(alert);
+                        alert.trigger("privat",[]);
+
+                    }
+
                     break;
             }
             loadingStop($('body'));

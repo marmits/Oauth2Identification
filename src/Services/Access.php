@@ -34,11 +34,9 @@ class Access
         return $this->identifiant;
     }
 
-
     public function getPassword(){
         return  $this->password;
     }
-
 
     public function checkCrediental(){
 
@@ -63,6 +61,20 @@ class Access
         $hash = $passwordHasher->hash($this->params["private_params"]['password']); // returns a bcrypt hash
 
         return $passwordHasher->verify($hash, $val);
+
+    }
+
+    public function VerifIdentifiantPasswordHash($val){
+
+        $factory = new PasswordHasherFactory([
+            'common' => ['algorithm' => 'bcrypt'],
+            'memory-hard' => ['algorithm' => 'sodium'],
+        ]);
+
+        $passwordHasher = $factory->getPasswordHasher('common');
+        $hash = $passwordHasher->hash($this->params["private_params"]['identifiant'].$this->params["private_params"]['password']); // returns a bcrypt hash
+
+        return $passwordHasher->verify($hash,$val );
 
     }
 

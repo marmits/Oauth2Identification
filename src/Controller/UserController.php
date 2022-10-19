@@ -71,14 +71,14 @@ class UserController  extends AbstractController
     {
 
 
-        $result["error"] =  true;
-        $result["message"] = "bad identifiant";
-        $result["identifiant"] = null;
+        $result['error'] =  true;
+        $result['message'] = "bad identifiant";
+        $result['identifiant'] = null;
         if ($this->getDatasUser() !== null) {
             $this->requestStack->getSession()->set('identifiant', $this->access->getIdentifiantParam());
-            $result["identifiant"] = $this->requestStack->getSession()->get('identifiant');
-            $result["error"] = false;
-            $result["message"] = "Identifiant correct";
+            $result['identifiant'] = $this->requestStack->getSession()->get('identifiant');
+            $result['error'] = false;
+            $result['message'] = "Identifiant correct";
         }
 
         return new jsonResponse($result, 200);
@@ -95,8 +95,8 @@ class UserController  extends AbstractController
     public function checkPrivateAccess(Request $request): JsonResponse
     {
 
-        $result["error"] =  true;
-        $result["message"] = "Not identified user";
+        $result['error'] =  true;
+        $result['message'] = "Not identified user";
         $codeError = 401;
         if ($this->getDatasUser() !== null) {
             if ($request->request->has("password") && $request->request->has("identifiant")) {
@@ -105,24 +105,42 @@ class UserController  extends AbstractController
                 $this->access->setIdentifiant($identifiant);
                 $this->access->setPassword($password);
                 if ($this->access->checkCrediental()) {
-                    $result["error"] = false;
-                    $result["message"] = "Successfull Login";
+                    $result['error'] = false;
+                    $result['message'] = "Successfull Login";
                     $codeError = 200;
+                    $this->requestStack->getSession()->set('privateaccess', $identifiant.$password);
                 } else {
-                    $result["error"] = true;
-                    $result["message"] = "Bad Login";
+                    $result['error'] = true;
+                    $result['message'] = "Bad Login";
                     $codeError = 403;
                 }
             } else {
-                $result["message"] = "empty password";
+                $result['message'] = "empty password";
                 $codeError = 200;
             }
         }
 
-        
-
         return new jsonResponse($result, $codeError);
 
+    }
+
+    /**
+     *
+     * @Route("/privatedatasaccess", name="privatedatasaccess",options={"expose"=true}, methods={"GET"})
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function privateDatasAccess(): JsonResponse
+    {
+
+        $content = $this->getPrivateDatas();
+        $datasUser = [];
+        if($content['error'] === false){
+            $datasUser = $this->getDatasUser()->getContenu();
+        }
+        
+        return new jsonResponse($datasUser, $content['errorCode']);
     }
 
     private function getDatasUser(){
@@ -130,7 +148,7 @@ class UserController  extends AbstractController
         $count = count($datas);
         if($count > 0) {
             if($this->requestStack->getSession()->has('access')){
-                $email_connect = $this->requestStack->getSession()->get('access')["email"];
+                $email_connect = $this->requestStack->getSession()->get('access')['email'];
                 $user =  $this->DatasRepository->findOneBy(['email' => $email_connect]);
                 if($user instanceof Datas) {
                     return $user;
@@ -138,6 +156,32 @@ class UserController  extends AbstractController
             }
         }
         return null;
+    }
+
+    private function getPrivateDatas(): array
+    {
+
+        $result['error'] =  true;
+        $result['message'] = "User Error identification";
+        $result['errorCode'] = 401;
+
+        if($this->requestStack->getSession()->has('privateaccess')) {
+            //verifier que la connection est correct
+            if (!$this->access->VerifIdentifiantPasswordHash($this->requestStack->getSession()->get('privateaccess'))) {
+                $result['message'] = "Credential non valid";
+            } //vérifier que l'utilisateur est bien valide et connecté
+            elseif ($this->getDatasUser() === null) {
+                $result['message'] = "Utilisateur non valide";
+            } else {
+                $result['errorCode'] = 200;
+                $result['message'] = "Private datas authorize Yes";
+                $result['error'] = false;
+            }
+        }
+
+
+        return $result;
+
     }
 
 }
