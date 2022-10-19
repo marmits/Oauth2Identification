@@ -8,6 +8,7 @@ import {
 
 
 class Oauth2 {
+
     constructor() {
         this.userEmail = null;
         this.template_private = "bundles/marmitsgoogleidentification/templates/template_private.html";
@@ -182,7 +183,6 @@ class Oauth2 {
         });
     }
 
-
     BuildEventOnPrivateDatasAccess = function(element){
         let that = this;
         let time = 1000;
@@ -194,7 +194,6 @@ class Oauth2 {
             }, time);
         });
     }
-
 
     setIdentifiantAppli = async function(){
         let that = this;
@@ -219,41 +218,50 @@ class Oauth2 {
 
     bindPrivateBtConnect = async function(){
         let that = this;
+
         return new Promise(function(resolve,reject) {
             that.bouton_connect.click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-
+                let password = that.input_password.val();
                 that.animLogin({"action":"open", "error":false, "message":""});
+                if (password !== "") {
 
-                let setIdentifiantAppli = that.setIdentifiantAppli();
+                    let setIdentifiantAppli = that.setIdentifiantAppli();
 
-                let checkPrivateAccess = setIdentifiantAppli.then((result) => {
-                    return that.checkPrivateAccess(result);
-                });
-
-                let displayPrivate = checkPrivateAccess.then((result) => {
-
-                    return that.displayPrivate(result);
-                });
-
-                let promises = [
-                    setIdentifiantAppli,
-                    checkPrivateAccess,
-                    displayPrivate,
-                ];
-
-                Promise.all(promises)
-                    .then((retour) => {
-
-                        let contenu = retour[retour.length - 1][1];
-                        that.animLogin({"action":"close", "error":retour[retour.length - 1][0].error, "message":retour[retour.length - 1][0].message, "contenu":contenu});
-                        resolve(retour);
-                    })
-                    .catch((e) => {
-                        that.animLogin({"action":"close", "error":true, "message":e.responseJSON.message});
-                        reject(e);
+                    let checkPrivateAccess = setIdentifiantAppli.then((result) => {
+                        return that.checkPrivateAccess(result);
                     });
+
+                    let displayPrivate = checkPrivateAccess.then((result) => {
+                        return that.displayPrivate(result);
+                    });
+
+                    let promises = [
+                        setIdentifiantAppli,
+                        checkPrivateAccess,
+                        displayPrivate,
+                    ];
+
+                    Promise.all(promises)
+                        .then((retour) => {
+
+                            let contenu = retour[retour.length - 1][1];
+                            that.animLogin({"action":"close", "error":retour[retour.length - 1][0].error, "message":retour[retour.length - 1][0].message, "contenu":contenu});
+                            resolve(retour);
+                        })
+                        .catch((e) => {
+                            that.animLogin({"action":"close", "error":true, "message":e.responseJSON.message});
+                            reject(e);
+                        });
+
+                } else {
+                    let retour = {};
+                    retour.error = true;
+                    retour.message = "Empty password";
+                    that.animLogin({"action":"close", "error":retour.error, "message":retour.message, "contenu":""});
+                    resolve(retour);
+                }
 
             });
         });
@@ -268,37 +276,36 @@ class Oauth2 {
         };
 
         return new Promise(function(resolve,reject) {
-            if(datasIdentifiant.error === false) {
-                if (password !== "") {
+            if (password !== "") {
+                if(datasIdentifiant.error === false) {
                     $.ajax({
-                        url: Routing.generate("checkprivateaccess"),
-                        method: "POST",
-                        data: {
-                            identifiant:datasIdentifiant.identifiant,
-                            password: password
-                        },
-                        success: function (datas) {
-                            retour = datas;
-                            resolve(retour);
-                        },
-                        error: function (e) {
-                            retour.error = true;
-                            retour.message = e;
-                            resolve(e);
-                        }
-                    });
+                            url: Routing.generate("checkprivateaccess"),
+                            method: "POST",
+                            data: {
+                                identifiant:datasIdentifiant.identifiant,
+                                password: password
+                            },
+                            success: function (datas) {
+                                retour = datas;
+                                resolve(retour);
+                            },
+                            error: function (e) {
+                                retour.error = true;
+                                retour.message = e;
+                                resolve(e);
+                            }
+                        });
                 } else {
-                    retour.error = true;
-                    retour.message = "Empty password";
-                    resolve(retour);
+                    let message = datasIdentifiant.message;
+                    reject(message);
                 }
             } else {
-                let message = datasIdentifiant.message;
-                reject(message);
+                retour.error = true;
+                retour.message = "Empty password";
+                resolve(retour);
             }
         });
     }
-
 
     displayPrivate = async function(access) {
         let that = this;
@@ -362,9 +369,6 @@ class Oauth2 {
             loadingStop($('body'));
         }
     }
-
-
-
 
 
 }
