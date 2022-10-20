@@ -1,10 +1,11 @@
 @import "~bootstrap/scss/bootstrap";
+$enable-cssgrid: true;
 $main_dark : #3b5998;
 
 
 body {
-  background-color: lightgray;
-  color:white;
+  background-color: #212529;
+  color:lightgray;
 }
 
 .hidden{
@@ -20,6 +21,22 @@ div.private{
     li{
       float:none;
     }
+  }
+  div.login{
+    text-align: center;
+    
+  }
+  input#inputPassword{
+   
+    display:inline;
+  }
+
+  button#private_connect, input#inputPassword{
+    width: 14em;
+  }
+
+  div.goodlogincontenu{
+    text-align: left;
   }
 }
 
