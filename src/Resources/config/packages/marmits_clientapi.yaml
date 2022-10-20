@@ -19,6 +19,7 @@ parameters:
     password: '%env(PRIVATE_PASSWORD)%'
   
   encryption:
+    decrypt: false
     method: '%env(DECRYPT_DATAS_METHOD)%'
     password: '%env(DECRYPT_DATAS_PASSWORD)%'
 
