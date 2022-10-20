@@ -18,7 +18,7 @@ parameters:
     identifiant: '%env(PRIVATE_IDENTIFIANT)%'
     password: '%env(PRIVATE_PASSWORD)%'
   
-  tools: 
+  encryption:
     method: '%env(DECRYPT_DATAS_METHOD)%'
     password: '%env(DECRYPT_DATAS_PASSWORD)%'
 

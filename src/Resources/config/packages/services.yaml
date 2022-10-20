@@ -28,7 +28,6 @@ services:
         '@Doctrine\ORM\EntityManagerInterface',
         '@Marmits\GoogleIdentification\Repository\DatasRepository',
         '@Marmits\GoogleIdentification\Services\Access',
-        '@Marmits\GoogleIdentification\Services\Tools'
     ]
     tags:
       - { name: controller.service_arguments }
@@ -46,10 +45,11 @@ services:
   Marmits\GoogleIdentification\Services\Access:
     arguments:
       - private_params: '%private_access%'
+      - '@Marmits\GoogleIdentification\Services\Encryption'
 
-  Marmits\GoogleIdentification\Services\Tools:
+  Marmits\GoogleIdentification\Services\Encryption:
     arguments:
-      - tools_params: '%tools%'
+      - encryption_params: '%encryption%'
 
 
 

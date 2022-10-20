@@ -2,22 +2,27 @@
 namespace Marmits\GoogleIdentification\Services;
 
 
+use Marmits\GoogleIdentification\Services\Encryption;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+
 
 class Access
 {
     protected array $params;
     protected string $password;
     protected string $identifiant;
+    protected Encryption $encryption;
 
 
 
     /**
      * @param array $private_params
+     * @param Encryption $encryption
      */
-    public function __construct(array $private_params)
+    public function __construct(array $private_params, Encryption $encryption)
     {
         $this->params = $private_params;
+        $this->encryption = $encryption;
     }
 
     public function setPassword(string $val){
@@ -80,6 +85,10 @@ class Access
 
     public function getIdentifiantParam(){
         return $this->params["private_params"]['identifiant'];
+    }
+
+    public function getDatasCrypted($contenu){
+        return  nl2br($this->encryption->decrypt($contenu));
     }
 
 

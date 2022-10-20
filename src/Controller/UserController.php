@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Marmits\GoogleIdentification\Entity\Datas;
 use Marmits\GoogleIdentification\Repository\DatasRepository;
 use Marmits\GoogleIdentification\Services\Access;
-use Marmits\GoogleIdentification\Services\Tools;
+
 
 class UserController  extends AbstractController
 {
@@ -29,17 +29,17 @@ class UserController  extends AbstractController
      * @param EntityManagerInterface $em
      * @param DatasRepository $DatasRepository
      * @param Access $access
-     * @param Tools $$tools
+
 
      */
-    public function __construct(ContainerInterface $container, RequestStack $requestStack, EntityManagerInterface $em, DatasRepository $DatasRepository, Access $access, Tools $tools)
+    public function __construct(ContainerInterface $container, RequestStack $requestStack, EntityManagerInterface $em, DatasRepository $DatasRepository, Access $access)
     {
         $this->container = $container;
         $this->requestStack = $requestStack;
         $this->em = $em;
         $this->DatasRepository = $DatasRepository;
         $this->access = $access;
-        $this->tools = $tools;
+
 
     }
 
@@ -140,11 +140,7 @@ class UserController  extends AbstractController
         $content = $this->getPrivateDatas();
         $datasUser = "";
         if($content['error'] === false){
-            
-            $text_decrypt = nl2br($this->tools->decrypt($this->getDatasUser()->getContenu()));
-            //$text_decrypt = preg_replace('#<br />#', '$1', $text_decrypt);
-
-            $datasUser = $text_decrypt;
+            $datasUser =$this->access->getDatasCrypted($this->getDatasUser()->getContenu());
         }
         
         return new jsonResponse($datasUser, $content['errorCode']);
