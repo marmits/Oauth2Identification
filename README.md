@@ -34,11 +34,12 @@ url: '%env(resolve:DATABASE_URL)%'
 
 ### COMPOSER
 ```
+lcoal
 "require": {
     "marmits/googleidentification": "*@dev",
 }
 
-,s
+,
 "repositories": [
         {
             "type": "path",
@@ -49,6 +50,17 @@ url: '%env(resolve:DATABASE_URL)%'
 
         }
 ]
+
+prod
+
+"repositories": [
+   {
+       "type": "vcs",
+       "url": "git@github.com:marmits/googleidentification.git"
+   }
+]
+   
+
 ```
 
 ### routes.yaml
@@ -74,6 +86,20 @@ _profiler:
 ```
 bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
 ```
+
+### Clean nodes modules
+```
+
+$ rm -rf node_modules
+$ rm -f package-lock.json
+$ npm cache clean --force
+$ npm install
+```
+
+### demarrer webpack
+
+`npm run watch`
+
 ### package.json
 
 ``` 
@@ -106,6 +132,39 @@ bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.j
         "webpack-notifier": "^1.15.0"
     }
 }
+
+
+TAF NEW
+{
+    "devDependencies": {
+        "@babel/core": "^7.17",
+        "@babel/preset-env": "^7.19",
+        "@hotwired/stimulus": "^3.0",
+        "@popperjs/core": "^2.11",
+        "@symfony/stimulus-bridge": "^3.2",
+        "@symfony/webpack-encore": "^4.5"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "bootstrap": "^5.2",
+        "core-js": "^3.25",
+        "jquery": "^3.6",
+        "regenerator-runtime": "^0.13",
+        "sass": "^1.55",
+        "sass-loader": "^13.2",
+        "webpack": "^5.74",
+        "webpack-cli": "^4.10",
+        "webpack-notifier": "^1.15"
+    }
+}
+
 
 
 ```
