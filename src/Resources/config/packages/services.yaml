@@ -51,5 +51,3 @@ services:
     arguments:
       - encryption_params: '%encryption%'
 
-
-

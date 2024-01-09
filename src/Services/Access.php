@@ -87,11 +87,17 @@ class Access
         return $this->params["private_params"]['identifiant'];
     }
 
-    public function getDatasCrypted($contenu){
-        return  nl2br($this->encryption->decrypt($contenu));
+    public function isParamCrypted() :bool{
+        return $this->encryption->getParms()['encryption_params']['decrypt'];
     }
 
-
-
+    /**
+     * @param $contenu
+     * @return string
+     */
+    public function getDatasCrypted($contenu): string
+    {
+        return nl2br($this->encryption->decrypt($contenu));
+    }
 
 }

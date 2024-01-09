@@ -39,6 +39,12 @@ class DatasRepository extends ServiceEntityRepository
         }
     }
 
+    public function updateContenu(Datas $entity, string $contenu): void{
+        $entity->setContenu($contenu);
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
+
 //    /**
 //     * @return Datas[] Returns an array of Datas objects
 //     */

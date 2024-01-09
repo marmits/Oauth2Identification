@@ -129,24 +129,31 @@ class UserController  extends AbstractController
 
     /**
      *
+     * Retourn le champs contenu de la table data
      * @Route("/privatedatasaccess", name="privatedatasaccess",options={"expose"=true}, methods={"GET"})
-     *
-     * @param Request $request
      * @return JsonResponse
      */
     public function privateDatasAccess(): JsonResponse
     {
 
         $content = $this->getPrivateDatas();
-        $datasUser = "";
+        $datasUser = '';
         if($content['error'] === false){
-            $datasUser =$this->access->getDatasCrypted($this->getDatasUser()->getContenu());
+            if($this->access->isParamCrypted() === true) {
+                $datasUser = $this->access->getDatasCrypted($this->getDatasUser()->getContenu());
+            } else {
+                $datasUser = $this->getDatasUser()->getContenu();
+            }
         }
         
         return new jsonResponse($datasUser, $content['errorCode']);
     }
 
-    private function getDatasUser(){
+    /**
+     * @return Datas|null
+     */
+    private function getDatasUser(): ?Datas
+    {
         $datas = $this->DatasRepository->findAll();
         $count = count($datas);
         if($count > 0) {
@@ -161,23 +168,26 @@ class UserController  extends AbstractController
         return null;
     }
 
+    /**
+     * @return array
+     */
     private function getPrivateDatas(): array
     {
 
         $result['error'] =  true;
-        $result['message'] = "User Error identification";
+        $result['message'] = 'User Error identification';
         $result['errorCode'] = 401;
 
         if($this->requestStack->getSession()->has('privateaccess')) {
             //verifier que la connection est correct
             if (!$this->access->VerifIdentifiantPasswordHash($this->requestStack->getSession()->get('privateaccess'))) {
-                $result['message'] = "Credential non valid";
+                $result['message'] = 'Credential non valid';
             } //vérifier que l'utilisateur est bien valide et connecté
             elseif ($this->getDatasUser() === null) {
-                $result['message'] = "Utilisateur non valide";
+                $result['message'] = 'Utilisateur non valide';
             } else {
                 $result['errorCode'] = 200;
-                $result['message'] = "Private datas authorize Yes";
+                $result['message'] = 'Private datas authorize Yes';
                 $result['error'] = false;
             }
         }
