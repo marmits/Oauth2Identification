@@ -5,6 +5,7 @@ namespace Marmits\GoogleIdentification\Repository;
 use Marmits\GoogleIdentification\Entity\Datas;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DateTimeImmutable;
 
 /**
  * @extends ServiceEntityRepository<Datas>
@@ -40,6 +41,8 @@ class DatasRepository extends ServiceEntityRepository
     }
 
     public function updateContenu(Datas $entity, string $contenu): void{
+        $time = new DateTimeImmutable();
+        $entity->setTemps($time);
         $entity->setContenu($contenu);
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
