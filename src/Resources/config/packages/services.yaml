@@ -35,6 +35,7 @@ services:
 
   Marmits\GoogleIdentification\Providers\GoogleProvider:
     arguments:
+      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
       - googleclient_params: '%google_client%'
 
   Marmits\GoogleIdentification\Providers\GithubProvider:

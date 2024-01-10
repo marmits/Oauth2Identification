@@ -11,8 +11,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class GithubProvider
 {
 
+    private string $name = 'github';
     protected array $params;
     private HttpClientInterface $client;
+
 
     /**
      * @param array $githubclient_params
@@ -29,6 +31,10 @@ class GithubProvider
     public function getParams(): array
     {
         return $this->params;
+    }
+
+    public function getName(): string{
+        return $this->name;
     }
 
     /**
