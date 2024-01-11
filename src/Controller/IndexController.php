@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Marmits\GoogleIdentification\Controller;
 
@@ -57,18 +58,16 @@ class IndexController extends AbstractController
      */
     public function index(Request $request): Response
     {
-
-
-
         return $this->redirectToRoute('bundle_privat');
     }
 
 
     /**
-     *
+     * Renvoi les données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
      * @Route("/bundle_privat", name="bundle_privat")
      * @param Request $request
      * @return Response
+     * @throws Exception
      */
     public function private(Request $request): Response
     {
@@ -81,16 +80,13 @@ class IndexController extends AbstractController
 
                 switch ($this->requestStack->getSession()->get('provider_name')){
                     case $this->githubProvider->getName():
-                        $user = $this->githubProvider->fetchEmailUser($datas_access['accesstoken']);
+                        $user = $this->githubProvider->fetchUser($datas_access);
                         break;
                     case $this->googleProvider->getName():
-
-                        $user = $this->googleProvider->fetchEmailUser($datas_access['accesstoken']);
+                        $user = $this->googleProvider->fetchUser($datas_access);
                         break;
                 }
-
             }
-
         }
 
         return $this->render('@MarmitsGoogleIdentification/private.html.twig', $user);
@@ -98,14 +94,13 @@ class IndexController extends AbstractController
 
 
     /**
-     *
+     * Renvoi l'utilisateur autorisé son email et l'accesstoken
      * @Route("/bundlesaveaccesstoken", options={"expose"=true}, name="bundlesaveaccesstoken", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */
     public function saveAccessToken(Request $request): JsonResponse
     {
-
         if($this->requestStack->getSession()->has('access')){
             return new jsonResponse(
                 [
@@ -118,14 +113,13 @@ class IndexController extends AbstractController
     }
 
     /**
-     *
+     * Reset Session
      * @Route("/logout", name="logout")
      * @param Request $request
      * @return Response
      */
     public function logout(Request $request): Response
     {
-
         if($this->requestStack->getSession()->has('access')){
             $this->requestStack->getSession()->remove('access');
         }
@@ -137,16 +131,29 @@ class IndexController extends AbstractController
         }
         $this->requestStack->getSession()->clear();
 
-
-
         return $this->redirectToRoute('bundle_index');
 
     }
 
 
+    /*
+     * ####################### requete provider #####################
+     */
+    /**
+     * Demande d'autorisation a github
+     * @Route("/github_authorize", name="github_authorize")
+     * @param Request $request
+     * @return Response
+     */
+    public function githubgetauthorize(Request $request): Response
+    {
+        $authorizationUrl =  $this->githubProvider->getInstance()->getAuthorizationUrl();
+        header('Location: ' . $authorizationUrl);
+        exit;
+    }
 
     /**
-     *
+     * Processus Authorization Code Grant
      * @Route("/getaccesstokengithub", name="getaccesstokengithub")
      *
      * @param Request $request
@@ -155,18 +162,18 @@ class IndexController extends AbstractController
      */
     public function getaccesstokenGithub(Request $request): JsonResponse
     {
-
             $this->requestStack->getSession()->set('provider_name', $this->githubProvider->getName());
             if ($request->get('code') === null)
             {
 
-                $authorizationUrl = $this->githubProvider->getInstance()->getAuthorizationUrl();
+                $options = [
+                    'state' => 'OPTIONAL_CUSTOM_CONFIGURED_STATE',
+                    'scope' => ['user','user:email']
+                ];
+                $authorizationUrl = $this->githubProvider->getInstance()->getAuthorizationUrl($options);
 
                 // If we don't have an authorization code then get one
                 $this->requestStack->getSession()->set('oauth2state', $this->githubProvider->getInstance()->getState());
-
-
-
                 header('Location: ' . $authorizationUrl);
 
                 exit;
@@ -186,7 +193,6 @@ class IndexController extends AbstractController
 
                 return new jsonResponse(['message' => 'Invalid state'], 500);
 
-
             }
             else
             {
@@ -199,25 +205,19 @@ class IndexController extends AbstractController
 
                 // Optional: Now you have a token you can look up a users profile data
                 try {
-
                     // We got an access token, let's now get the owner details
-
                     $ownerDetails = $this->githubProvider->getInstance()->getResourceOwner($accessToken);
 
-
                     if ($ownerDetails instanceof ResourceOwnerInterface) {
-
-                        error_log( print_r($ownerDetails, TRUE) );
-                        $this->requestStack->getSession()->set('access',
-                            [
-                                'accesstoken' => $accessToken->getToken(),
-                                'refreshtoken' => $accessToken->getRefreshToken(),
-                                'email' => $ownerDetails->getEmail(),
-                                'authorization_code' => $request->get('code'),
-                                'client_id' =>  $this->githubProvider->getParams()['githubclient_params']['client_id']
-                            ]
-                        );
-
+                        $access = [
+                            'ownerDetails' => $ownerDetails,
+                            'accesstoken' => $accessToken->getToken(),
+                            'refreshtoken' => $accessToken->getRefreshToken(),
+                            'email' => $ownerDetails->getEmail(),
+                            'authorization_code' => $request->get('code'),
+                            'client_id' =>  $this->githubProvider->getParams()['githubclient_params']['client_id']
+                        ];
+                        $this->requestStack->getSession()->set('access',$access);
                     }
 
                     header('Location: ' . 'bundle_privat');
@@ -227,55 +227,27 @@ class IndexController extends AbstractController
                 } catch (IdentityProviderException $e) {
                     // Failed to get user details
                     exit('Something went wrong: ' . $e->getMessage());
-
                 }
 
             }
-
-
     }
 
-
-
     /**
-     *
-     * @Route("/bundlegetgithubauthentification", options={"expose"=true}, name="getgithubauthentification", methods={"GET"})
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getGithubAuthentification(Request $request): JsonResponse
-    {
-
-
-        if($this->requestStack->getSession()->has('access')){
-            $datas_access = $this->requestStack->getSession()->get('access');
-            $datas = $this->githubProvider->fetchAuthentification($datas_access['accesstoken']);
-            return new jsonResponse(
-                [
-                    $datas
-                ], 200);
-        }
-
-        return new jsonResponse(['code'=> 401, 'message' => 'Invalid Access Token'], 500);
-    }
-
-
-    /**
-     *
-     * @Route("/github_authorize", name="github_authorize")
+     * Demande d'autorisation a google
+     * @Route("/google_authorize", name="google_authorize")
      * @param Request $request
      * @return Response
      */
-    public function githubgetauthorize(Request $request): Response
+    public function googlegetauthorize(Request $request): Response
     {
-        $authorizationUrl =  $this->githubProvider->getInstance()->getAuthorizationUrl();
+        $authorizationUrl =  $this->googleProvider->getInstance()->getAuthorizationUrl();
         header('Location: ' . $authorizationUrl);
         exit;
     }
 
 
     /**
-     *
+     * Processus Authorization Code Grant
      * @Route("/getaccesstokengoogle", name="getaccesstokengoogle")
      *
      * @param Request $request
@@ -285,18 +257,12 @@ class IndexController extends AbstractController
     public function getaccesstokenGoogle(Request $request): JsonResponse
     {
         $this->requestStack->getSession()->set('provider_name', $this->googleProvider->getName());
-
         if ($request->get('code') === null)
         {
-
-
             $authorizationUrl = $this->googleProvider->getInstance()->getAuthorizationUrl();
 
             // If we don't have an authorization code then get one
             $this->requestStack->getSession()->set('oauth2state', $this->googleProvider->getInstance()->getState());
-
-
-
             header('Location: ' . $authorizationUrl);
 
             exit;
@@ -316,7 +282,6 @@ class IndexController extends AbstractController
 
             return new jsonResponse(['message' => 'Invalid state'], 500);
 
-
         }
         else {
 
@@ -326,7 +291,6 @@ class IndexController extends AbstractController
                 'provider' => 'google'
             ]);
 
-
             // Optional: Now you have a token you can look up a users profile data
             try {
 
@@ -334,19 +298,21 @@ class IndexController extends AbstractController
 
                 $ownerDetails = $this->googleProvider->getInstance()->getResourceOwner($accessToken);
 
-
                 if ($ownerDetails instanceof ResourceOwnerInterface) {
-                    error_log( print_r($ownerDetails, TRUE) );
-                    $this->requestStack->getSession()->set('access',
-                        [
-                            'accesstoken' => $accessToken->getToken(),
-                            'refreshtoken' => $accessToken->getRefreshToken(),
-                            'email' => $ownerDetails->getEmail(),
-                            'authorization_code' => $request->get('code'),
-                            'client_id' =>  $this->googleProvider->getParams()['googleclient_params']['client_id']
-                        ]
-                    );
 
+                    $openidinfos = $this->googleProvider->fetchOpenIdInfos($accessToken);
+
+                    $access =  [
+                        'openidinfos' => $openidinfos,
+                        'ownerDetails' => $ownerDetails,
+                        'accesstoken' => $accessToken->getToken(),
+                        'refreshtoken' => $accessToken->getRefreshToken(),
+                        'email' => $ownerDetails->getEmail(),
+                        'authorization_code' => $request->get('code'),
+                        'client_id' =>  $this->googleProvider->getParams()['googleclient_params']['client_id']
+                    ];
+
+                    $this->requestStack->getSession()->set('access',$access);
                 }
 
                 header('Location: ' . 'bundle_privat');
@@ -356,26 +322,34 @@ class IndexController extends AbstractController
             } catch (IdentityProviderException $e) {
                 // Failed to get user details
                 exit('Something went wrong: ' . $e->getMessage());
-
             }
 
         }
-
-
     }
+    /*
+     * #################################################################
+     */
 
     /**
-     *
-     * @Route("/google_authorize", name="google_authorize")
+     * Pour TEST
+     * @Route("/bundlegetgithubauthentification", options={"expose"=true}, name="getgithubauthentification", methods={"GET"})
      * @param Request $request
-     * @return Response
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function googlegetauthorize(Request $request): Response
+    public function getGithubAuthentification(Request $request): JsonResponse
     {
-        $authorizationUrl =  $this->googleProvider->getInstance()->getAuthorizationUrl();
-       // dd($authorizationUrl);
-        header('Location: ' . $authorizationUrl);
-        exit;
+
+        if($this->requestStack->getSession()->has('access')){
+            $datas_access = $this->requestStack->getSession()->get('access');
+            $datas = $this->githubProvider->fetchAuthentification($datas_access);
+            return new jsonResponse(
+                [
+                    $datas
+                ], 200);
+        }
+
+        return new jsonResponse(['code'=> 401, 'message' => 'Invalid Access Token'], 401);
     }
 
 }

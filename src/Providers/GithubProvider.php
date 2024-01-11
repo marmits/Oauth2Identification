@@ -1,27 +1,28 @@
 <?php
+declare(strict_types=1);
 
 namespace Marmits\GoogleIdentification\Providers;
+use Exception;
 use League\OAuth2\Client\Provider\Github;
+use Symfony\Component\HttpClient\Response\AsyncResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-
-
 /**
  *
  */
-class GithubProvider
+class GithubProvider extends AbstractProvider
 {
 
-    private string $name = 'github';
-    protected array $params;
-    private HttpClientInterface $client;
+    private $name = 'github';
+    protected $params;
 
 
     /**
+     * @param HttpClientInterface $client
      * @param array $githubclient_params
      */
-    public function __construct( HttpClientInterface $client, array $githubclient_params)
+    public function __construct(HttpClientInterface $client, array $githubclient_params)
     {
-        $this->client = $client;
+        parent::__construct($client);
         $this->params = $githubclient_params;
     }
 
@@ -38,16 +39,6 @@ class GithubProvider
     }
 
     /**
-     * @return HttpClientInterface
-     */
-    public function getClient(): HttpClientInterface
-    {
-        return $this->client;
-    }
-
-
-
-    /**
      * @return Github
      */
     public function getInstance(): Github
@@ -62,18 +53,18 @@ class GithubProvider
     }
 
 
-
     /**
+     * @param $datas_access
      * @return array
+     * @throws Exception
      */
-    public function fetchEmailUser($accestoken): array
+    public function fetchUser($datas_access): array
     {
 
         $this->client = $this->client->withOptions([
-
             'headers' => [
                 'Accept' => 'application/vnd.github+json',
-                'Authorization' => 'Bearer '.$accestoken
+                'Authorization' => 'Bearer '.$datas_access['accesstoken']
             ]
         ]);
 
@@ -82,22 +73,14 @@ class GithubProvider
             'https://api.github.com/user'
         );
 
-
-
-        $statusCode = $response->getStatusCode();
-        // $statusCode = 200
-        $contentType = $response->getHeaders()['content-type'][0];
-        // $contentType = 'application/json'
-        $content = $response->getContent();
-        // $content = '{"id":521583, "name":"symfony-docs", ...}'
-        $content = $response->toArray();
-        // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
-
-        return $content;
+        return $this->getClientHttpReponse($response);
     }
 
     /**
+     * TEST
+     * @param $accestoken
      * @return array
+     * @throws Exception
      */
     public function fetchAuthentification($accestoken): array
     {
@@ -106,33 +89,18 @@ class GithubProvider
 
             'headers' => [
                 'Accept' => 'application/vnd.github+json',
-                'Authorization' => 'Bearer '.$accestoken
+                'Authorization' => 'Bearer '.$accestoken['accesstoken'],
+                'X-GitHub-Api-Version' => '2022-11-28'
             ]
         ]);
 
         $response = $this->client->request(
-            'POST',
-            'https://api.github.com/applications/'.$this->params['githubclient_params']['client_id'].'/token',
-            [
-                'body' => ['access_token' => $accestoken]
-            ]
+            'GET',
+            'https://api.github.com/users/marmits/installation',// doit être dans le scope de l'application
         );
 
+        return $this->getClientHttpReponse($response);
 
-
-        $statusCode = $response->getStatusCode();
-        // $statusCode = 200
-        $contentType = $response->getHeaders()['content-type'][0];
-        // $contentType = 'application/json'
-        $content = $response->getContent();
-        // $content = '{"id":521583, "name":"symfony-docs", ...}'
-        $content = $response->toArray();
-        // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
-
-        return $content;
     }
-
-
-
 
 }

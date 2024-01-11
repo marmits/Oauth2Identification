@@ -32,6 +32,9 @@ services:
     tags:
       - { name: controller.service_arguments }
 
+  Marmits\GoogleIdentification\Providers\AbstractProvider:
+    arguments:
+      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
 
   Marmits\GoogleIdentification\Providers\GoogleProvider:
     arguments:
