@@ -165,7 +165,9 @@ class UserController  extends AbstractController
                 $datasUser = $this->getDatasUser()->getContenu();
             }
         }
-        
+        if($datasUser === ''){
+            return new jsonResponse('Ressource innaccessible', 403);
+        }
         return new jsonResponse($datasUser, $content['errorCode']);
     }
 
