@@ -57,13 +57,13 @@ class IndexController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        return $this->redirectToRoute('bundle_privat');
+        return $this->redirectToRoute('privat');
     }
 
 
     /**
      * Renvoi les données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
-     * @Route("/bundle_privat", name="bundle_privat")
+     * @Route("/privat", name="privat")
      * @param Request $request
      * @return Response
      * @throws Exception
@@ -71,7 +71,6 @@ class IndexController extends AbstractController
     public function private(Request $request): Response
     {
         $user = [];
-
         if($this->requestStack->getSession()->has('access')){
             $datas_access = $this->requestStack->getSession()->get('access');
 
