@@ -320,7 +320,6 @@ class Oauth2 {
                     private_datas.push(access);
                     private_datas.push(datas);
                     resolve(private_datas);
-
                 },
                 error: function (e) {
                     reject(e);

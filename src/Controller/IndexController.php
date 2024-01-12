@@ -86,10 +86,9 @@ class IndexController extends AbstractController
                 }
             }
         }
-        error_log( print_r($user, TRUE) );
+
         return $this->render('@MarmitsGoogleIdentification/private.html.twig', $user);
     }
-
 
     /**
      * Reset Session

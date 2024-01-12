@@ -55,4 +55,16 @@ abstract class AbstractProvider
         return $response->toArray();
     }
 
+    /**
+     * @param $datas
+     * @return array
+     */
+    public function formatOutPout($datas): array{
+        $output = $datas;
+        if(array_key_exists('avatar_url', $datas)){
+            $output['picture'] = $datas['avatar_url'];
+        }
+        return $output;
+    }
+
 }

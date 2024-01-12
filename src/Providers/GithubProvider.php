@@ -73,7 +73,7 @@ class GithubProvider extends AbstractProvider
             'https://api.github.com/user'
         );
 
-        return $this->getClientHttpReponse($response);
+        return $this->formatOutPout($this->getClientHttpReponse($response));
     }
 
     /**
