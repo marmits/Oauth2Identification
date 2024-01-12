@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Marmits\GoogleIdentification\Services;
 
+/**
+ * OPENSSL
+ */
 Class Encryption
 {
 

@@ -5,7 +5,9 @@ namespace Marmits\GoogleIdentification\Services;
 use Marmits\GoogleIdentification\Services\Encryption;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 
-
+/**
+ * GERE LE TRAITEMENT ET LA SECURITE DES CREDENTIALS
+ */
 class Access
 {
     protected array $params;
