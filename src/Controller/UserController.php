@@ -64,7 +64,7 @@ class UserController  extends AbstractController
                     'accesstoken' => $this->requestStack->getSession()->get('access')['accesstoken']
                 ], 200);
         }
-        return new jsonResponse(['code'=> 401, 'message' => 'Invalid Access Token'], 500);
+        return new jsonResponse(['code'=> 401, 'message' => 'Accès interdit'], 401);
     }
 
     /**
@@ -157,6 +157,7 @@ class UserController  extends AbstractController
     {
 
         $content = $this->getPrivateDatas();
+
         $datasUser = '';
         if($content['error'] === false){
             if($this->access->isParamCrypted() === true) {
@@ -164,10 +165,10 @@ class UserController  extends AbstractController
             } else {
                 $datasUser = $this->getDatasUser()->getContenu();
             }
+        } else {
+            return new jsonResponse($content['message'], $content['errorCode']);
         }
-        if($datasUser === ''){
-            return new jsonResponse('Ressource innaccessible', 403);
-        }
+
         return new jsonResponse($datasUser, $content['errorCode']);
     }
 

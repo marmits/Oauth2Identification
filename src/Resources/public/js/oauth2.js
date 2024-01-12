@@ -98,7 +98,6 @@ class Oauth2 {
                     resolve(datas);
                 },
                 error: function(e){
-
                    resolve(e);
                 }
             });
