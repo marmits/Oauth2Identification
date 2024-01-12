@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Marmits\GoogleIdentification\Services;
+Use Exception;
 
 /**
  * OPENSSL
@@ -27,19 +28,27 @@ Class Encryption
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function decrypt($data)
     {
         if($this->params['encryption_params']['decrypt']) {
-
+            $message_error = 'Les données de la table sont incorrectes - decryptage KO';
             $key = hash('sha256', $this->params['encryption_params']['password']);
             $data = base64_decode($data);
             $ivSize = openssl_cipher_iv_length($this->params['encryption_params']['method']);
             $iv = substr($data, 0, $ivSize);
+
+            if(substr($data, $ivSize) === ''){
+                throw New Exception($message_error);
+            }
+
             if($data = openssl_decrypt(substr($data, $ivSize), $this->params['encryption_params']['method'], $key, OPENSSL_RAW_DATA, $iv)){
                 return $data;
             }
 
-            return 'Les données de la table sont incorrectes - decryptage KO';
+            return $message_error;
 
         }
 

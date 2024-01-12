@@ -1,9 +1,11 @@
 <?php
+declare(strict_types=1);
+
 namespace Marmits\GoogleIdentification\Services;
 
-
-use Marmits\GoogleIdentification\Services\Encryption;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+Use Exception;
+use Marmits\GoogleIdentification\Services\Encryption;
 
 /**
  * GERE LE TRAITEMENT ET LA SECURITE DES CREDENTIALS
@@ -97,7 +99,13 @@ class Access
      */
     public function getDatasCrypted($contenu): string
     {
-        return nl2br($this->encryption->decrypt($contenu));
+        try {
+            return nl2br($this->encryption->decrypt($contenu));
+        }
+        catch (Exception $e){
+            return $e->getMessage();
+        }
+
     }
 
 }
