@@ -16,7 +16,8 @@ parameters:
 
   private_access:
     identifiant: '%env(PRIVATE_IDENTIFIANT)%'
-    password: '%env(PRIVATE_PASSWORD)%'
+    passwordfirst: '%env(PRIVATE_PASS_FIRST)%'
+    passwordfull: '%env(PRIVATE_PASSWORD_COMPLETE)%'
   
   encryption:
     decrypt: true

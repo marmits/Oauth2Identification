@@ -27,24 +27,45 @@ class Access
         $this->encryption = $encryption;
     }
 
-    public function setPassword(string $val){
-        $this->password = $val;
+    /**
+     * @param string $val
+     * @return $this
+     */
+    public function setPassword(string $val): Access
+    {
+        $this->password = $this->params['private_params']['passwordfirst'].$val;
         return $this;
     }
 
-    public function setIdentifiant(string $val){
+    /**
+     * @param string $val
+     * @return $this
+     */
+    public function setIdentifiant(string $val): Access
+    {
         $this->identifiant = $val;
         return $this;
     }
 
-    public function getIdentifiant(){
+    /**
+     * @return string
+     */
+    public function getIdentifiant(): string
+    {
         return $this->identifiant;
     }
 
-    public function getPassword(){
-        return  $this->password;
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
+    /**
+     * @return false|mixed
+     */
     public function checkCrediental(){
 
         $isValid = false;
@@ -57,6 +78,10 @@ class Access
 
     }
 
+    /**
+     * @param $val
+     * @return mixed
+     */
     private function VerifPassHash($val){
 
         $factory = new PasswordHasherFactory([
@@ -65,12 +90,16 @@ class Access
         ]);
 
         $passwordHasher = $factory->getPasswordHasher('common');
-        $hash = $passwordHasher->hash($this->params["private_params"]['password']); // returns a bcrypt hash
+        $hash = $passwordHasher->hash($this->params['private_params']['passwordfull']); // returns a bcrypt hash
 
         return $passwordHasher->verify($hash, $val);
 
     }
 
+    /**
+     * @param $val
+     * @return mixed
+     */
     public function VerifIdentifiantPasswordHash($val){
 
         $factory = new PasswordHasherFactory([
@@ -79,16 +108,22 @@ class Access
         ]);
 
         $passwordHasher = $factory->getPasswordHasher('common');
-        $hash = $passwordHasher->hash($this->params["private_params"]['identifiant'].$this->params["private_params"]['password']); // returns a bcrypt hash
+        $hash = $passwordHasher->hash($this->params['private_params']['identifiant'].$this->params['private_params']['passwordfull']); // returns a bcrypt hash
 
         return $passwordHasher->verify($hash,$val);
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getIdentifiantParam(){
-        return $this->params["private_params"]['identifiant'];
+        return $this->params['private_params']['identifiant'];
     }
 
+    /**
+     * @return bool
+     */
     public function isParamCrypted() :bool{
         return $this->encryption->getParms()['encryption_params']['decrypt'];
     }
