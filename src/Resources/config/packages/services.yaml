@@ -20,6 +20,16 @@ services:
     tags:
       - { name: controller.service_arguments }
 
+  Marmits\GoogleIdentification\Controller\OauthController:
+    arguments: [
+      '@service_container',
+      '@Symfony\Component\HttpFoundation\RequestStack',
+      '@Marmits\GoogleIdentification\Providers\GoogleProvider',
+      '@Marmits\GoogleIdentification\Providers\GithubProvider'
+    ]
+    tags:
+      - { name: controller.service_arguments }
+
 
   Marmits\GoogleIdentification\Controller\UserController:
     arguments: [

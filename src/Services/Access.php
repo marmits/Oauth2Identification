@@ -13,8 +13,6 @@ class Access
     protected string $identifiant;
     protected Encryption $encryption;
 
-
-
     /**
      * @param array $private_params
      * @param Encryption $encryption
@@ -79,7 +77,7 @@ class Access
         $passwordHasher = $factory->getPasswordHasher('common');
         $hash = $passwordHasher->hash($this->params["private_params"]['identifiant'].$this->params["private_params"]['password']); // returns a bcrypt hash
 
-        return $passwordHasher->verify($hash,$val );
+        return $passwordHasher->verify($hash,$val);
 
     }
 

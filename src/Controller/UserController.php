@@ -15,6 +15,11 @@ use Marmits\GoogleIdentification\Repository\DatasRepository;
 use Marmits\GoogleIdentification\Services\Access;
 
 
+/**
+ * PARTIE APPLICATION LOCALE
+ * Gère les routes exposées pour JS
+ */
+
 class UserController  extends AbstractController
 {
 
@@ -44,7 +49,26 @@ class UserController  extends AbstractController
     }
 
     /**
-     *
+     * Renvoi l'utilisateur autorisé son email et l'access renovoyé
+     * @Route("/bundlesaveaccesstoken", options={"expose"=true}, name="bundlesaveaccesstoken", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function saveAccessToken(Request $request): JsonResponse
+    {
+        if($this->requestStack->getSession()->has('access')){
+            return new jsonResponse(
+                [
+                    'code'=> 200, 'message' => 'ok authorisation',
+                    'email' => $this->requestStack->getSession()->get('access')['email'],
+                    'accesstoken' => $this->requestStack->getSession()->get('access')['accesstoken']
+                ], 200);
+        }
+        return new jsonResponse(['code'=> 401, 'message' => 'Invalid Access Token'], 500);
+    }
+
+    /**
+     * Verifie si l'utilisateur existe dans la BDD
      * @Route("/isvaliduser", name="isvaliduser",options={"expose"=true}, methods={"GET"})
      *
      * @param Request $request
@@ -59,13 +83,11 @@ class UserController  extends AbstractController
 
         return new jsonResponse(['code'=> 404, 'message' => 'Unauthorized'], 401);
 
-
     }
 
     /**
-     *
+     * Renvoi est stock l'identifiant de l'appplication local au moment de la connection
      * @Route("/setidentifiantappli", name="setidentifiantappli",options={"expose"=true}, methods={"GET"})
-     *
      * @param Request $request
      * @return JsonResponse
      */
@@ -89,9 +111,8 @@ class UserController  extends AbstractController
     }
 
     /**
-     *
+     * Verifie si les crédentials sont corrects et les stocks en sessions
      * @Route("/checkprivateaccess", name="checkprivateaccess",options={"expose"=true}, methods={"POST"})
-     *
      * @param Request $request
      * @return JsonResponse
      */
@@ -128,8 +149,7 @@ class UserController  extends AbstractController
     }
 
     /**
-     *
-     * Retourn le champs contenu de la table data
+     * Si l'utlisateur est authorisé Retourne le champs contenu de la table data en tenant compte du parametre crypté ou non
      * @Route("/privatedatasaccess", name="privatedatasaccess",options={"expose"=true}, methods={"GET"})
      * @return JsonResponse
      */
@@ -150,6 +170,7 @@ class UserController  extends AbstractController
     }
 
     /**
+     * Recupere le contenu de la table en fonction de l'email de l'utilisateur
      * @return Datas|null
      */
     private function getDatasUser(): ?Datas
@@ -169,6 +190,7 @@ class UserController  extends AbstractController
     }
 
     /**
+     * Verifie que les credentials stockés en session sont authorisés (passwordHasher verify) en comparant avec le hash
      * @return array
      */
     private function getPrivateDatas(): array
