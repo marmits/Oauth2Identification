@@ -20,11 +20,15 @@ div.private{
     padding:1em 0;
     li{
       float:none;
+      img{
+        &.picture{
+          width: 2em;
+        }
+      }
     }
   }
   div.login{
     text-align: center;
-    
   }
   input#inputPassword{
    

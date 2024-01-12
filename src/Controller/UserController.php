@@ -15,6 +15,11 @@ use Marmits\GoogleIdentification\Repository\DatasRepository;
 use Marmits\GoogleIdentification\Services\Access;
 
 
+/**
+ * PARTIE APPLICATION LOCALE
+ * Gère les routes exposées pour JS
+ */
+
 class UserController  extends AbstractController
 {
 
@@ -44,7 +49,26 @@ class UserController  extends AbstractController
     }
 
     /**
-     *
+     * Renvoi l'utilisateur autorisé son email et l'access renovoyé
+     * @Route("/bundlesaveaccesstoken", options={"expose"=true}, name="bundlesaveaccesstoken", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function saveAccessToken(Request $request): JsonResponse
+    {
+        if($this->requestStack->getSession()->has('access')){
+            return new jsonResponse(
+                [
+                    'code'=> 200, 'message' => 'ok authorisation',
+                    'email' => $this->requestStack->getSession()->get('access')['email'],
+                    'accesstoken' => $this->requestStack->getSession()->get('access')['accesstoken']
+                ], 200);
+        }
+        return new jsonResponse(['code'=> 401, 'message' => 'Accès interdit'], 401);
+    }
+
+    /**
+     * Verifie si l'utilisateur existe dans la BDD
      * @Route("/isvaliduser", name="isvaliduser",options={"expose"=true}, methods={"GET"})
      *
      * @param Request $request
@@ -59,13 +83,11 @@ class UserController  extends AbstractController
 
         return new jsonResponse(['code'=> 404, 'message' => 'Unauthorized'], 401);
 
-
     }
 
     /**
-     *
+     * Renvoi est stock l'identifiant de l'appplication local au moment de la connection
      * @Route("/setidentifiantappli", name="setidentifiantappli",options={"expose"=true}, methods={"GET"})
-     *
      * @param Request $request
      * @return JsonResponse
      */
@@ -89,9 +111,8 @@ class UserController  extends AbstractController
     }
 
     /**
-     *
+     * Verifie si les crédentials sont corrects et les stocks en sessions
      * @Route("/checkprivateaccess", name="checkprivateaccess",options={"expose"=true}, methods={"POST"})
-     *
      * @param Request $request
      * @return JsonResponse
      */
@@ -111,7 +132,7 @@ class UserController  extends AbstractController
                     $result['error'] = false;
                     $result['message'] = "Successfull Login";
                     $codeError = 200;
-                    $this->requestStack->getSession()->set('privateaccess', $identifiant.$password);
+                    $this->requestStack->getSession()->set('privateaccess', $identifiant.$this->access->getRealPassword());
                 } else {
                     $result['error'] = true;
                     $result['message'] = "Bad Login";
@@ -128,25 +149,35 @@ class UserController  extends AbstractController
     }
 
     /**
-     *
+     * Si l'utlisateur est authorisé Retourne le champs contenu de la table data en tenant compte du parametre crypté ou non
      * @Route("/privatedatasaccess", name="privatedatasaccess",options={"expose"=true}, methods={"GET"})
-     *
-     * @param Request $request
      * @return JsonResponse
      */
     public function privateDatasAccess(): JsonResponse
     {
 
         $content = $this->getPrivateDatas();
-        $datasUser = "";
+
+        $datasUser = '';
         if($content['error'] === false){
-            $datasUser =$this->access->getDatasCrypted($this->getDatasUser()->getContenu());
+            if($this->access->isParamCrypted() === true) {
+                $datasUser = $this->access->getDatasCrypted($this->getDatasUser()->getContenu());
+            } else {
+                $datasUser = $this->getDatasUser()->getContenu();
+            }
+        } else {
+            return new jsonResponse($content['message'], $content['errorCode']);
         }
-        
+
         return new jsonResponse($datasUser, $content['errorCode']);
     }
 
-    private function getDatasUser(){
+    /**
+     * Recupere le contenu de la table en fonction de l'email de l'utilisateur
+     * @return Datas|null
+     */
+    private function getDatasUser(): ?Datas
+    {
         $datas = $this->DatasRepository->findAll();
         $count = count($datas);
         if($count > 0) {
@@ -161,23 +192,27 @@ class UserController  extends AbstractController
         return null;
     }
 
+    /**
+     * Verifie que les credentials stockés en session sont authorisés (passwordHasher verify) en comparant avec le hash
+     * @return array
+     */
     private function getPrivateDatas(): array
     {
 
         $result['error'] =  true;
-        $result['message'] = "User Error identification";
+        $result['message'] = 'User Error identification';
         $result['errorCode'] = 401;
 
         if($this->requestStack->getSession()->has('privateaccess')) {
             //verifier que la connection est correct
             if (!$this->access->VerifIdentifiantPasswordHash($this->requestStack->getSession()->get('privateaccess'))) {
-                $result['message'] = "Credential non valid";
+                $result['message'] = 'Credential non valid';
             } //vérifier que l'utilisateur est bien valide et connecté
             elseif ($this->getDatasUser() === null) {
-                $result['message'] = "Utilisateur non valide";
+                $result['message'] = 'Utilisateur non valide';
             } else {
                 $result['errorCode'] = 200;
-                $result['message'] = "Private datas authorize Yes";
+                $result['message'] = 'Private datas authorize Yes';
                 $result['error'] = false;
             }
         }

@@ -45,7 +45,7 @@ class Oauth2 {
                 .catch((e) => {
 
                     reponse.code = e.status;
-                    reponse.message = "Impossible de vérifier l'utilisateur";
+                    reponse.message = "Utilisateur non autorisé.";
 
                     this.divprivate.trigger("access_off",reponse);
 
@@ -68,6 +68,10 @@ class Oauth2 {
             $.ajax({
                 url: Routing.generate("bundlesaveaccesstoken"),
                 method: "GET",
+                beforeSend : function(){
+                    loadingStop($('body'));
+                    loadingStart($("body"), "Loading  ...");
+                },
                 success: function(datas){
                     resolve(datas);
                 },
@@ -83,6 +87,9 @@ class Oauth2 {
                         console.error(e);
                         return reject("Impossible de charger getSaveAccessToken");
                     }
+                },
+                complete    : function(){
+                    loadingStop($('body'));
                 }
             });
         });
@@ -94,12 +101,18 @@ class Oauth2 {
             $.ajax({
                 url: Routing.generate("isvaliduser"),
                 method: "GET",
+                beforeSend : function(){
+                    loadingStop($('body'));
+                    loadingStart($("body"), "Check is authorized user ...");
+                },
                 success: function(datas){
                     resolve(datas);
                 },
                 error: function(e){
-
                    resolve(e);
+                },
+                complete    : function(){
+                    loadingStop($('body'));
                 }
             });
         });
@@ -320,7 +333,6 @@ class Oauth2 {
                     private_datas.push(access);
                     private_datas.push(datas);
                     resolve(private_datas);
-
                 },
                 error: function (e) {
                     reject(e);
@@ -333,7 +345,7 @@ class Oauth2 {
         let that = this;
 
         if(datas.action === "open") {
-            loadingStart($("body"), "Login in progress...");
+            loadingStart($("body"), "Login in progress, please wait...");
             that.divprivate.find("form#privateform").addClass("hidden");
         } else {
             that.divprivate.find("form#privateform").removeClass("hidden");

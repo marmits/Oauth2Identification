@@ -1,19 +1,21 @@
 <?php
+declare(strict_types=1);
+
 namespace Marmits\GoogleIdentification\Services;
 
-
-use Marmits\GoogleIdentification\Services\Encryption;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+Use Exception;
+use Marmits\GoogleIdentification\Services\Encryption;
 
-
+/**
+ * GERE LE TRAITEMENT ET LA SECURITE DES CREDENTIALS
+ */
 class Access
 {
     protected array $params;
     protected string $password;
     protected string $identifiant;
     protected Encryption $encryption;
-
-
 
     /**
      * @param array $private_params
@@ -25,36 +27,75 @@ class Access
         $this->encryption = $encryption;
     }
 
-    public function setPassword(string $val){
+    /**
+     * @param string $val
+     * @return $this
+     */
+    public function setPassword(string $val): Access
+    {
         $this->password = $val;
         return $this;
     }
 
-    public function setIdentifiant(string $val){
+    /**
+     * @param string $val
+     * @return $this
+     */
+    public function setIdentifiant(string $val): Access
+    {
         $this->identifiant = $val;
         return $this;
     }
 
-    public function getIdentifiant(){
+    /**
+     * @return string
+     */
+    public function getIdentifiant(): string
+    {
         return $this->identifiant;
     }
 
-    public function getPassword(){
-        return  $this->password;
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
+    /**
+     * @return string
+     */
+    public function getRealPassword():string{
+        return $this->params['private_params']['passwordfull'];
+    }
+
+    /**
+     * @return string
+     */
+    public function geFirstPartPassword():string{
+        return $this->params['private_params']['passwordfirst'];
+    }
+
+    /**
+     * @return false|mixed
+     */
     public function checkCrediental(){
 
         $isValid = false;
-        $passwordInput = $this->getPassword();
-        $identifiantInput = $this->getIdentifiant();
-        if($identifiantInput === $this->getIdentifiantParam()) {
-            $isValid = $this->VerifPassHash($passwordInput);
+
+        if($this->getIdentifiant() === $this->getIdentifiantParam()) {
+            $password = $this->geFirstPartPassword().$this->getPassword();
+            $isValid = $this->VerifPassHash($password);
         }
         return $isValid;
 
     }
 
+    /**
+     * @param $val
+     * @return mixed
+     */
     private function VerifPassHash($val){
 
         $factory = new PasswordHasherFactory([
@@ -63,12 +104,16 @@ class Access
         ]);
 
         $passwordHasher = $factory->getPasswordHasher('common');
-        $hash = $passwordHasher->hash($this->params["private_params"]['password']); // returns a bcrypt hash
+        $hash = $passwordHasher->hash($this->getRealPassword()); // returns a bcrypt hash
 
         return $passwordHasher->verify($hash, $val);
 
     }
 
+    /**
+     * @param $val
+     * @return mixed
+     */
     public function VerifIdentifiantPasswordHash($val){
 
         $factory = new PasswordHasherFactory([
@@ -77,21 +122,39 @@ class Access
         ]);
 
         $passwordHasher = $factory->getPasswordHasher('common');
-        $hash = $passwordHasher->hash($this->params["private_params"]['identifiant'].$this->params["private_params"]['password']); // returns a bcrypt hash
+        $hash = $passwordHasher->hash($this->getIdentifiantParam().$this->getRealPassword()); // returns a bcrypt hash
 
-        return $passwordHasher->verify($hash,$val );
+        return $passwordHasher->verify($hash,$val);
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getIdentifiantParam(){
-        return $this->params["private_params"]['identifiant'];
+        return $this->params['private_params']['identifiant'];
     }
 
-    public function getDatasCrypted($contenu){
-        return  nl2br($this->encryption->decrypt($contenu));
+    /**
+     * @return bool
+     */
+    public function isParamCrypted() :bool{
+        return $this->encryption->getParms()['encryption_params']['decrypt'];
     }
 
+    /**
+     * @param $contenu
+     * @return string
+     */
+    public function getDatasCrypted($contenu): string
+    {
+        try {
+            return nl2br($this->encryption->decrypt($contenu));
+        }
+        catch (Exception $e){
+            return $e->getMessage();
+        }
 
-
+    }
 
 }

@@ -19,16 +19,11 @@
             {% if email is defined %}
             <h1> Private Page </h1>
                     <ul>
-                        {% if accesstoken is defined %}
-                            <li>accesstoken : {{ accesstoken }}</li>
-                        {% endif %}
 
-
-                        {% if accesstoken is defined %}
-                            <li>accesstoken : {{ accesstoken }}</li>
-                        {% endif %}
                         {% if refreshtoken is defined %}
-                            <li>refreshtoken : {{ refreshtoken }}</li>
+                            {% if refreshtoken != '' %}
+                                <li>refreshtoken : {{ refreshtoken }}</li>
+                            {% endif %}
                         {% endif %}
 
                         {% if expiredin is defined %}
@@ -39,16 +34,17 @@
                             <li>expired : {{ expired }}</li>
                         {% endif %}
 
+                        {% if picture is defined %}
+                            <li><img class="picture" src="{{ picture }}" /></li>
+                        {% endif %}
+
                         {% if name is defined %}
                             <li>name : {{ name }}</li>
                         {% endif %}
 
-
                          <li class="email">email : {{ email }}</li>
 
-
                     </ul>
-
 
             {% endif %}
 

@@ -20,6 +20,16 @@ services:
     tags:
       - { name: controller.service_arguments }
 
+  Marmits\GoogleIdentification\Controller\OauthController:
+    arguments: [
+      '@service_container',
+      '@Symfony\Component\HttpFoundation\RequestStack',
+      '@Marmits\GoogleIdentification\Providers\GoogleProvider',
+      '@Marmits\GoogleIdentification\Providers\GithubProvider'
+    ]
+    tags:
+      - { name: controller.service_arguments }
+
 
   Marmits\GoogleIdentification\Controller\UserController:
     arguments: [
@@ -32,9 +42,13 @@ services:
     tags:
       - { name: controller.service_arguments }
 
+  Marmits\GoogleIdentification\Providers\AbstractProvider:
+    arguments:
+      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
 
   Marmits\GoogleIdentification\Providers\GoogleProvider:
     arguments:
+      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
       - googleclient_params: '%google_client%'
 
   Marmits\GoogleIdentification\Providers\GithubProvider:
@@ -50,6 +64,4 @@ services:
   Marmits\GoogleIdentification\Services\Encryption:
     arguments:
       - encryption_params: '%encryption%'
-
-
 

@@ -7,7 +7,7 @@ parameters:
     auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
     client_secret: '%env(GOOGLE_CLIENT_SECRET)%'
     redirect_uris: '%env(GOOGLE_REDIRECT_URIS)%'
-    google_origins: '%env(GOOGLE_ORIGINS)%'
+    google_origins: '%env(GOOGLE_ORIGINS)%' #// optional; used to restrict access to users on your G Suite/Google Apps for Business accounts
 
   github_client:
     client_id:  '%env(GITHUB_CLIENT_ID)%'
@@ -16,12 +16,11 @@ parameters:
 
   private_access:
     identifiant: '%env(PRIVATE_IDENTIFIANT)%'
-    password: '%env(PRIVATE_PASSWORD)%'
+    passwordfirst: '%env(PRIVATE_PASS_FIRST)%'
+    passwordfull: '%env(PRIVATE_PASSWORD_COMPLETE)%'
   
   encryption:
-    decrypt: false
+    decrypt: true
     method: '%env(DECRYPT_DATAS_METHOD)%'
-    password: '%env(DECRYPT_DATAS_PASSWORD)%'
-
-
-
+    key: '%env(DECRYPT_DATAS_KEY)%'
+    

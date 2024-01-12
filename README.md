@@ -1,8 +1,9 @@
 ## INSTALLATION
 
 ### BUNDLES
-[thephpleague/oauth2-client](https://github.com/thephpleague/oauth2-client)  
+[thephpleague/oauth2-client](https://github.com/thephpleague/oauth2-client)    
 [thephpleague/oauth2-google](https://github.com/thephpleague/oauth2-google)  
+[thephpleague/oauth2-github](https://github.com/thephpleague/oauth2-github)  
 [google openid-connect](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters)
 
 
@@ -84,7 +85,7 @@ _profiler:
 
 ### jsrouting-bundle
 ```
-bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
+symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
 ```
 
 ### Clean nodes modules
@@ -240,6 +241,7 @@ ou Dumper les variables d’environnement pour plus de rapidité en développeme
 ``` 
 composer dump-env dev
 ``` 
+
 
 ### UPDATE
 à voir  
