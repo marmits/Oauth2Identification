@@ -10,7 +10,18 @@ parameters:
     google_origins: '%env(GOOGLE_ORIGINS)%'
 
   github_client:
-    client_id: '6f9eeb9c4ffe9aacbfdb'
-    client_secret: '72ba1beee2649527a8f42d3b959143ab7a53b0e4'
-    redirect_uris: 'http://googleclient:64640/getaccesstokengithub'
+    client_id:  '%env(GITHUB_CLIENT_ID)%'
+    client_secret: '%env(GITHUB_CLIENT_SECRET)%'
+    redirect_uris: '%env(GITHUB_REDIRECT_URIS)%'
+
+  private_access:
+    identifiant: '%env(PRIVATE_IDENTIFIANT)%'
+    password: '%env(PRIVATE_PASSWORD)%'
+  
+  encryption:
+    decrypt: false
+    method: '%env(DECRYPT_DATAS_METHOD)%'
+    password: '%env(DECRYPT_DATAS_PASSWORD)%'
+
+
 

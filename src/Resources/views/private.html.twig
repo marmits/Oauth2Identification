@@ -11,12 +11,13 @@
 
 
 <div class="container-fluid">
-    <h1> Private Page </h1>
-    <div class="row">
-        <div class="col-lg-4">
+
+    <div class="row g-4 ">
+        <div class="col-6 offset-3 align-self-center gy-5">
+
             <div class="private">
             {% if email is defined %}
-
+            <h1> Private Page </h1>
                     <ul>
                         {% if accesstoken is defined %}
                             <li>accesstoken : {{ accesstoken }}</li>
@@ -49,14 +50,11 @@
                     </ul>
 
 
-
-            {% else %}
-                <div class="alert alert-danger" role="alert">
-                    NOT CONNECTED
-                </div>
-
-
             {% endif %}
+
+                <div class="alert alert-danger message hidden" role="alert">
+
+                </div>
             </div>
         </div>
     </div>

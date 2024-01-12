@@ -9,13 +9,16 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Marmits\GoogleIdentification\Services\GoogleProvider;
-use Marmits\GoogleIdentification\Services\GithubProvider;
+use Marmits\GoogleIdentification\Providers\GoogleProvider;
+use Marmits\GoogleIdentification\Providers\GithubProvider;
+use League\OAuth2\Client\Provider\GoogleUser;
+use League\OAuth2\Client\Provider\GithubResourceOwner;
 
 
 /**
@@ -24,22 +27,24 @@ use Marmits\GoogleIdentification\Services\GithubProvider;
 class IndexController extends AbstractController
 {
 
+
     protected GoogleProvider $googleProvider;
     protected GithubProvider $githubProvider;
-    protected SessionInterface $session;
+    protected RequestStack $requestStack;
 
     /**
      * @param ContainerInterface $container
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
      * @param GoogleProvider $googleProvider
      * @param GithubProvider $githubProvider
      */
-    public function __construct(ContainerInterface $container, SessionInterface $session, GoogleProvider $googleProvider, GithubProvider $githubProvider)
+    public function __construct(ContainerInterface $container, RequestStack $requestStack, GoogleProvider $googleProvider, GithubProvider $githubProvider)
     {
         $this->container = $container;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->googleProvider = $googleProvider;
         $this->githubProvider = $githubProvider;
+
     }
 
     /**
@@ -51,10 +56,9 @@ class IndexController extends AbstractController
     public function index(Request $request): Response
     {
 
-        return $this->render('@MarmitsGoogleIdentification/default.html.twig', [
-            'googleProvider' => $this->googleProvider->getParams(),
-            'githubProvider' => $this->githubProvider->getParams()
-        ]);
+
+
+        return $this->redirectToRoute('bundle_privat');
     }
 
 
@@ -67,9 +71,11 @@ class IndexController extends AbstractController
     public function private(Request $request): Response
     {
         $user = [];
-        if($this->session->has('access')){
-            $datas_access = $this->session->get('access');
-            $user = $this->githubProvider->fetchGitHubEmailUser($datas_access['accesstoken']);
+
+
+        if($this->requestStack->getSession()->has('access')){
+            $datas_access = $this->requestStack->getSession()->get('access');
+            $user = $this->githubProvider->fetchEmailUser($datas_access['accesstoken']);
         }
 
 
@@ -86,97 +92,41 @@ class IndexController extends AbstractController
     public function saveAccessToken(Request $request): JsonResponse
     {
 
-        if($this->session->has('access')){
-            return new jsonResponse(['code'=> 200, 'message' => 'ok authorisation', 'email' => $this->session->get('access')['email']], 200);
+        if($this->requestStack->getSession()->has('access')){
+            return new jsonResponse(
+                [
+                    'code'=> 200, 'message' => 'ok authorisation',
+                    'email' => $this->requestStack->getSession()->get('access')['email'],
+                    'accesstoken' => $this->requestStack->getSession()->get('access')['accesstoken']
+                ], 200);
         }
         return new jsonResponse(['code'=> 401, 'message' => 'Invalid Access Token'], 500);
     }
 
     /**
      *
-     * @Route("/getaccesstokengoogle", name="getaccesstokengoogle")
-     *
+     * @Route("/logout", name="logout")
      * @param Request $request
-     * @return JsonResponse
-     * @throws IdentityProviderException
+     * @return Response
      */
-    public function getaccesstokenGoogle(Request $request): JsonResponse
+    public function logout(Request $request): Response
     {
-        $code = null;
-        $error = null;
-        $state = null;
-        $id_token = -1;
-        if ($request->get('code')) {
-            $code = $request->get('code');
+
+        if($this->requestStack->getSession()->has('access')){
+            $this->requestStack->getSession()->remove('access');
         }
-        if ($request->get('error')) {
-            $error = $request->get('error');
+        if($this->requestStack->getSession()->has('oauth2state')){
+            $this->requestStack->getSession()->remove('oauth2state');
         }
-        if ($request->get('state')) {
-            $state = $request->get('state');
-        }
-
-        $authorizationUrl =  $this->googleProvider->getInstance()->getAuthorizationUrl();
-
-        if ($error !== null) {
-
-            // Got an error, probably user denied access
-            exit('Got error: ' . htmlspecialchars( $error['error'], ENT_QUOTES, 'UTF-8'));
-
-        } elseif ($code !== null) {
-
-            // If we don't have an authorization code then get one
-            $this->session->set('oauth2state', $this->googleProvider->getInstance()->getState());
-            header('Location: ' . $authorizationUrl);
-            exit;
-
-        } elseif (($state === null) || ($this->session->has('oauth2state') && $state !== $this->session->get('oauth2state'))) {
-
-            // State is invalid, possible CSRF attack in progress
-            if ( $this->session->has('oauth2state')) {
-                $this->session->remove('oauth2state');
-            }
-
-            return new jsonResponse(['message' => 'Invalid state'], 500);
+        $this->requestStack->getSession()->clear();
 
 
-        } else {
 
-            // Try to get an access token (using the authorization code grant)
-            $accessToken = $this->googleProvider->getInstance()->getAccessToken('authorization_code', [
-                'code' => $code,
-                'provider' => 'github'
-            ]);
+        return $this->redirectToRoute('bundle_index');
 
-            // Optional: Now you have a token you can look up a users profile data
-            try {
-
-                // We got an access token, let's now get the owner details
-                $ownerDetails = $this->googleProvider->getInstance()->getResourceOwner($accessToken);
-
-                // Use these details to create a new profile
-                if(isset($accessToken->getValues()['id_token'])){
-                    $id_token = $accessToken->getValues()['id_token'];
-                }
-
-                $res = [
-                    'accesstoken' => $accessToken->getToken(),
-                    'refreshtoken' => $accessToken->getRefreshToken(),
-                    'expiredin' => $accessToken->getExpires(),
-                    'expired' => $accessToken->hasExpired() ,
-                    'id_token'=> $id_token,
-                    'firstName' => $ownerDetails->getFirstName()
-                ];
-                return new jsonResponse($res, 200);
-
-            } catch (IdentityProviderException $e) {
-
-                // Failed to get user details
-                exit('Something went wrong: ' . $e->getMessage());
-
-            }
-        }
     }
+
+
 
     /**
      *
@@ -190,65 +140,96 @@ class IndexController extends AbstractController
     {
 
 
-        if ($request->get('code') === null) {
+            if ($request->get('code') === null)
+            {
 
-            $authorizationUrl =  $this->githubProvider->getInstance()->getAuthorizationUrl();
+                $authorizationUrl = $this->githubProvider->getInstance()->getAuthorizationUrl();
 
-            // If we don't have an authorization code then get one
-            $this->session->set('oauth2state', $this->githubProvider->getInstance()->getState());
-
-
-            header('Location: ' . $authorizationUrl);
-
-            exit;
-
-        } elseif (($request->get('state') === null) || ($this->session->has('oauth2state') && $request->get('state') !== $this->session->get('oauth2state'))) {
-
-            // State is invalid, possible CSRF attack in progress
-            if ( $this->session->has('oauth2state')) {
-                $this->session->remove('oauth2state');
-            }
-
-            if ( $this->session->has('access')) {
-                $this->session->remove('access');
-            }
-
-            return new jsonResponse(['message' => 'Invalid state'], 500);
+                // If we don't have an authorization code then get one
+                $this->requestStack->getSession()->set('oauth2state', $this->githubProvider->getInstance()->getState());
 
 
-        } else {
+                header('Location: ' . $authorizationUrl);
 
-            // Try to get an access token (using the authorization code grant)
-            $accessToken = $this->githubProvider->getInstance()->getAccessToken('authorization_code', [
-                'code' => $request->get('code'),
-                'provider' => 'github'
-            ]);
-
-            // Optional: Now you have a token you can look up a users profile data
-            try {
-
-                // We got an access token, let's now get the owner details
-                $ownerDetails = $this->githubProvider->getInstance()->getResourceOwner($accessToken);
-
-                $this->session->set('access',
-                    [
-                        'accesstoken' => $accessToken->getToken(),
-                        'refreshtoken' => $accessToken->getRefreshToken(),
-                        'email' => $ownerDetails->getEmail()
-                    ]
-                );
-
-                header('Location: ' . 'bundle_privat');
                 exit;
 
+            } elseif (($request->get('state') === null) || ($this->requestStack->getSession()->has('oauth2state') && $request->get('state') !== $this->requestStack->getSession()->get('oauth2state')))
+            {
 
-            } catch (IdentityProviderException $e) {
-                // Failed to get user details
-                exit('Something went wrong: ' . $e->getMessage());
+                // State is invalid, possible CSRF attack in progress
+                if ($this->requestStack->getSession()->has('oauth2state')) {
+                    $this->requestStack->getSession()->remove('oauth2state');
+                }
+
+                if ($this->requestStack->getSession()->has('access')) {
+                    $this->requestStack->getSession()->remove('access');
+                }
+
+                return new jsonResponse(['message' => 'Invalid state'], 500);
+
+
+            } else {
+
+                // Try to get an access token (using the authorization code grant)
+                $accessToken = $this->githubProvider->getInstance()->getAccessToken('authorization_code', [
+                    'code' => $request->get('code'),
+                    'provider' => 'github'
+                ]);
+
+                // Optional: Now you have a token you can look up a users profile data
+                try {
+
+                    // We got an access token, let's now get the owner details
+
+                    $ownerDetails = $this->githubProvider->getInstance()->getResourceOwner($accessToken);
+                    if ($ownerDetails instanceof GithubResourceOwner) {
+                        $this->requestStack->getSession()->set('access',
+                            [
+                                'accesstoken' => $accessToken->getToken(),
+                                'refreshtoken' => $accessToken->getRefreshToken(),
+                                'email' => $ownerDetails->getEmail(),
+                                'authorization_code' => $request->get('code'),
+                                'client_id' =>  $this->githubProvider->getParams()['githubclient_params']['client_id']
+                            ]
+                        );
+
+                    }
+
+                    header('Location: ' . 'bundle_privat');
+                    exit;
+
+
+                } catch (IdentityProviderException $e) {
+                    // Failed to get user details
+                    exit('Something went wrong: ' . $e->getMessage());
+
+                }
 
             }
+
+
+    }
+
+
+    /**
+     *
+     * @Route("/bundlegetgithubauthentification", options={"expose"=true}, name="getgithubauthentification", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getGithubAuthentification(Request $request): JsonResponse
+    {
+
+        if($this->requestStack->getSession()->has('access')){
+            $datas_access = $this->requestStack->getSession()->get('access');
+            $datas = $this->githubProvider->fetchAuthentification($datas_access['accesstoken']);
+            return new jsonResponse(
+                [
+                    $datas
+                ], 200);
         }
 
+        return new jsonResponse(['code'=> 401, 'message' => 'Invalid Access Token'], 500);
     }
 
 
