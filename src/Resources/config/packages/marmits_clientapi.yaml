@@ -22,5 +22,5 @@ parameters:
   encryption:
     decrypt: true
     method: '%env(DECRYPT_DATAS_METHOD)%'
-    password: '%env(DECRYPT_DATAS_PASSWORD)%'
+    key: '%env(DECRYPT_DATAS_KEY)%'
     

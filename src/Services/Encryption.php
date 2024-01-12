@@ -35,7 +35,7 @@ Class Encryption
     {
         if($this->params['encryption_params']['decrypt']) {
             $message_error = 'Les données de la table sont incorrectes - decryptage KO';
-            $key = hash('sha256', $this->params['encryption_params']['password']);
+            $key = hash('sha256', $this->params['encryption_params']['key']);
             $data = base64_decode($data);
             $ivSize = openssl_cipher_iv_length($this->params['encryption_params']['method']);
             $iv = substr($data, 0, $ivSize);
@@ -60,7 +60,7 @@ Class Encryption
      */
     public function encrypt(string $data): string
     {
-        $key = hash('sha256', $this->params['encryption_params']['password']);
+        $key = hash('sha256', $this->params['encryption_params']['key']);
 
         $ivSize = openssl_cipher_iv_length($this->params['encryption_params']['method']);
         $iv = openssl_random_pseudo_bytes($ivSize);

@@ -132,7 +132,7 @@ class UserController  extends AbstractController
                     $result['error'] = false;
                     $result['message'] = "Successfull Login";
                     $codeError = 200;
-                    $this->requestStack->getSession()->set('privateaccess', $identifiant.$this->access->getPassword());
+                    $this->requestStack->getSession()->set('privateaccess', $identifiant.$this->access->getRealPassword());
                 } else {
                     $result['error'] = true;
                     $result['message'] = "Bad Login";

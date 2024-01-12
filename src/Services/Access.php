@@ -33,7 +33,7 @@ class Access
      */
     public function setPassword(string $val): Access
     {
-        $this->password = $this->params['private_params']['passwordfirst'].$val;
+        $this->password = $val;
         return $this;
     }
 
@@ -64,15 +64,29 @@ class Access
     }
 
     /**
+     * @return string
+     */
+    public function getRealPassword():string{
+        return $this->params['private_params']['passwordfull'];
+    }
+
+    /**
+     * @return string
+     */
+    public function geFirstPartPassword():string{
+        return $this->params['private_params']['passwordfirst'];
+    }
+
+    /**
      * @return false|mixed
      */
     public function checkCrediental(){
 
         $isValid = false;
-        $passwordInput = $this->getPassword();
-        $identifiantInput = $this->getIdentifiant();
-        if($identifiantInput === $this->getIdentifiantParam()) {
-            $isValid = $this->VerifPassHash($passwordInput);
+
+        if($this->getIdentifiant() === $this->getIdentifiantParam()) {
+            $password = $this->geFirstPartPassword().$this->getPassword();
+            $isValid = $this->VerifPassHash($password);
         }
         return $isValid;
 
@@ -90,7 +104,7 @@ class Access
         ]);
 
         $passwordHasher = $factory->getPasswordHasher('common');
-        $hash = $passwordHasher->hash($this->params['private_params']['passwordfull']); // returns a bcrypt hash
+        $hash = $passwordHasher->hash($this->getRealPassword()); // returns a bcrypt hash
 
         return $passwordHasher->verify($hash, $val);
 
@@ -108,7 +122,7 @@ class Access
         ]);
 
         $passwordHasher = $factory->getPasswordHasher('common');
-        $hash = $passwordHasher->hash($this->params['private_params']['identifiant'].$this->params['private_params']['passwordfull']); // returns a bcrypt hash
+        $hash = $passwordHasher->hash($this->getIdentifiantParam().$this->getRealPassword()); // returns a bcrypt hash
 
         return $passwordHasher->verify($hash,$val);
 
