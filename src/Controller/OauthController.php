@@ -119,7 +119,7 @@ class OauthController extends AbstractController
                     $this->requestStack->getSession()->set('access',$access);
                 }
 
-                header('Location: ' . '/privat');
+                header('Location: ' . 'privat');
                 exit;
 
 
@@ -214,7 +214,7 @@ class OauthController extends AbstractController
                 }
 
                 
-                header('Location: ' . '/privat');
+                header('Location: ' . 'privat');
                 exit;
 
 
