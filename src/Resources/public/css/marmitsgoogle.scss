@@ -14,11 +14,15 @@ body {
 
 div.private{
   text-align: center;
+
   ul{
     list-style-type: none;
     margin:0;
     padding:1em 0;
     li{
+      &:first-child{
+        padding: 0 0 1em 0 !important;
+      }
       float:none;
       img{
         &.picture{
@@ -27,6 +31,11 @@ div.private{
       }
     }
   }
+
+  div.infos_user{
+    text-align: left;
+  }
+
   div.login{
     text-align: center;
   }

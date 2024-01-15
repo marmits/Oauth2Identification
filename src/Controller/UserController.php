@@ -20,7 +20,7 @@ use Marmits\GoogleIdentification\Services\Access;
  * Gère les routes exposées pour JS
  */
 
-class UserController  extends AbstractController
+class UserController extends AbstractController
 {
 
     protected RequestStack $requestStack;

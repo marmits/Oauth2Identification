@@ -14,9 +14,12 @@ class Oauth2 {
         this.template_private = "bundles/marmitsgoogleidentification/templates/template_private.html";
         this.template_social_connect = "bundles/marmitsgoogleidentification/templates/template_social_connect.html";
         this.template_bt_logout = "bundles/marmitsgoogleidentification/templates/template_bt_logout.html";
+        this.template_user_api_info = "bundles/marmitsgoogleidentification/templates/template_user_api_info.html";
         this.bouton_connect = null;
+        this.bouton_userapi_info = null;
         this.input_password = null;
         this.divprivate = $("div.private");
+        this.infosusersopen = false;
         this.BuildEventToPrivatDiv();
 
         this.getSaveAccessToken()
@@ -60,6 +63,16 @@ class Oauth2 {
         .catch((e) => {
             console.error(e);
         });
+
+    }
+
+    setInfosUserOpen = function (val){
+        this.infosusersopen = val;
+        return this;
+    }
+
+    getInfosUserOpen = function (){
+        return this.infosusersopen;
     }
 
     getSaveAccessToken = async function(){
@@ -127,8 +140,8 @@ class Oauth2 {
                 that.divprivate.append(blocDiv);
                 that.bouton_connect = that.divprivate.find("#privateform").find("button#private_connect");
                 that.input_password = that.divprivate.find("#privateform").find("input#inputPassword");
+                that.bouton_userapi_info = that.divprivate.find("button#private_info");
                 resolve();
-
             });
         });
     }
@@ -172,16 +185,22 @@ class Oauth2 {
         });
 
         that.divprivate.on("access_on", function (e, data) {
+            that.divprivate.find("div.infos_user").addClass('hidden');
             that.divprivate.find("div.message").addClass("hidden");
 
             let BuildFormPrivate =  that.BuildFormPrivate();
 
-            let bindPrivateBtConnect = BuildFormPrivate.then((result) => {
-                return that.bindPrivateBtConnect();
+            let bindPrivateBtUserApiInfo = BuildFormPrivate.then((result) => {
+                return that.bindPrivateBtUserApiInfo();
+            });
+
+            let bindPrivateBtConnect = bindPrivateBtUserApiInfo.then((result) => {
+                return that.bindPrivateBtConnect()
             });
 
             let promises = [
                 BuildFormPrivate,
+                bindPrivateBtUserApiInfo,
                 bindPrivateBtConnect
             ];
 
@@ -280,6 +299,31 @@ class Oauth2 {
         });
     }
 
+    bindPrivateBtUserApiInfo = async function(){
+        let that = this;
+
+        return new Promise(function(resolve,reject) {
+
+            that.bouton_userapi_info.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                that.divprivate.find("div.infos_user").addClass('hidden');
+                if(that.iSdisplayUserInfos() === true){
+                    that.divprivate.find("div.infos_user").removeClass('hidden');
+                }
+            });
+
+
+            that.divprivate.click(function (e) {
+                that.bouton_userapi_info.trigger('click');
+            });
+
+            resolve();
+
+        });
+    }
+
     checkPrivateAccess = async function(datasIdentifiant){
         let that = this;
         let password = that.input_password.val();
@@ -339,6 +383,16 @@ class Oauth2 {
                 }
             });
         });
+    }
+
+    iSdisplayUserInfos = function() {
+        let that = this;
+        if(that.getInfosUserOpen() === false){
+            that.setInfosUserOpen(true);
+        } else {
+            that.setInfosUserOpen(false);
+        }
+        return that.getInfosUserOpen();
     }
 
     animLogin = function(datas){

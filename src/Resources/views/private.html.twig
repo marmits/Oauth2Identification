@@ -16,38 +16,51 @@
         <div class="col-6 offset-3 align-self-center gy-5">
 
             <div class="private">
-            {% if email is defined %}
+
+            {% if user.email is defined %}
             <h1> Private Page </h1>
                     <ul>
 
-                        {% if refreshtoken is defined %}
-                            {% if refreshtoken != '' %}
-                                <li>refreshtoken : {{ refreshtoken }}</li>
+                        {% if user.efreshtoken is defined %}
+                            {% if user.refreshtoken != '' %}
+                                <li>refreshtoken : {{ user.refreshtoken }}</li>
                             {% endif %}
                         {% endif %}
 
-                        {% if expiredin is defined %}
-                            <li>expiredin : {{ expiredin }}</li>
+                        {% if user.expiredin is defined %}
+                            <li>expiredin : {{ user.expiredin }}</li>
                         {% endif %}
 
-                        {% if expired is defined %}
-                            <li>expired : {{ expired }}</li>
+                        {% if user.expired is defined %}
+                            <li>expired : {{ user.expired }}</li>
                         {% endif %}
 
-                        {% if picture is defined %}
-                            <li><img class="picture" src="{{ picture }}" /></li>
+                        {% if user.picture is defined %}
+                            <li><img class="picture" src="{{ user.picture }}" /></li>
                         {% endif %}
 
-                        {% if name is defined %}
-                            <li>name : {{ name }}</li>
+                        {% if user.name is defined %}
+                            <li><button id="private_info" type="button" class="btn btn-primary mb-3">Infos From API</button></li>
+                            <li>name : {{ user.name }}</li>
                         {% endif %}
 
-                         <li class="email">email : {{ email }}</li>
+                         <li class="email">email : {{ user.email }}</li>
 
                     </ul>
 
-            {% endif %}
+            <div class="infos_user hidden">
+                <table class="table table-bordered table-sm table-responsive-sm">
+                    <tbody>
+                        {% for key in user|keys %}
+                        <tr>
+                            <td>{{ key }}</td> <td>{{ user[key] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
+            {% endif %}
                 <div class="alert alert-danger message hidden" role="alert">
 
                 </div>
