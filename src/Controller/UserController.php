@@ -127,7 +127,7 @@ class UserController  extends AbstractController
                 $identifiant = $request->request->get("identifiant");
                 $password = $request->request->get("password");
                 $this->access->setIdentifiant($identifiant);
-                $this->access->setPassword($password);
+                $this->access->setPassword($this->access->geFirstPartPassword().$password);
                 if ($this->access->checkCrediental()) {
                     $result['error'] = false;
                     $result['message'] = "Successfull Login";

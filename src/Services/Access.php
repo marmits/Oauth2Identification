@@ -85,7 +85,7 @@ class Access
         $isValid = false;
 
         if($this->getIdentifiant() === $this->getIdentifiantParam()) {
-            $password = $this->geFirstPartPassword().$this->getPassword();
+            $password = $this->getPassword();
             $isValid = $this->VerifPassHash($password);
         }
         return $isValid;
