@@ -183,7 +183,8 @@ class UserController extends AbstractController
         if($count > 0) {
             if($this->requestStack->getSession()->has('access')){
                 $email_connect = $this->requestStack->getSession()->get('access')['email'];
-                $user =  $this->DatasRepository->findOneBy(['email' => $email_connect]);
+                $api_user_id = $this->requestStack->getSession()->get('access')['api_user_id'];
+                $user =  $this->DatasRepository->findOneBy(['email' => $email_connect, 'idApi' => $api_user_id, 'activate' => 1]);
                 if($user instanceof Datas) {
                     return $user;
                 }

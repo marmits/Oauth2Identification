@@ -106,13 +106,14 @@ class OauthController extends AbstractController
             try {
                 // We got an access token, let's now get the owner details
                 $ownerDetails = $this->githubProvider->getInstance()->getResourceOwner($accessToken);
-
+                
                 if ($ownerDetails instanceof ResourceOwnerInterface) {
                     $access = [
                         'ownerDetails' => $ownerDetails,
                         'accesstoken' => $accessToken->getToken(),
                         'refreshtoken' => $accessToken->getRefreshToken(),
                         'email' => $ownerDetails->getEmail(),
+                        'api_user_id' => $ownerDetails->getId(),
                         'authorization_code' => $request->get('code'),
                         'client_id' =>  $this->githubProvider->getParams()['githubclient_params']['client_id']
                     ];
@@ -206,6 +207,7 @@ class OauthController extends AbstractController
                         'accesstoken' => $accessToken->getToken(),
                         'refreshtoken' => $accessToken->getRefreshToken(),
                         'email' => $ownerDetails->getEmail(),
+                        'api_user_id' => $ownerDetails->getId(),
                         'authorization_code' => $request->get('code'),
                         'client_id' =>  $this->googleProvider->getParams()['googleclient_params']['client_id']
                     ];

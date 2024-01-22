@@ -1,8 +1,9 @@
 <?php
-
+declare(strict_types=1);
 namespace Marmits\GoogleIdentification\Entity;
 
 use App\Repository\DatasRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,6 +21,11 @@ class Datas
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private string $idApi;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private ?string $email;
 
     /**
@@ -30,16 +36,57 @@ class Datas
     /**
      * @ORM\Column(type="datetime")
      */
-    private ?\DateTimeInterface $temps;
+    private ?DateTimeInterface $temps;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default":"0"})
+     */
+    private bool $activate;
 
     /**
      * @return int|null
      */
     public function getId(): ?int
     {
+
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
+    public function getIdApi(): string
+    {
+        return $this->idApi;
+    }
+
+    /**
+     * @param string $idApi
+     * @return Datas
+     */
+    public function setIdApi(string $idApi): self
+    {
+        $this->idApi = $idApi;
+        return $this;
+    }
+
+    /**
+     * @param bool $activate
+     * @return Datas
+     */
+    public function setActivate(bool $activate): self
+    {
+        $this->activate = $activate;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getActivate(): bool
+    {
+        return $this->activate;
+    }
     /**
      * @return string|null
      */
@@ -79,18 +126,18 @@ class Datas
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getTemps(): ?\DateTimeInterface
+    public function getTemps(): ?DateTimeInterface
     {
         return $this->temps;
     }
 
     /**
-     * @param \DateTimeInterface $temps
+     * @param DateTimeInterface $temps
      * @return $this
      */
-    public function setTemps(\DateTimeInterface $temps): self
+    public function setTemps(DateTimeInterface $temps): self
     {
         $this->temps = $temps;
 
