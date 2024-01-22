@@ -10,7 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-use League\OAuth2\Client\Provider\ResourceOwnerInterface;
+use League\OAuth2\Client\Provider\GoogleUser;
+use League\OAuth2\Client\Provider\GithubResourceOwner;
 use Marmits\GoogleIdentification\Providers\GithubProvider;
 use Marmits\GoogleIdentification\Providers\GoogleProvider;
 
@@ -21,6 +22,10 @@ use Marmits\GoogleIdentification\Providers\GoogleProvider;
 
 class OauthController extends AbstractController
 {
+    private RequestStack $requestStack;
+    private GoogleProvider $googleProvider;
+    private GithubProvider $githubProvider;
+
     /**
      * @param ContainerInterface $container
      * @param RequestStack $requestStack
@@ -107,7 +112,7 @@ class OauthController extends AbstractController
                 // We got an access token, let's now get the owner details
                 $ownerDetails = $this->githubProvider->getInstance()->getResourceOwner($accessToken);
                 
-                if ($ownerDetails instanceof ResourceOwnerInterface) {
+                if ($ownerDetails instanceof GithubResourceOwner) {
                     $access = [
                         'ownerDetails' => $ownerDetails,
                         'accesstoken' => $accessToken->getToken(),
@@ -197,7 +202,7 @@ class OauthController extends AbstractController
 
                 $ownerDetails = $this->googleProvider->getInstance()->getResourceOwner($accessToken);
 
-                if ($ownerDetails instanceof ResourceOwnerInterface) {
+                if ($ownerDetails instanceof GoogleUser) {
 
                     $openidinfos = $this->googleProvider->fetchOpenIdInfos($accessToken);
 
