@@ -314,9 +314,10 @@ class Oauth2 {
                 }
             });
 
-
-            that.divprivate.click(function (e) {
-                that.bouton_userapi_info.trigger('click');
+            that.divprivate.find('table').click(function (e) {
+                if(that.getInfosUserOpen() === true) {
+                    that.bouton_userapi_info.trigger('click');
+                }
             });
 
             resolve();
