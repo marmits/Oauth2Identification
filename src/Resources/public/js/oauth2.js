@@ -21,6 +21,8 @@ class Oauth2 {
         this.bouton_userapi_info = null;
         this.input_password = null;
         this.divprivate = $("div.private");
+        this.divprivatemessage = this.divprivate.find("div.message");
+        this.divprivatemessagetext = this.divprivatemessage.find("h4.alert-heading");
         this.bouton_userapi_info = this.divprivate.find("button#private_info");
         this.infosusersopen = false;
         this.BuildEventToPrivatDiv();
@@ -55,7 +57,7 @@ class Oauth2 {
 
             } else {
                 reponse.code = 404;
-                reponse.message = "non connecté";
+                reponse.message = "Sign in width";
                 this.divprivate.trigger("access_off", reponse);
             }
         })
@@ -155,7 +157,7 @@ class Oauth2 {
         $('<div>').load(that.template_social_connect, function (response, status, xhr) {
             let blocDiv = $(xhr.responseText);
             blocDiv.attr('id', "socialconnect");
-            that.divprivate.find("div.message").html(data);
+            that.divprivatemessagetext.html(data);
             that.divprivate.append(blocDiv);
         });
     }
@@ -165,7 +167,7 @@ class Oauth2 {
         $('<div>').load(that.template_bt_logout, function (response, status, xhr) {
             let blocDiv = $(xhr.responseText);
             blocDiv.attr('id', "logout");
-            that.divprivate.find("div.message").html(data);
+            that.divprivatemessagetext.html(data);
             that.divprivate.append(blocDiv);
         });
     }
@@ -174,7 +176,7 @@ class Oauth2 {
         let that = this;
         that.divprivate.off("access_off");
         that.divprivate.on("access_off", function (e, data) {
-            that.divprivate.find("div.message").removeClass("hidden");
+            that.divprivatemessage.removeClass("hidden");
             if(data.code === 403){
                 that.BuildBtLogout(data.message);
             } else  if(data.code === 401) {
@@ -195,7 +197,7 @@ class Oauth2 {
 
         that.divprivate.on("access_on", function (e, data) {
             that.divprivate.find("div.infos_user").addClass('hidden');
-            that.divprivate.find("div.message").addClass("hidden");
+            that.divprivatemessage.addClass("hidden");
             that.BuildBtLogout('');
             let BuildFormPrivate =  that.BuildFormPrivate();
 
