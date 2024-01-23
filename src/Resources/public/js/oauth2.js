@@ -6,6 +6,8 @@ import {
     loadingStart,loadingChangeText,onProgressChange,loadingChangeProgressPercent,loadingStop
 } from './loader';
 
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.js');
 
 class Oauth2 {
 
@@ -56,7 +58,7 @@ class Oauth2 {
 
             } else {
                 reponse.code = 404;
-                reponse.message = "Utilisateur non connecté";
+                reponse.message = "non connecté";
                 this.divprivate.trigger("access_off", reponse);
             }
         })
@@ -264,6 +266,7 @@ class Oauth2 {
             that.bouton_connect.click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();
+                that.bouton_userapi_info.trigger('click');
                 let password = that.input_password.val();
                 that.animLogin({"action":"open", "error":false, "message":""});
                 if (password !== "") {

@@ -18,7 +18,7 @@
             <div class="private">
 
             {% if user.email is defined %}
-            <h1> Private Page </h1>
+            <h1>Private Page</h1>
                     <ul>
 
                         {% if user.efreshtoken is defined %}
@@ -48,8 +48,8 @@
 
                     </ul>
 
-            <div class="infos_user hidden">
-                <table class="table table-bordered table-secondary table-sm table-responsive-sm">
+            <div class="infos_user table-responsive hidden">
+                <table class="table table-bordered table-secondary table-sm">
                     <tbody>
                         {% for key in user|keys %}
                         <tr>
