@@ -19,6 +19,7 @@ class Oauth2 {
         this.bouton_userapi_info = null;
         this.input_password = null;
         this.divprivate = $("div.private");
+        this.bouton_userapi_info = this.divprivate.find("button#private_info");
         this.infosusersopen = false;
         this.BuildEventToPrivatDiv();
 
@@ -34,7 +35,6 @@ class Oauth2 {
                 // verifier que l'utilisateur existe dans la BDD
                 this.getIsValidUser()
                 .then((result) => {
-
                     if(result.code === 200) {
                         reponse.code = result.code;
                         reponse.message = "Utilisateur autorisé";
@@ -135,12 +135,13 @@ class Oauth2 {
         let that = this;
         return new Promise(function(resolve,reject) {
             $('<div>').load(that.template_private, function (response, status, xhr) {
+
                 let blocDiv = $(xhr.responseText);
                 blocDiv.attr('id', "privateform");
                 that.divprivate.append(blocDiv);
                 that.bouton_connect = that.divprivate.find("#privateform").find("button#private_connect");
                 that.input_password = that.divprivate.find("#privateform").find("input#inputPassword");
-                that.bouton_userapi_info = that.divprivate.find("button#private_info");
+
                 resolve();
             });
         });
@@ -182,12 +183,20 @@ class Oauth2 {
                 that.BuildBtSocial(data.message);
             }
 
+            that.bindPrivateBtUserApiInfo()
+            .then((retour) => {
+
+            })
+            .catch((e) => {
+                    console.error(e);
+                });
+
         });
 
         that.divprivate.on("access_on", function (e, data) {
             that.divprivate.find("div.infos_user").addClass('hidden');
             that.divprivate.find("div.message").addClass("hidden");
-
+            that.BuildBtLogout('');
             let BuildFormPrivate =  that.BuildFormPrivate();
 
             let bindPrivateBtUserApiInfo = BuildFormPrivate.then((result) => {
@@ -307,7 +316,6 @@ class Oauth2 {
             that.bouton_userapi_info.click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-
                 that.divprivate.find("div.infos_user").addClass('hidden');
                 if(that.iSdisplayUserInfos() === true){
                     that.divprivate.find("div.infos_user").removeClass('hidden');
