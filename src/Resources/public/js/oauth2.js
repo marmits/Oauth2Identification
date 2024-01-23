@@ -24,7 +24,7 @@ class Oauth2 {
         this.bouton_userapi_info = this.divprivate.find("button#private_info");
         this.infosusersopen = false;
         this.BuildEventToPrivatDiv();
-
+        this.bindDisplayUserInfos();
         this.getSaveAccessToken()
         .then((result) => {             
             let reponse = {
@@ -33,7 +33,6 @@ class Oauth2 {
             };
             if(result.email !== undefined){
                 this.userEmail = result.email;
-
                 // verifier que l'utilisateur existe dans la BDD
                 this.getIsValidUser()
                 .then((result) => {
@@ -48,10 +47,8 @@ class Oauth2 {
                     }
                 })
                 .catch((e) => {
-
                     reponse.code = e.status;
                     reponse.message = "Utilisateur non autorisé.";
-
                     this.divprivate.trigger("access_off",reponse);
 
                 });
@@ -69,6 +66,11 @@ class Oauth2 {
     }
 
     setInfosUserOpen = function (val){
+        let that = this;
+        that.divprivate.find("div.infos_user").addClass('hidden');
+        if(val === true){
+            that.divprivate.find("div.infos_user").removeClass('hidden');
+        }
         this.infosusersopen = val;
         return this;
     }
@@ -96,7 +98,6 @@ class Oauth2 {
                             "code": e.responseJSON.code,
                             "message": e.responseJSON.message
                         };
-
                         resolve(result);
                     } else {
                         console.error(e);
@@ -156,7 +157,6 @@ class Oauth2 {
             blocDiv.attr('id', "socialconnect");
             that.divprivate.find("div.message").html(data);
             that.divprivate.append(blocDiv);
-
         });
     }
 
@@ -167,7 +167,6 @@ class Oauth2 {
             blocDiv.attr('id', "logout");
             that.divprivate.find("div.message").html(data);
             that.divprivate.append(blocDiv);
-
         });
     }
 
@@ -175,7 +174,6 @@ class Oauth2 {
         let that = this;
         that.divprivate.off("access_off");
         that.divprivate.on("access_off", function (e, data) {
-
             that.divprivate.find("div.message").removeClass("hidden");
             if(data.code === 403){
                 that.BuildBtLogout(data.message);
@@ -238,6 +236,106 @@ class Oauth2 {
         });
     }
 
+    bindPrivateBtConnect = async function(){
+        let that = this;
+
+        return new Promise(function(resolve,reject) {
+            that.bouton_connect.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                that.loadPrivateDatas().then((result) => {
+                    resolve(result);
+                })
+                    .catch((e) => {
+                        reject(e);
+                    });
+
+            });
+        });
+    }
+
+    //hidden true OR false
+    bindDisplayUserInfos = function() {
+        let that = this;
+        that.divprivate.off("displayUserInfos");
+        that.divprivate.on("displayUserInfos", function (e, params) {
+            if (that.getInfosUserOpen() === false) {
+                that.setInfosUserOpen(true);
+            } else {
+                that.setInfosUserOpen(false);
+            }
+            return false;
+        });
+    }
+
+    loadPrivateDatas = async function(){
+        let that = this;
+        that.setInfosUserOpen(false);
+        return new Promise(function(resolve,reject) {
+
+            let password = that.input_password.val();
+            that.animLogin({"action": "open", "error": false, "message": ""});
+            if (password !== "") {
+
+                let setIdentifiantAppli = that.setIdentifiantAppli();
+
+                let checkPrivateAccess = setIdentifiantAppli.then((result) => {
+                    return that.checkPrivateAccess(result);
+                });
+
+                let displayPrivate = checkPrivateAccess.then((result) => {
+                    return that.displayPrivate(result);
+                });
+
+                let promises = [
+                    setIdentifiantAppli,
+                    checkPrivateAccess,
+                    displayPrivate,
+                ];
+
+                Promise.all(promises)
+                    .then((retour) => {
+
+                        let contenu = retour[retour.length - 1][1];
+                        that.animLogin({
+                            "action": "close",
+                            "error": retour[retour.length - 1][0].error,
+                            "message": retour[retour.length - 1][0].message,
+                            "contenu": contenu
+                        });
+                        resolve(retour);
+                    })
+                    .catch((e) => {
+                        that.animLogin({"action": "close", "error": true, "message": e.responseJSON.message});
+                        reject(e);
+                    });
+
+            } else {
+                let retour = {};
+                retour.error = true;
+                retour.message = "Empty password";
+                that.animLogin({"action": "close", "error": retour.error, "message": retour.message, "contenu": ""});
+                resolve(retour);
+            }
+        });
+    }
+
+    bindPrivateBtUserApiInfo = async function(){
+        let that = this;
+
+        return new Promise(function(resolve,reject) {
+
+            that.bouton_userapi_info.add(that.divprivate.find('table')).click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                that.divprivate.trigger('displayUserInfos');
+            });
+
+            resolve();
+
+        });
+    }
+
     setIdentifiantAppli = async function(){
         let that = this;
         let retour = {};
@@ -256,85 +354,6 @@ class Oauth2 {
                     resolve(e);
                 }
             });
-        });
-    }
-
-    bindPrivateBtConnect = async function(){
-        let that = this;
-
-        return new Promise(function(resolve,reject) {
-            that.bouton_connect.click(function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if(that.getInfosUserOpen() === true) {
-                    that.bouton_userapi_info.trigger('click');
-                }
-                let password = that.input_password.val();
-                that.animLogin({"action":"open", "error":false, "message":""});
-                if (password !== "") {
-
-                    let setIdentifiantAppli = that.setIdentifiantAppli();
-
-                    let checkPrivateAccess = setIdentifiantAppli.then((result) => {
-                        return that.checkPrivateAccess(result);
-                    });
-
-                    let displayPrivate = checkPrivateAccess.then((result) => {
-                        return that.displayPrivate(result);
-                    });
-
-                    let promises = [
-                        setIdentifiantAppli,
-                        checkPrivateAccess,
-                        displayPrivate,
-                    ];
-
-                    Promise.all(promises)
-                        .then((retour) => {
-
-                            let contenu = retour[retour.length - 1][1];
-                            that.animLogin({"action":"close", "error":retour[retour.length - 1][0].error, "message":retour[retour.length - 1][0].message, "contenu":contenu});
-                            resolve(retour);
-                        })
-                        .catch((e) => {
-                            that.animLogin({"action":"close", "error":true, "message":e.responseJSON.message});
-                            reject(e);
-                        });
-
-                } else {
-                    let retour = {};
-                    retour.error = true;
-                    retour.message = "Empty password";
-                    that.animLogin({"action":"close", "error":retour.error, "message":retour.message, "contenu":""});
-                    resolve(retour);
-                }
-
-            });
-        });
-    }
-
-    bindPrivateBtUserApiInfo = async function(){
-        let that = this;
-
-        return new Promise(function(resolve,reject) {
-
-            that.bouton_userapi_info.click(function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                that.divprivate.find("div.infos_user").addClass('hidden');
-                if(that.iSdisplayUserInfos() === true){
-                    that.divprivate.find("div.infos_user").removeClass('hidden');
-                }
-            });
-
-            that.divprivate.find('table').click(function (e) {
-                if(that.getInfosUserOpen() === true) {
-                    that.bouton_userapi_info.trigger('click');
-                }
-            });
-
-            resolve();
-
         });
     }
 
@@ -380,9 +399,7 @@ class Oauth2 {
 
     displayPrivate = async function(access) {
         let that = this;
-
         return new Promise(function(resolve,reject) {
-
             $.ajax({
                 url: Routing.generate("privatedatasaccess"),
                 method: "GET",
@@ -397,16 +414,6 @@ class Oauth2 {
                 }
             });
         });
-    }
-
-    iSdisplayUserInfos = function() {
-        let that = this;
-        if(that.getInfosUserOpen() === false){
-            that.setInfosUserOpen(true);
-        } else {
-            that.setInfosUserOpen(false);
-        }
-        return that.getInfosUserOpen();
     }
 
     animLogin = function(datas){
