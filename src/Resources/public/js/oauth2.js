@@ -266,7 +266,9 @@ class Oauth2 {
             that.bouton_connect.click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                that.bouton_userapi_info.trigger('click');
+                if(that.getInfosUserOpen() === true) {
+                    that.bouton_userapi_info.trigger('click');
+                }
                 let password = that.input_password.val();
                 that.animLogin({"action":"open", "error":false, "message":""});
                 if (password !== "") {
