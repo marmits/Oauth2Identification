@@ -74,14 +74,15 @@ marmitsgoogleidentificationbundle:
   resource: "@MarmitsGoogleIdentificationBundle/Resources/config/packages/routing/"
   type:     directory
 
-_wdt:
-  resource: "@WebProfilerBundle/Resources/config/routing/wdt.xml"
-  prefix:   /_wdt
+when@dev:
+  _wdt:
+    resource: "@WebProfilerBundle/Resources/config/routing/wdt.xml"
+    prefix:   /_wdt
 
-_profiler:
-  resource: "@WebProfilerBundle/Resources/config/routing/profiler.xml"
-  prefix:   /_profiler
-  ```
+  _profiler:
+    resource: "@WebProfilerBundle/Resources/config/routing/profiler.xml"
+    prefix:   /_profiler
+```
 
 ### jsrouting-bundle
 ```
@@ -138,12 +139,13 @@ $ npm install
 TAF NEW
 {
     "devDependencies": {
-        "@babel/core": "^7.17",
-        "@babel/preset-env": "^7.19",
-        "@hotwired/stimulus": "^3.0",
-        "@popperjs/core": "^2.11",
-        "@symfony/stimulus-bridge": "^3.2",
-        "@symfony/webpack-encore": "^4.5"
+        "@babel/core": "^7.17.0",
+        "@babel/preset-env": "^7.19.3",
+        "@fortawesome/fontawesome-free": "^6.5.1",
+        "@hotwired/stimulus": "^3.0.0",
+        "@popperjs/core": "^2.11.6",
+        "@symfony/stimulus-bridge": "^3.2.0",
+        "@symfony/webpack-encore": "^2.1.0"
     },
     "license": "UNLICENSED",
     "private": true,
@@ -154,15 +156,15 @@ TAF NEW
         "build": "encore production --progress"
     },
     "dependencies": {
-        "bootstrap": "^5.2",
-        "core-js": "^3.25",
-        "jquery": "^3.6",
-        "regenerator-runtime": "^0.13",
-        "sass": "^1.55",
-        "sass-loader": "^13.2",
-        "webpack": "^5.74",
-        "webpack-cli": "^4.10",
-        "webpack-notifier": "^1.15"
+        "bootstrap": "^5.2.2",
+        "core-js": "^3.25.5",
+        "jquery": "^3.6.1",
+        "regenerator-runtime": "^0.13.9",
+        "sass": "^1.55.0",
+        "sass-loader": "12.0.0",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^4.10.0",
+        "webpack-notifier": "^1.15.0"
     }
 }
 
