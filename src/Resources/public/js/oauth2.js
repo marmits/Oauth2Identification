@@ -25,8 +25,16 @@ class Oauth2 {
         this.divprivatemessagetext = this.divprivatemessage.find("h4.alert-heading");
         this.bouton_userapi_info = this.divprivate.find("button#private_info");
         this.infosusersopen = false;
+
+        // chargement du div principal
         this.BuildEventToPrivatDiv();
+
+        // chargement tableau infos user api
         this.bindDisplayUserInfos();
+        
+        // charge les informations d'accès dans la sesssion de l'utilisateur
+        // et vérifie que l'utlisateur est en BDD
+        // et déclenche l'évenement acces_on ou access_off
         this.getSaveAccessToken()
         .then((result) => {             
             let reponse = {
@@ -81,61 +89,6 @@ class Oauth2 {
         return this.infosusersopen;
     }
 
-    getSaveAccessToken = async function(){
-        let that = this;
-        return new Promise(function(resolve,reject) {
-            $.ajax({
-                url: Routing.generate("bundlesaveaccesstoken"),
-                method: "GET",
-                beforeSend : function(){
-                    loadingStop($('body'));
-                    loadingStart($("body"), "Loading  ...");
-                },
-                success: function(datas){
-                    resolve(datas);
-                },
-                error: function(e){
-                    if(e.responseJSON.code === 401) {
-                        let result = {
-                            "code": e.responseJSON.code,
-                            "message": e.responseJSON.message
-                        };
-                        resolve(result);
-                    } else {
-                        console.error(e);
-                        return reject("Impossible de charger getSaveAccessToken");
-                    }
-                },
-                complete    : function(){
-                    loadingStop($('body'));
-                }
-            });
-        });
-    }
-
-    getIsValidUser = async function(){
-        let that = this;
-        return new Promise(function(resolve,reject) {
-            $.ajax({
-                url: Routing.generate("isvaliduser"),
-                method: "GET",
-                beforeSend : function(){
-                    loadingStop($('body'));
-                    loadingStart($("body"), "Check is authorized user ...");
-                },
-                success: function(datas){
-                    resolve(datas);
-                },
-                error: function(e){
-                   resolve(e);
-                },
-                complete    : function(){
-                    loadingStop($('body'));
-                }
-            });
-        });
-    }
-
     BuildFormPrivate = async function(event){
         let that = this;
         return new Promise(function(resolve,reject) {
@@ -172,6 +125,9 @@ class Oauth2 {
         });
     }
 
+    /*
+    Gere l'affichage du contenu en fonction de l'évenement acces_on ou access_off
+    */
     BuildEventToPrivatDiv = function(){
         let that = this;
         that.divprivate.off("access_off");
@@ -194,7 +150,7 @@ class Oauth2 {
                 });
 
         });
-
+        that.divprivate.off("access_on");
         that.divprivate.on("access_on", function (e, data) {
             that.divprivate.find("div.infos_user").addClass('hidden');
             that.divprivatemessage.addClass("hidden");
@@ -226,6 +182,9 @@ class Oauth2 {
         });
     }
 
+    /*
+    effet d'affichage si acces ok
+     */
     BuildEventOnPrivateDatasAccess = function(element){
         let that = this;
         let time = 1000;
@@ -238,6 +197,39 @@ class Oauth2 {
         });
     }
 
+
+    /* infos user api hidden true OR false */
+    bindDisplayUserInfos = function() {
+        let that = this;
+        that.divprivate.off("displayUserInfos");
+        that.divprivate.on("displayUserInfos", function (e, params) {
+            if (that.getInfosUserOpen() === false) {
+                that.setInfosUserOpen(true);
+            } else {
+                that.setInfosUserOpen(false);
+            }
+            return false;
+        });
+    }
+
+    // click infos user api
+    bindPrivateBtUserApiInfo = async function(){
+        let that = this;
+
+        return new Promise(function(resolve,reject) {
+
+            that.bouton_userapi_info.add(that.divprivate.find('table')).click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                that.divprivate.trigger('displayUserInfos');
+            });
+
+            resolve();
+
+        });
+    }
+
+    // click connection private datas
     bindPrivateBtConnect = async function(){
         let that = this;
 
@@ -256,20 +248,11 @@ class Oauth2 {
         });
     }
 
-    //hidden true OR false
-    bindDisplayUserInfos = function() {
-        let that = this;
-        that.divprivate.off("displayUserInfos");
-        that.divprivate.on("displayUserInfos", function (e, params) {
-            if (that.getInfosUserOpen() === false) {
-                that.setInfosUserOpen(true);
-            } else {
-                that.setInfosUserOpen(false);
-            }
-            return false;
-        });
-    }
-
+    /*
+     Se connecte avec l'identifiant contenu dans l'acces
+     et le mot de passe renseigné dans le formulaire
+     puis affiche les infos privés
+     */
     loadPrivateDatas = async function(){
         let that = this;
         that.setInfosUserOpen(false);
@@ -297,7 +280,6 @@ class Oauth2 {
 
                 Promise.all(promises)
                     .then((retour) => {
-
                         let contenu = retour[retour.length - 1][1];
                         that.animLogin({
                             "action": "close",
@@ -322,102 +304,7 @@ class Oauth2 {
         });
     }
 
-    bindPrivateBtUserApiInfo = async function(){
-        let that = this;
-
-        return new Promise(function(resolve,reject) {
-
-            that.bouton_userapi_info.add(that.divprivate.find('table')).click(function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                that.divprivate.trigger('displayUserInfos');
-            });
-
-            resolve();
-
-        });
-    }
-
-    setIdentifiantAppli = async function(){
-        let that = this;
-        let retour = {};
-        return new Promise(function(resolve,reject) {
-            $.ajax({
-                url: Routing.generate("setidentifiantappli", {
-
-                }),
-                method: "GET",
-                success: function (datas) {
-                    resolve(datas);
-                },
-                error: function (e) {
-                    retour.error = true;
-                    retour.message = e;
-                    resolve(e);
-                }
-            });
-        });
-    }
-
-    checkPrivateAccess = async function(datasIdentifiant){
-        let that = this;
-        let password = that.input_password.val();
-        let retour = {
-            error:true,
-            message:""
-        };
-
-        return new Promise(function(resolve,reject) {
-            if (password !== "") {
-                if(datasIdentifiant.error === false) {
-                    $.ajax({
-                            url: Routing.generate("checkprivateaccess"),
-                            method: "POST",
-                            data: {
-                                identifiant:datasIdentifiant.identifiant,
-                                password: password
-                            },
-                            success: function (datas) {
-                                retour = datas;
-                                resolve(retour);
-                            },
-                            error: function (e) {
-                                retour.error = true;
-                                retour.message = e;
-                                resolve(e);
-                            }
-                        });
-                } else {
-                    let message = datasIdentifiant.message;
-                    reject(message);
-                }
-            } else {
-                retour.error = true;
-                retour.message = "Empty password";
-                resolve(retour);
-            }
-        });
-    }
-
-    displayPrivate = async function(access) {
-        let that = this;
-        return new Promise(function(resolve,reject) {
-            $.ajax({
-                url: Routing.generate("privatedatasaccess"),
-                method: "GET",
-                success: function (datas) {
-                    let private_datas = [];
-                    private_datas.push(access);
-                    private_datas.push(datas);
-                    resolve(private_datas);
-                },
-                error: function (e) {
-                    reject(e);
-                }
-            });
-        });
-    }
-
+    // Login in progress, please wait...
     animLogin = function(datas){
         let that = this;
 
@@ -458,6 +345,148 @@ class Oauth2 {
             loadingStop($('body'));
         }
     }
+
+    /* user controller */
+    getSaveAccessToken = async function(){
+        let that = this;
+        return new Promise(function(resolve,reject) {
+            $.ajax({
+                url: Routing.generate("bundlesaveaccesstoken"),
+                method: "GET",
+                beforeSend : function(){
+                    loadingStop($('body'));
+                    loadingStart($("body"), "Loading  ...");
+                },
+                success: function(datas){
+                    resolve(datas);
+                },
+                error: function(e){
+                    if(e.responseJSON.code === 401) {
+                        let result = {
+                            "code": e.responseJSON.code,
+                            "message": e.responseJSON.message
+                        };
+                        resolve(result);
+                    } else {
+                        console.error(e);
+                        return reject("Impossible de charger getSaveAccessToken");
+                    }
+                },
+                complete    : function(){
+                    loadingStop($('body'));
+                }
+            });
+        });
+    }
+
+    /* user controller */
+    getIsValidUser = async function(){
+        let that = this;
+        return new Promise(function(resolve,reject) {
+            $.ajax({
+                url: Routing.generate("isvaliduser"),
+                method: "GET",
+                beforeSend : function(){
+                    loadingStop($('body'));
+                    loadingStart($("body"), "Check is authorized user ...");
+                },
+                success: function(datas){
+                    resolve(datas);
+                },
+                error: function(e){
+                    resolve(e);
+                },
+                complete    : function(){
+                    loadingStop($('body'));
+                }
+            });
+        });
+    }
+
+    /* user controller */
+    setIdentifiantAppli = async function(){
+        let that = this;
+        let retour = {};
+        return new Promise(function(resolve,reject) {
+            $.ajax({
+                url: Routing.generate("setidentifiantappli", {
+
+                }),
+                method: "GET",
+                success: function (datas) {
+                    resolve(datas);
+                },
+                error: function (e) {
+                    retour.error = true;
+                    retour.message = e;
+                    resolve(e);
+                }
+            });
+        });
+    }
+
+    /* user controller */
+    checkPrivateAccess = async function(datasIdentifiant){
+        let that = this;
+        let password = that.input_password.val();
+        let retour = {
+            error:true,
+            message:""
+        };
+
+        return new Promise(function(resolve,reject) {
+            if (password !== "") {
+                if(datasIdentifiant.error === false) {
+                    $.ajax({
+                            url: Routing.generate("checkprivateaccess"),
+                            method: "POST",
+                            data: {
+                                identifiant:datasIdentifiant.identifiant,
+                                password: password
+                            },
+                            success: function (datas) {
+                                retour = datas;
+                                resolve(retour);
+                            },
+                            error: function (e) {
+                                retour.error = true;
+                                retour.message = e;
+                                resolve(e);
+                            }
+                        });
+                } else {
+                    let message = datasIdentifiant.message;
+                    reject(message);
+                }
+            } else {
+                retour.error = true;
+                retour.message = "Empty password";
+                resolve(retour);
+            }
+        });
+    }
+
+    /* user controller */
+    displayPrivate = async function(access) {
+        let that = this;
+        return new Promise(function(resolve,reject) {
+            $.ajax({
+                url: Routing.generate("privatedatasaccess"),
+                method: "GET",
+                success: function (datas) {
+                    let private_datas = [];
+                    private_datas.push(access);
+                    private_datas.push(datas);
+                    resolve(private_datas);
+                },
+                error: function (e) {
+                    reject(e);
+                }
+            });
+        });
+    }
+
+
 
 
 }

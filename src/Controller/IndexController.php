@@ -50,7 +50,7 @@ class IndexController extends AbstractController
     }
 
     /**
-     *
+     * Redirection privat route
      * @Route("/bundle_index", name="bundle_index")
      * @param Request $request
      * @return Response
@@ -62,7 +62,8 @@ class IndexController extends AbstractController
 
 
     /**
-     * Renvoi les données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
+     * Rendu des données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
+     * MarmitsGoogleIdentification/private.html.twig
      * @Route("/privat", name="privat")
      * @param Request $request
      * @return Response
@@ -90,6 +91,7 @@ class IndexController extends AbstractController
     }
 
     /**
+     * Redirection bundle_index route
      * Reset Session
      * @Route("/logout", name="logout")
      * @param Request $request

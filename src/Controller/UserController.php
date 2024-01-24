@@ -49,7 +49,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * Renvoi l'utilisateur autorisé son email et l'access renovoyé
+     * Renvoi l'utilisateur autorisé son email et l'access renovoyé stocké dans la session
      * @Route("/bundlesaveaccesstoken", options={"expose"=true}, name="bundlesaveaccesstoken", methods={"GET"})
      * @param Request $request
      * @return JsonResponse

@@ -17,6 +17,7 @@ use Marmits\GoogleIdentification\Providers\GoogleProvider;
 
 
 /**
+ * Processus de demande d'authorisation et acces obtenu
  * protocol Oauth2 Goole et Github
  */
 
