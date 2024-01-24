@@ -5,6 +5,7 @@ namespace Marmits\GoogleIdentification\Controller;
 
 use Exception;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use Marmits\GoogleIdentification\Services\UserApi;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,8 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Marmits\GoogleIdentification\Providers\GoogleProvider;
-use Marmits\GoogleIdentification\Providers\GithubProvider;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\GithubResourceOwner;
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
@@ -31,8 +30,7 @@ class IndexController extends AbstractController
 {
 
 
-    protected GoogleProvider $googleProvider;
-    protected GithubProvider $githubProvider;
+    protected UserApi $userApi;
     protected RequestStack $requestStack;
 
     /**
@@ -41,12 +39,11 @@ class IndexController extends AbstractController
      * @param GoogleProvider $googleProvider
      * @param GithubProvider $githubProvider
      */
-    public function __construct(ContainerInterface $container, RequestStack $requestStack, GoogleProvider $googleProvider, GithubProvider $githubProvider)
+    public function __construct(ContainerInterface $container, RequestStack $requestStack, UserApi $userApi)
     {
         $this->container = $container;
         $this->requestStack = $requestStack;
-        $this->googleProvider = $googleProvider;
-        $this->githubProvider = $githubProvider;
+        $this->userApi = $userApi;
     }
 
     /**
@@ -71,22 +68,7 @@ class IndexController extends AbstractController
      */
     public function private(Request $request): Response
     {
-        $user = [];
-        if($this->requestStack->getSession()->has('access')){
-            $datas_access = $this->requestStack->getSession()->get('access');
-
-            if($this->requestStack->getSession()->has('provider_name')) {
-                switch ($this->requestStack->getSession()->get('provider_name')){
-                    case $this->githubProvider->getName():
-                        $user = $this->githubProvider->fetchUser($datas_access);
-                        break;
-                    case $this->googleProvider->getName():
-                        $user = $this->googleProvider->fetchUser($datas_access);
-                        break;
-                }
-            }
-        }
-
+        $user = $this->userApi->fetch($request);
         return $this->render('@MarmitsGoogleIdentification/private.html.twig', ['user' => $user]);
     }
 
@@ -112,6 +94,11 @@ class IndexController extends AbstractController
 
         return $this->redirectToRoute('bundle_index');
 
+    }
+
+    public function bundleLoged(Request $request): Response
+    {
+       // return $this->render('@MarmitsGoogleIdentification/default.html.twig', ['user' => $user]);
     }
 
 

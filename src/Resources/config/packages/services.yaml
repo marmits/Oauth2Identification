@@ -7,6 +7,13 @@ services:
         '@Doctrine\Persistence\ManagerRegistry',
     ]
 
+  Marmits\GoogleIdentification\Services\UserApi:
+    arguments: [
+      '@Symfony\Component\HttpFoundation\RequestStack',
+      '@Marmits\GoogleIdentification\Providers\GoogleProvider',
+      '@Marmits\GoogleIdentification\Providers\GithubProvider'
+    ]
+
 
   Marmits\GoogleIdentification\Entity\Datas:
 
@@ -14,8 +21,7 @@ services:
     arguments: [
         '@service_container',
         '@Symfony\Component\HttpFoundation\RequestStack',
-        '@Marmits\GoogleIdentification\Providers\GoogleProvider',
-        '@Marmits\GoogleIdentification\Providers\GithubProvider'
+        '@Marmits\GoogleIdentification\Services\UserApi',
     ]
     tags:
       - { name: controller.service_arguments }
