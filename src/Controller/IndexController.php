@@ -36,8 +36,7 @@ class IndexController extends AbstractController
     /**
      * @param ContainerInterface $container
      * @param RequestStack $requestStack
-     * @param GoogleProvider $googleProvider
-     * @param GithubProvider $githubProvider
+     * @param UserApi $userApi
      */
     public function __construct(ContainerInterface $container, RequestStack $requestStack, UserApi $userApi)
     {
@@ -54,23 +53,10 @@ class IndexController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        return $this->redirectToRoute('privat');
+        return $this->redirectToRoute('bundle_private');
     }
 
 
-    /**
-     * Rendu des données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
-     * MarmitsGoogleIdentification/private.html.twig
-     * @Route("/privat", name="privat")
-     * @param Request $request
-     * @return Response
-     * @throws Exception
-     */
-    public function private(Request $request): Response
-    {
-        $user = $this->userApi->fetch($request);
-        return $this->render('@MarmitsGoogleIdentification/private.html.twig', ['user' => $user]);
-    }
 
     /**
      * Redirection bundle_index route
@@ -96,9 +82,37 @@ class IndexController extends AbstractController
 
     }
 
-    public function bundleLoged(Request $request): Response
+    /**
+     * Rendu des données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
+     * MarmitsGoogleIdentification/bundle_private.html.twig
+     * @Route("/bundle_private", name="bundle_private")
+     * @param Request $request
+     * @return Response
+     */
+    public function bundlePrivate(Request $request): Response
     {
-       // return $this->render('@MarmitsGoogleIdentification/default.html.twig', ['user' => $user]);
+        $user = $this->userApi->fetch($request);
+        return $this->render('@MarmitsGoogleIdentification/privateDefault.html.twig', ['user' => $user]);
+    }
+
+    /**
+     * Renvoi l'utilisateur autorisé son email et l'access renovoyé stocké dans la session
+     * @Route("/bundlesaveaccesstoken", options={"expose"=true}, name="bundlesaveaccesstoken", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function saveAccessToken(Request $request): JsonResponse
+    {
+        if($this->requestStack->getSession()->has('access')){
+            return new jsonResponse(
+                [
+                    'code'=> 200, 'message' => 'ok authorisation',
+                    'email' => $this->requestStack->getSession()->get('access')['email'],
+                    'api_user_id' => $this->requestStack->getSession()->get('access')['api_user_id'],
+                    'accesstoken' => $this->requestStack->getSession()->get('access')['accesstoken']
+                ], 200);
+        }
+        return new jsonResponse(['code'=> 401, 'message' => 'Accès interdit'], 401);
     }
 
 

@@ -37,16 +37,6 @@ services:
       - { name: controller.service_arguments }
 
 
-  Marmits\GoogleIdentification\Controller\UserController:
-    arguments: [
-        '@service_container',
-        '@Symfony\Component\HttpFoundation\RequestStack',
-        '@Doctrine\ORM\EntityManagerInterface',
-        '@Marmits\GoogleIdentification\Repository\DatasRepository',
-        '@Marmits\GoogleIdentification\Services\Access',
-    ]
-    tags:
-      - { name: controller.service_arguments }
 
   Marmits\GoogleIdentification\Providers\AbstractProvider:
     arguments:

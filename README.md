@@ -89,6 +89,11 @@ when@dev:
 symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json
 ```
 
+### route principale
+```
+http://localhost/bundle_private
+```
+
 ### Clean nodes modules
 ```
 
@@ -175,8 +180,14 @@ TAF NEW
 ### assets
 ``` 
 add marmits.js => 
-import marmits from '../vendor/marmits/googleidentification/src/Resources/public/js/marmitsgoogle';
-let main = new marmits();
+
+
+import '../vendor/marmits/googleidentification/src/Resources/public/js/marmitsgoogle';
+
+// import JS du bundle => fonctionnement indépendant route :bundle_private
+import Oauth2Lib from "../vendor/marmits/googleidentification/src/Resources/public/js/Oauth2"
+let Oauth2 = new Oauth2Lib();
+
 ``` 
 
 ### webpack.config.js
@@ -184,6 +195,9 @@ let main = new marmits();
 .addEntry('marmits', './assets/marmits.js')
 .autoProvidejQuery()
 .enableSassLoader()
+
+si vhost alias
+.setManifestKeyPrefix(' build/')
 
 ``` 
 - yarn install
@@ -195,7 +209,6 @@ let main = new marmits();
 yarn encore dev
 npm run watch (live)
 ``` 
-
 
 ### Secrets
 Mettre un password dans une variable SODIUM et accessible comme une variable d'environnement.  
