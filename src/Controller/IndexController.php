@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Marmits\GoogleIdentification\Controller;
+namespace Marmits\Oauth2Identification\Controller;
 
 use Exception;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-use Marmits\GoogleIdentification\Services\UserApi;
+use Marmits\Oauth2Identification\Services\UserApi;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,24 +67,14 @@ class IndexController extends AbstractController
      */
     public function logout(Request $request): Response
     {
-        if($this->requestStack->getSession()->has('access')){
-            $this->requestStack->getSession()->remove('access');
-        }
-        if($this->requestStack->getSession()->has('oauth2state')){
-            $this->requestStack->getSession()->remove('oauth2state');
-        }
-        if($this->requestStack->getSession()->has('provider_name')){
-            $this->requestStack->getSession()->remove('provider_name');
-        }
         $this->requestStack->getSession()->clear();
-
         return $this->redirectToRoute('bundle_index');
 
     }
 
     /**
      * Rendu des données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
-     * MarmitsGoogleIdentification/bundle_private.html.twig
+     * MarmitsOauth2Identification/bundle_private.html.twig
      * @Route("/bundle_private", name="bundle_private")
      * @param Request $request
      * @return Response
@@ -92,7 +82,7 @@ class IndexController extends AbstractController
     public function bundlePrivate(Request $request): Response
     {
         $user = $this->userApi->fetch($request);
-        return $this->render('@MarmitsGoogleIdentification/privateDefault.html.twig', ['user' => $user]);
+        return $this->render('@MarmitsOauth2Identification/privateDefault.html.twig', ['user' => $user]);
     }
 
     /**
@@ -103,13 +93,13 @@ class IndexController extends AbstractController
      */
     public function saveAccessToken(Request $request): JsonResponse
     {
-        if($this->requestStack->getSession()->has('access')){
+        if($this->requestStack->getSession()->has('oauth_user_infos')){
             return new jsonResponse(
                 [
                     'code'=> 200, 'message' => 'ok authorisation',
-                    'email' => $this->requestStack->getSession()->get('access')['email'],
-                    'api_user_id' => $this->requestStack->getSession()->get('access')['api_user_id'],
-                    'accesstoken' => $this->requestStack->getSession()->get('access')['accesstoken']
+                    'email' => $this->requestStack->getSession()->get('oauth_user_infos')['email'],
+                    'api_user_id' => $this->requestStack->getSession()->get('oauth_user_infos')['api_user_id'],
+                    'accesstoken' => $this->requestStack->getSession()->get('oauth_user_infos')['accesstoken']
                 ], 200);
         }
         return new jsonResponse(['code'=> 401, 'message' => 'Accès interdit'], 401);

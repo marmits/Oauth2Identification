@@ -1,5 +1,5 @@
 default:
   prefix: /
-  resource: '@MarmitsGoogleIdentificationBundle/Controller'
+  resource: '@MarmitsOauth2IdentificationBundle/Controller'
 
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Marmits\GoogleIdentification\Providers;
+namespace Marmits\Oauth2Identification\Providers;
 
 use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;

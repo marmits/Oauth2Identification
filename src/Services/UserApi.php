@@ -1,9 +1,9 @@
 <?php
 
-namespace Marmits\GoogleIdentification\Services;
+namespace Marmits\Oauth2Identification\Services;
 
-use Marmits\GoogleIdentification\Providers\GithubProvider;
-use Marmits\GoogleIdentification\Providers\GoogleProvider;
+use Marmits\Oauth2Identification\Providers\GithubProvider;
+use Marmits\Oauth2Identification\Providers\GoogleProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -25,8 +25,8 @@ class UserApi
 
     public function fetch(Request $request) : array{
         $user = [];
-        if($this->requestStack->getSession()->has('access')){
-            $datas_access = $this->requestStack->getSession()->get('access');
+        if($this->requestStack->getSession()->has('oauth_user_infos')){
+            $datas_access = $this->requestStack->getSession()->get('oauth_user_infos');
 
             if($this->requestStack->getSession()->has('provider_name')) {
                 switch ($this->requestStack->getSession()->get('provider_name')){

@@ -12,8 +12,8 @@ require('@fortawesome/fontawesome-free/js/all.js');
 class Oauth2 {
     constructor() {
 
-        this.template_social_connect = "bundles/marmitsgoogleidentification/templates/template_social_connect.html";
-        this.template_bt_logout = "bundles/marmitsgoogleidentification/templates/template_bt_logout.html";
+        this.template_social_connect = "bundles/marmitsoauth2identification/templates/template_social_connect.html";
+        this.template_bt_logout = "bundles/marmitsoauth2identification/templates/template_bt_logout.html";
         this.divprivate = $("div.private");
         this.divprivatemessage = this.divprivate.find("div.message");
         this.divprivatemessagetext = this.divprivatemessage.find("h4.alert-heading");

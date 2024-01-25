@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Marmits\GoogleIdentification\DependencyInjection;
+namespace Marmits\Oauth2Identification\DependencyInjection;
 
 use Exception;
 use InvalidArgumentException;
@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  *
  */
-class MarmitsGoogleIdentificationExtension extends Extension implements PrependExtensionInterface
+class MarmitsOauth2IdentificationExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * Allow an extension to prepend the extension configurations.

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Marmits\GoogleIdentification\Services;
+namespace Marmits\Oauth2Identification\Services;
 Use Exception;
 
 /**

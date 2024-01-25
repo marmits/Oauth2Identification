@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Marmits\GoogleIdentification\Controller;
+namespace Marmits\Oauth2Identification\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -12,8 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\GithubResourceOwner;
-use Marmits\GoogleIdentification\Providers\GithubProvider;
-use Marmits\GoogleIdentification\Providers\GoogleProvider;
+use Marmits\Oauth2Identification\Providers\GithubProvider;
+use Marmits\Oauth2Identification\Providers\GoogleProvider;
 
 
 /**
@@ -86,15 +86,17 @@ class OauthController extends AbstractController
         }
         elseif (($request->get('state') === null) || ($this->requestStack->getSession()->has('oauth2state') && $request->get('state') !== $this->requestStack->getSession()->get('oauth2state')))
         {
-
+            
             // State is invalid, possible CSRF attack in progress
             if ($this->requestStack->getSession()->has('oauth2state')) {
                 $this->requestStack->getSession()->remove('oauth2state');
             }
 
-            if ($this->requestStack->getSession()->has('access')) {
-                $this->requestStack->getSession()->remove('access');
+            if ($this->requestStack->getSession()->has('oauth_user_infos')) {
+                $this->requestStack->getSession()->remove('oauth_user_infos');
             }
+
+            $this->requestStack->getSession()->clear();
 
             return new jsonResponse(['message' => 'Invalid state'], 500);
 
@@ -123,7 +125,7 @@ class OauthController extends AbstractController
                         'authorization_code' => $request->get('code'),
                         'client_id' =>  $this->githubProvider->getParams()['githubclient_params']['client_id']
                     ];
-                    $this->requestStack->getSession()->set('access',$access);
+                    $this->requestStack->getSession()->set('oauth_user_infos',$access);
                 }
 
                 header('Location: ' . 'privat');
@@ -181,8 +183,8 @@ class OauthController extends AbstractController
                 $this->requestStack->getSession()->remove('oauth2state');
             }
 
-            if ($this->requestStack->getSession()->has('access')) {
-                $this->requestStack->getSession()->remove('access');
+            if ($this->requestStack->getSession()->has('oauth_user_infos')) {
+                $this->requestStack->getSession()->remove('oauth_user_infos');
             }
 
             return new jsonResponse(['message' => 'Invalid state'], 500);
@@ -209,7 +211,7 @@ class OauthController extends AbstractController
 
                     $access =  [
                         'openidinfos' => $openidinfos,
-                        'ownerDetails' => $ownerDetails,
+                        'ownerDetails' => $ownerDetails->toArray(),
                         'accesstoken' => $accessToken->getToken(),
                         'refreshtoken' => $accessToken->getRefreshToken(),
                         'email' => $ownerDetails->getEmail(),
@@ -218,10 +220,9 @@ class OauthController extends AbstractController
                         'client_id' =>  $this->googleProvider->getParams()['googleclient_params']['client_id']
                     ];
 
-                    $this->requestStack->getSession()->set('access',$access);
+                    $this->requestStack->getSession()->set('oauth_user_infos',$access);
                 }
 
-                
                 header('Location: ' . 'privat');
                 exit;
 
@@ -237,6 +238,7 @@ class OauthController extends AbstractController
      * #################################################################
      */
 
+    /*
     /**
      * Pour TEST
      * @Route("/bundlegetgithubauthentification", name="getgithubauthentification", methods={"GET"})
@@ -244,11 +246,12 @@ class OauthController extends AbstractController
      * @return JsonResponse
      * @throws Exception
      */
+    /*
     public function getGithubAuthentification(Request $request): JsonResponse
     {
 
-        if($this->requestStack->getSession()->has('access')){
-            $datas_access = $this->requestStack->getSession()->get('access');
+        if($this->requestStack->getSession()->has('oauth_user_infos')){
+            $datas_access = $this->requestStack->getSession()->get('oauth_user_infos');
             $datas = $this->githubProvider->fetchAuthentification($datas_access);
             return new jsonResponse(
                 [
@@ -258,5 +261,6 @@ class OauthController extends AbstractController
 
         return new jsonResponse(['code'=> 401, 'message' => 'Invalid Access Token'], 401);
     }
+    */
 
 }

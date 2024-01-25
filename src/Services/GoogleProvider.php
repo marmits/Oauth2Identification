@@ -1,6 +1,6 @@
 <?php
 
-namespace Marmits\GoogleIdentification\Services;
+namespace Marmits\Oauth2Identification\Services;
 use League\OAuth2\Client\Provider\Google;
 
 /**

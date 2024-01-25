@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Marmits\GoogleIdentification\Services;
+namespace Marmits\Oauth2Identification\Services;
 
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 Use Exception;
-use Marmits\GoogleIdentification\Services\Encryption;
+use Marmits\Oauth2Identification\Services\Encryption;
 
 /**
  * GERE LE TRAITEMENT ET LA SECURITE DES CREDENTIALS

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Marmits\GoogleIdentification\Providers;
+namespace Marmits\Oauth2Identification\Providers;
 use Exception;
 use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Token\AccessToken;

@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace Marmits\GoogleIdentification\Services;
+namespace Marmits\Oauth2Identification\Services;
 use League\OAuth2\Client\Provider\Github;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 

@@ -1,6 +1,6 @@
 {
-    "name": "marmits/googleidentification",
-    "description": "Client Google Identification",
+    "name": "marmits/oauth2identification",
+    "description": "Client Tiers Identification",
     "type": "symfony-bundle",
     "license": "MIT",        
     "authors": [
@@ -44,7 +44,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Marmits\\GoogleIdentification\\":  "src/"
+            "Marmits\\Oauth2Identification\\":  "src/"
         }
     }
 }
