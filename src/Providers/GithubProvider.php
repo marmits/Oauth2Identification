@@ -103,4 +103,19 @@ class GithubProvider extends AbstractProvider
 
     }
 
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function fetchGitHubInformation(): array
+    {
+        $response = $this->client->request(
+            'GET',
+            'https://api.github.com/repos/symfony/symfony-docs'
+        );
+
+        return $this->getClientHttpReponse($response);
+    }
+
+
 }

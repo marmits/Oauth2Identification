@@ -29,15 +29,14 @@ class Oauth2 {
         // charge les informations d'accès dans la sesssion de l'utilisateur
         // et vérifie que l'utlisateur est en BDD
         // et déclenche l'évenement acces_on ou access_off
-        this.getSaveAccessToken()
+        this.getUserOauthLogged()
             .then((result) => {
                 let reponse = {
                     "code":null,
                     "message":""
                 };
-                if(result.email !== undefined){
-                    this.userEmail = result.email;
-                    reponse.code = 200;
+                if(result.code === 200){
+                    reponse.code = result.code;
                     reponse.message = "Connected";
                     reponse.result = result;
                     this.divprivate.trigger("access_on", reponse);
@@ -100,12 +99,12 @@ class Oauth2 {
 
     }
 
-    // route qui récupere la session access
-    getSaveAccessToken = async function(){
+    // route qui récupere la session oauth_user_infos avec email, api_user_id, accesstoken
+    getUserOauthLogged = async function(){
         let that = this;
         return new Promise(function(resolve,reject) {
             $.ajax({
-                url: Routing.generate("bundlesaveaccesstoken"),
+                url: Routing.generate("getuseroauthlogged"),
                 method: "GET",
                 beforeSend : function(){
                     loadingStop($('body'));
@@ -123,7 +122,7 @@ class Oauth2 {
                         resolve(result);
                     } else {
                         console.error(e);
-                        return reject("Impossible de charger getSaveAccessToken");
+                        return reject("Impossible de charger getUserOauthLogged");
                     }
                 },
                 complete    : function(){
