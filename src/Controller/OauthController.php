@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-use League\OAuth2\Client\Provider\GoogleUser;
-use League\OAuth2\Client\Provider\GithubResourceOwner;
 use Marmits\Oauth2Identification\Providers\AccessTokenProcess;
 
 
@@ -22,7 +20,7 @@ use Marmits\Oauth2Identification\Providers\AccessTokenProcess;
 
 class OauthController extends AbstractController
 {
-    private RequestStack $requestStack;
+
     private AccessTokenProcess $accessTokenProcess;
 
     /**

@@ -8,7 +8,8 @@ services:
     arguments: [
       '@Symfony\Component\HttpFoundation\RequestStack',
       '@Marmits\Oauth2Identification\Providers\GoogleProvider',
-      '@Marmits\Oauth2Identification\Providers\GithubProvider'
+      '@Marmits\Oauth2Identification\Providers\GithubProvider',
+      '@Marmits\Oauth2Identification\Services\Encryption'
     ]
 
 
@@ -61,10 +62,6 @@ services:
       - '@Symfony\Contracts\HttpClient\HttpClientInterface'
       - githubclient_params: '%github_client%'
 
-  Marmits\Oauth2Identification\Services\Access:
-    arguments:
-      - private_params: '%private_access%'
-      - '@Marmits\Oauth2Identification\Services\Encryption'
 
   Marmits\Oauth2Identification\Services\Encryption:
     arguments:

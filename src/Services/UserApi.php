@@ -4,6 +4,7 @@ namespace Marmits\Oauth2Identification\Services;
 
 use Exception;
 use Marmits\Oauth2Identification\Providers\GithubProvider;
+use Marmits\Oauth2Identification\Services\Encryption;
 use Marmits\Oauth2Identification\Providers\GoogleProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -14,18 +15,23 @@ class UserApi
     protected GoogleProvider $googleProvider;
     protected GithubProvider $githubProvider;
     protected RequestStack $requestStack;
+    public Encryption $encryption;
 
 
     public function __construct(
         RequestStack $requestStack,
         GoogleProvider $googleProvider,
-        GithubProvider $githubProvider
+        GithubProvider $githubProvider,
+        Encryption $encryption
     )
     {
         $this->requestStack = $requestStack;
         $this->googleProvider = $googleProvider;
         $this->githubProvider = $githubProvider;
+        $this->encryption = $encryption;
     }
+
+
 
     /**
      * @param string $providerName
@@ -40,7 +46,7 @@ class UserApi
      */
     public function getProvideName(): string
     {
-        return $this->provideName;
+        return $this->requestStack->getSession()->get('provider_name');
     }
 
 
@@ -49,7 +55,7 @@ class UserApi
      * @return void
      */
     public function setOauthUserIdentifiants($access) : void{
-        $this->requestStack->getSession()->set('oauth_user_infos',$access);
+        $this->requestStack->getSession()->set('oauth_user_infos',$this->encryption->encrypt(json_encode($access)));
     }
 
 
@@ -58,10 +64,10 @@ class UserApi
      */
     public function getOauthUserIdentifiants(): array{
         if($this->requestStack->getSession()->has('oauth_user_infos')) {
+            $oauth_user_infos = json_decode($this->encryption->decrypt($this->requestStack->getSession()->get('oauth_user_infos')), true);
             return [
-                'email' => $this->requestStack->getSession()->get('oauth_user_infos')['email'],
-                'api_user_id' => $this->requestStack->getSession()->get('oauth_user_infos')['api_user_id'],
-                'accesstoken' => $this->requestStack->getSession()->get('oauth_user_infos')['accesstoken']
+                'email' => $oauth_user_infos['email'],
+                'api_user_id' => $oauth_user_infos['api_user_id']
             ];
         }
         return [];
@@ -75,7 +81,7 @@ class UserApi
     public function fetch(Request $request) : array{
         $user = [];
         if($this->requestStack->getSession()->has('oauth_user_infos')){
-            $datas_access = $this->requestStack->getSession()->get('oauth_user_infos');
+            $datas_access = json_decode($this->encryption->decrypt($this->requestStack->getSession()->get('oauth_user_infos')), true);
             if($this->requestStack->getSession()->has('provider_name')) {
                 switch ($this->requestStack->getSession()->get('provider_name')){
                     case $this->githubProvider->getName():

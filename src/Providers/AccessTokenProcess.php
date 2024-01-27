@@ -111,9 +111,7 @@ class AccessTokenProcess
                         'accesstoken' => $accessToken->getToken(),
                         'refreshtoken' => $accessToken->getRefreshToken(),
                         'email' => $ownerDetails->getEmail(),
-                        'api_user_id' => $ownerDetails->getId(),
-                        'authorization_code' => $request->get('code'),
-                        'client_id' =>  $this->githubProvider->getParams()['githubclient_params']['client_id']
+                        'api_user_id' => $ownerDetails->getId()
                     ];
                     $this->userApi->setOauthUserIdentifiants($access);
                 }
@@ -167,9 +165,7 @@ class AccessTokenProcess
                         'accesstoken' => $accessToken->getToken(),
                         'refreshtoken' => $accessToken->getRefreshToken(),
                         'email' => $ownerDetails->getEmail(),
-                        'api_user_id' => $ownerDetails->getId(),
-                        'authorization_code' => $request->get('code'),
-                        'client_id' =>  $this->googleProvider->getParams()['googleclient_params']['client_id']
+                        'api_user_id' => $ownerDetails->getId()
                     ];
                     $this->userApi->setOauthUserIdentifiants($access);
                 }
