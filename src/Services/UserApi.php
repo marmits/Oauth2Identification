@@ -6,7 +6,6 @@ use Exception;
 use Marmits\Oauth2Identification\Providers\GithubProvider;
 use Marmits\Oauth2Identification\Services\Encryption;
 use Marmits\Oauth2Identification\Providers\GoogleProvider;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserApi
@@ -74,11 +73,10 @@ class UserApi
     }
 
     /**
-     * @param Request $request
      * @return array
      * @throws Exception
      */
-    public function fetch(Request $request) : array{
+    public function fetch() : array{
         $user = [];
         if($this->requestStack->getSession()->has('oauth_user_infos')){
             $datas_access = json_decode($this->encryption->decrypt($this->requestStack->getSession()->get('oauth_user_infos')), true);
@@ -100,6 +98,7 @@ class UserApi
      * @return void
      */
     public function killSession(): void{
+        //dd($this->requestStack->getSession()->all());
         $this->requestStack->getSession()->clear();
     }
 
