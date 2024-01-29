@@ -20,7 +20,10 @@ class GithubProvider extends AbstractProvider
      * @param HttpClientInterface $client
      * @param array $githubclient_params
      */
-    public function __construct(HttpClientInterface $client, array $githubclient_params)
+    public function __construct(
+        HttpClientInterface $client, 
+        array $githubclient_params
+    )
     {
         parent::__construct($client);
         $this->params = $githubclient_params;

@@ -98,8 +98,6 @@ class UserApi
      * @return void
      */
     public function killSession(): void{
-        error_log( print_r($this->requestStack->getSession()->all(), TRUE) );
-
         $this->requestStack->getSession()->clear();
     }
 

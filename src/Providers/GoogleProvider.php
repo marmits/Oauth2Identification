@@ -21,7 +21,10 @@ class GoogleProvider extends AbstractProvider
      * @param HttpClientInterface $client
      * @param array $googleclient_params
      */
-    public function __construct(HttpClientInterface $client, array $googleclient_params)
+    public function __construct(
+        HttpClientInterface $client,
+        array $googleclient_params
+    )
     {
         parent::__construct($client);
         $this->params = $googleclient_params;
