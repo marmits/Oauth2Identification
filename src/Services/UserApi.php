@@ -1,10 +1,9 @@
 <?php
-
+declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Services;
 
 use Exception;
 use Marmits\Oauth2Identification\Providers\GithubProvider;
-use Marmits\Oauth2Identification\Services\Encryption;
 use Marmits\Oauth2Identification\Providers\GoogleProvider;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -60,6 +59,7 @@ class UserApi
 
     /**
      * @return array
+     * @throws Exception
      */
     public function getOauthUserIdentifiants(): array{
         if($this->requestStack->getSession()->has('oauth_user_infos')) {
@@ -98,7 +98,8 @@ class UserApi
      * @return void
      */
     public function killSession(): void{
-        //dd($this->requestStack->getSession()->all());
+        error_log( print_r($this->requestStack->getSession()->all(), TRUE) );
+
         $this->requestStack->getSession()->clear();
     }
 

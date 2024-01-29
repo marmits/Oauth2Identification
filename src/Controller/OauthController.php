@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Controller;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -80,6 +81,7 @@ class OauthController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      * @throws IdentityProviderException
+     * @throws Exception
      */
     public function getaccesstokenGoogle(Request $request): JsonResponse
     {
