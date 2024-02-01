@@ -11,6 +11,7 @@ use League\OAuth2\Client\Provider\GithubResourceOwner;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
@@ -46,7 +47,7 @@ class AccessTokenProcess
      * @param Request $request
      * @return Response
      */
-    public function githubgetauthorize(Request $request): Response
+    public function githubgetauthorize(): Response
     {
         $authorizationUrl =  $this->githubProvider->getInstance()->getAuthorizationUrl();
         header('Location: ' . $authorizationUrl);
@@ -59,7 +60,7 @@ class AccessTokenProcess
      * @param Request $request
      * @return Response
      */
-    public function googlegetauthorize(Request $request): Response
+    public function googlegetauthorize(): Response
     {
         $authorizationUrl =  $this->googleProvider->getInstance()->getAuthorizationUrl();
         header('Location: ' . $authorizationUrl);
@@ -70,6 +71,7 @@ class AccessTokenProcess
     /**
      * @param Request $request
      * @return JsonResponse
+     * @throws IdentityProviderException
      */
     public function getaccesstokenGithub(Request $request): JsonResponse
     {
