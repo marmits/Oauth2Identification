@@ -5,45 +5,31 @@ namespace Marmits\Oauth2Identification\Providers;
 use Exception;
 use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Token\AccessToken;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use League\OAuth2\Client\Provider\GoogleUser;
+
 /**
  *
  */
 class GoogleProvider extends AbstractProvider
 {
-    private  $name = 'google';
-    protected  $params;
+    public const PROVIDER_NAME = 'google';
 
 
     /**
      * @param HttpClientInterface $client
-     * @param array $googleclient_params
+     * @param array $params
      */
     public function __construct(
         HttpClientInterface $client,
-        array $googleclient_params
+        array $params
     )
     {
         parent::__construct($client);
-        $this->params = $googleclient_params;
+        $this->setName(self::PROVIDER_NAME);
+        $this->setParams($params['params']);
     }
 
-    /**
-     * @return array
-     */
-    public function getParams(): array
-    {
-        return $this->params;
-    }
 
-    /**
-     * @return string
-     */
-    public function getName(): string{
-        return $this->name;
-    }
 
     /**
      * @return Google
@@ -52,13 +38,13 @@ class GoogleProvider extends AbstractProvider
     {
 
         $params = [
-            'clientId'     => $this->params['googleclient_params']['client_id'],
-            'clientSecret' => $this->params['googleclient_params']['client_secret'],
-            'redirectUri'  => $this->params['googleclient_params']['redirect_uris'],
+            'clientId'     => $this->getParams()['client_id'],
+            'clientSecret' => $this->getParams()['client_secret'],
+            'redirectUri'  => $this->getParams()['redirect_uris'],
             'scope' => ['https://www.googleapis.com/auth/userinfo.profile']
         ];
-        if($this->params['googleclient_params']['google_origins'] !== ''){
-            $params['hostedDomain'] = $this->params['googleclient_params']['google_origins'];
+        if($this->getParams()['google_origins'] !== ''){
+            $params['hostedDomain'] = $this->getParams()['google_origins'];
         }
 
         return new Google($params);

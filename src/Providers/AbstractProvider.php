@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Providers;
 
 use Exception;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -13,8 +15,9 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 abstract class AbstractProvider
 {
-
-    protected $client;
+    private string $name = '';
+    private array $params;
+    protected HttpClientInterface $client;
 
     /**
      * @param HttpClientInterface $client
@@ -24,10 +27,47 @@ abstract class AbstractProvider
         $this->client = $client;
     }
 
+
+    /**
+     * @param string $name
+     * @return AbstractProvider
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getName(): string{
+        return $this->name;
+    }
+
+    /**
+     * @param array $params
+     * @return AbstractProvider
+     */
+    public function setParams(array $params): self
+    {
+        $this->params = $params;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+
     /**
      * @param ResponseInterface $response
      * @return array
      * @throws Exception
+     * @throws TransportExceptionInterface|DecodingExceptionInterface
      */
     public function getClientHttpReponse(ResponseInterface $response): array{
         $statusCode = $response->getStatusCode();
@@ -46,13 +86,13 @@ abstract class AbstractProvider
         if ($statusCode >= 500 && $statusCode <= 599) {
             throw new Exception($content, $statusCode);
         }
-        $content = 'vide';
-        if($response->getContent() !== null){
-            $content = $response->getContent();
-        }
-        $contentType = $response->getHeaders()['content-type'][0];
 
-        return $response->toArray();
+        if($response->getContent() !== null){
+            return $response->toArray();
+        }
+
+        return [];
+
     }
 
     /**

@@ -55,12 +55,12 @@ services:
   Marmits\Oauth2Identification\Providers\GoogleProvider:
     arguments:
       - '@Symfony\Contracts\HttpClient\HttpClientInterface'
-      - googleclient_params: '%google_client%'
+      - params: '%google_client%'
 
   Marmits\Oauth2Identification\Providers\GithubProvider:
     arguments:
       - '@Symfony\Contracts\HttpClient\HttpClientInterface'
-      - githubclient_params: '%github_client%'
+      - params: '%github_client%'
 
 
   Marmits\Oauth2Identification\Services\Encryption:

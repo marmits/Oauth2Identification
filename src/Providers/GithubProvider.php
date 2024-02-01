@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Providers;
 use Exception;
 use League\OAuth2\Client\Provider\Github;
-use Symfony\Component\HttpClient\Response\AsyncResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  *
@@ -12,34 +11,25 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class GithubProvider extends AbstractProvider
 {
 
-    private $name = 'github';
-    protected $params;
+    public const PROVIDER_NAME = 'github';
 
 
     /**
      * @param HttpClientInterface $client
-     * @param array $githubclient_params
+     * @param array $params
      */
     public function __construct(
         HttpClientInterface $client, 
-        array $githubclient_params
+        array $params
     )
     {
         parent::__construct($client);
-        $this->params = $githubclient_params;
+        $this->setName(self::PROVIDER_NAME);
+        $this->setParams($params['params']);
+
     }
 
-    /**
-     * @return array
-     */
-    public function getParams(): array
-    {
-        return $this->params;
-    }
 
-    public function getName(): string{
-        return $this->name;
-    }
 
     /**
      * @return Github
@@ -48,9 +38,9 @@ class GithubProvider extends AbstractProvider
     {
 
         return new Github([
-            'clientId'          => $this->params['githubclient_params']['client_id'],
-            'clientSecret'      => $this->params['githubclient_params']['client_secret'],
-            'redirectUri'       => $this->params['githubclient_params']['redirect_uris'],
+            'clientId'          => $this->getParams()['client_id'],
+            'clientSecret'      => $this->getParams()['client_secret'],
+            'redirectUri'       => $this->getParams()['redirect_uris'],
         ]);
 
     }
