@@ -5,27 +5,33 @@ namespace Marmits\Oauth2Identification\Services;
 use Exception;
 use Marmits\Oauth2Identification\Providers\GithubProvider;
 use Marmits\Oauth2Identification\Providers\GoogleProvider;
+use Marmits\Oauth2Identification\Providers\ProviderService;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/**
+ *
+ */
 class UserApi
 {
 
-    protected GoogleProvider $googleProvider;
-    protected GithubProvider $githubProvider;
+    private ProviderService $providerService;
     protected RequestStack $requestStack;
     public Encryption $encryption;
 
 
+    /**
+     * @param RequestStack $requestStack
+     * @param ProviderService $providerService
+     * @param Encryption $encryption
+     */
     public function __construct(
         RequestStack $requestStack,
-        GoogleProvider $googleProvider,
-        GithubProvider $githubProvider,
+        ProviderService $providerService,
         Encryption $encryption
     )
     {
         $this->requestStack = $requestStack;
-        $this->googleProvider = $googleProvider;
-        $this->githubProvider = $githubProvider;
+        $this->providerService = $providerService;
         $this->encryption = $encryption;
     }
 
@@ -81,14 +87,8 @@ class UserApi
         if($this->requestStack->getSession()->has('oauth_user_infos')){
             $datas_access = json_decode($this->encryption->decrypt($this->requestStack->getSession()->get('oauth_user_infos')), true);
             if($this->requestStack->getSession()->has('provider_name')) {
-                switch ($this->requestStack->getSession()->get('provider_name')){
-                    case $this->githubProvider->getName():
-                        $user = $this->githubProvider->fetchUser($datas_access);
-                        break;
-                    case $this->googleProvider->getName():
-                        $user = $this->googleProvider->fetchUser($datas_access);
-                        break;
-                }
+                $provider = $this->providerService->execute($this->requestStack->getSession()->get('provider_name'));
+                $user = $provider->fetchUser($datas_access);
             }
         }
         return $user;

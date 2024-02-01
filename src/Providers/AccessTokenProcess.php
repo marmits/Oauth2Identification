@@ -12,6 +12,7 @@ use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 
 /**
@@ -44,7 +45,6 @@ class AccessTokenProcess
     }
 
     /**
-     * @param Request $request
      * @return Response
      */
     public function githubgetauthorize(): Response
@@ -57,7 +57,6 @@ class AccessTokenProcess
     /**
      * Demande d'autorisation a google
      * @Route("/google_authorize", name="google_authorize")
-     * @param Request $request
      * @return Response
      */
     public function googlegetauthorize(): Response
@@ -173,7 +172,7 @@ class AccessTokenProcess
                 }
                 header('Location: ' . 'privat');
                 exit;
-            } catch (IdentityProviderException $e) {
+            } catch (Exception|TransportExceptionInterface $e) {
                 // Failed to get user details
                 exit('Something went wrong: ' . $e->getMessage());
             }

@@ -2,13 +2,32 @@ services:
 
   Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
+  _instanceof:
+    Marmits\Oauth2Identification\Providers\ProviderInterface:
+      tags: [ 'marmits.oauth_provider' ]
 
+  Marmits\Oauth2Identification\Providers\ProviderService:
+    arguments:
+      - !tagged_iterator marmits.oauth_provider
+
+  Marmits\Oauth2Identification\Providers\AbstractProvider:
+    arguments:
+      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
+
+  Marmits\Oauth2Identification\Providers\GoogleProvider:
+    arguments:
+      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
+      - params: '%google_client%'
+
+  Marmits\Oauth2Identification\Providers\GithubProvider:
+    arguments:
+      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
+      - params: '%github_client%'
 
   Marmits\Oauth2Identification\Services\UserApi:
     arguments: [
       '@Symfony\Component\HttpFoundation\RequestStack',
-      '@Marmits\Oauth2Identification\Providers\GoogleProvider',
-      '@Marmits\Oauth2Identification\Providers\GithubProvider',
+      '@Marmits\Oauth2Identification\Providers\ProviderService',
       '@Marmits\Oauth2Identification\Services\Encryption'
     ]
 
@@ -48,19 +67,9 @@ services:
     ]
 
 
-  Marmits\Oauth2Identification\Providers\AbstractProvider:
-    arguments:
-      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
 
-  Marmits\Oauth2Identification\Providers\GoogleProvider:
-    arguments:
-      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
-      - params: '%google_client%'
 
-  Marmits\Oauth2Identification\Providers\GithubProvider:
-    arguments:
-      - '@Symfony\Contracts\HttpClient\HttpClientInterface'
-      - params: '%github_client%'
+
 
 
   Marmits\Oauth2Identification\Services\Encryption:

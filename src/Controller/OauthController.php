@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Marmits\Oauth2Identification\Providers\AccessTokenProcess;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 
 /**
@@ -43,12 +44,11 @@ class OauthController extends AbstractController
     /**
      * Demande d'autorisation a github
      * @Route("/github_authorize", name="github_authorize")
-     * @param Request $request
      * @return Response
      */
-    public function githubgetauthorize(Request $request): Response
+    public function githubgetauthorize(): Response
     {
-        return $this->accessTokenProcess->githubgetauthorize($request);
+        return $this->accessTokenProcess->githubgetauthorize();
     }
 
     /**
@@ -67,12 +67,11 @@ class OauthController extends AbstractController
     /**
      * Demande d'autorisation a google
      * @Route("/google_authorize", name="google_authorize")
-     * @param Request $request
      * @return Response
      */
-    public function googlegetauthorize(Request $request): Response
+    public function googlegetauthorize(): Response
     {
-        return $this->accessTokenProcess->googlegetauthorize($request);
+        return $this->accessTokenProcess->googlegetauthorize();
     }
 
     /**
@@ -80,8 +79,8 @@ class OauthController extends AbstractController
      * @Route("/getaccesstokengoogle", name="getaccesstokengoogle")
      * @param Request $request
      * @return JsonResponse
-     * @throws IdentityProviderException
      * @throws Exception
+     * @throws TransportExceptionInterface
      */
     public function getaccesstokenGoogle(Request $request): JsonResponse
     {

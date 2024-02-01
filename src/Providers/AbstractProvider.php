@@ -27,6 +27,12 @@ abstract class AbstractProvider
         $this->client = $client;
     }
 
+    /**
+     * @param $datas_access
+     * @return array
+     */
+    abstract public function fetchUser($datas_access): array;
+
 
     /**
      * @param string $name

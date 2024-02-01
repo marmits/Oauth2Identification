@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Providers;
 use Exception;
 use League\OAuth2\Client\Provider\Github;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  *
  */
-class GithubProvider extends AbstractProvider
+class GithubProvider extends AbstractProvider implements ProviderInterface
 {
 
     public const PROVIDER_NAME = 'github';
@@ -27,6 +29,16 @@ class GithubProvider extends AbstractProvider
         $this->setName(self::PROVIDER_NAME);
         $this->setParams($params['params']);
 
+    }
+
+    public function supports(string $type): bool
+    {
+        return self::PROVIDER_NAME === $type;
+    }
+
+    public function build(): AbstractProvider
+    {
+        return $this;
     }
 
 
@@ -49,7 +61,7 @@ class GithubProvider extends AbstractProvider
     /**
      * @param $datas_access
      * @return array
-     * @throws Exception
+     * @throws Exception|TransportExceptionInterface
      */
     public function fetchUser($datas_access): array
     {
@@ -66,14 +78,18 @@ class GithubProvider extends AbstractProvider
             'https://api.github.com/user'
         );
 
-        return $this->formatOutPout($this->getClientHttpReponse($response));
+        try {
+            return $this->formatOutPout($this->getClientHttpReponse($response));
+        } catch (DecodingExceptionInterface|TransportExceptionInterface $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
      * TEST
      * @param $accestoken
      * @return array
-     * @throws Exception
+     * @throws Exception|TransportExceptionInterface
      */
     public function fetchAuthentification($accestoken): array
     {
@@ -92,13 +108,17 @@ class GithubProvider extends AbstractProvider
             'https://api.github.com/users/marmits/installation',// doit être dans le scope de l'application
         );
 
-        return $this->getClientHttpReponse($response);
+        try {
+            return $this->getClientHttpReponse($response);
+        } catch (DecodingExceptionInterface|TransportExceptionInterface $e) {
+            throw new Exception($e->getMessage());
+        }
 
     }
 
     /**
      * @return array
-     * @throws Exception
+     * @throws Exception|TransportExceptionInterface
      */
     public function fetchGitHubInformation(): array
     {
@@ -107,8 +127,13 @@ class GithubProvider extends AbstractProvider
             'https://api.github.com/repos/symfony/symfony-docs'
         );
 
-        return $this->getClientHttpReponse($response);
+        try {
+            return $this->getClientHttpReponse($response);
+        } catch (DecodingExceptionInterface|TransportExceptionInterface $e) {
+            throw new Exception($e->getMessage());
+        }
     }
+
 
 
 }

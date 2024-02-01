@@ -5,12 +5,14 @@ namespace Marmits\Oauth2Identification\Providers;
 use Exception;
 use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Token\AccessToken;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  *
  */
-class GoogleProvider extends AbstractProvider
+class GoogleProvider extends AbstractProvider  implements ProviderInterface
 {
     public const PROVIDER_NAME = 'google';
 
@@ -27,6 +29,16 @@ class GoogleProvider extends AbstractProvider
         parent::__construct($client);
         $this->setName(self::PROVIDER_NAME);
         $this->setParams($params['params']);
+    }
+
+    public function supports(string $type): bool
+    {
+        return self::PROVIDER_NAME === $type;
+    }
+
+    public function build(): AbstractProvider
+    {
+        return $this;
     }
 
 
@@ -55,7 +67,7 @@ class GoogleProvider extends AbstractProvider
     /**
      * @param $datas_access
      * @return array
-     * @throws Exception
+     * @throws Exception|TransportExceptionInterface
      */
     public function fetchUser($datas_access): array
     {
@@ -71,11 +83,14 @@ class GoogleProvider extends AbstractProvider
             'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='.$datas_access['accesstoken']
         );
 
-
-        if(array_key_exists('openidinfos',$datas_access)){
-            return array_merge($this->getClientHttpReponse($response), $datas_access['openidinfos']);
+        try {
+            if(array_key_exists('openidinfos',$datas_access)){
+                return array_merge($this->getClientHttpReponse($response), $datas_access['openidinfos']);
+            }
+            return $this->getClientHttpReponse($response);
+        } catch (DecodingExceptionInterface|TransportExceptionInterface $e) {
+            throw new Exception($e->getMessage());
         }
-        return $this->getClientHttpReponse($response);
 
     }
 
@@ -83,6 +98,7 @@ class GoogleProvider extends AbstractProvider
      * @param $datas_access
      * @return array
      * @throws Exception
+     * @throws TransportExceptionInterface
      */
     public function fetchOpenIdInfos($datas_access): array
     {
@@ -110,9 +126,11 @@ class GoogleProvider extends AbstractProvider
                 'GET',
                 $openidInfo
             );
-
-            return array_merge($this->getClientHttpReponse($response), $options);
-
+            try {
+                return array_merge($this->getClientHttpReponse($response), $options);
+            } catch (DecodingExceptionInterface|TransportExceptionInterface $e) {
+                throw new Exception($e->getMessage());
+            }
         }
         return [];
 
