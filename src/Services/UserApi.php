@@ -35,27 +35,6 @@ class UserApi
     }
 
     /**
-     * @param string $providerName
-     */
-    public function setProviderName(string $providerName): void
-    {
-        $this->requestStack->getSession()->set('provider_name', $providerName);
-    }
-
-    /**
-     * @return string
-     * @throws Exception
-     */
-    public function getProviderName(): string
-    {
-        if($this->requestStack->getSession()->has('provider_name')) {
-            return $this->requestStack->getSession()->get('provider_name');
-        }
-        return '';
-
-    }
-
-    /**
      * @param $access
      * @return void
      */
