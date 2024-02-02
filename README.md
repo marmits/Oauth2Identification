@@ -162,7 +162,3 @@ npm run watch (live)
 ``` 
 
 
-
-### UPDATE
-
-[changelog](https://github.com/marmits/Oauth2Identification/blob/main/CHANGELOG.md)
