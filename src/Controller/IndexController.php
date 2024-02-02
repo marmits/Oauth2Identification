@@ -23,7 +23,6 @@ use Marmits\Oauth2Identification\Services\UserApi;
 class IndexController extends AbstractController
 {
 
-
     protected UserApi $userApi;
     protected RequestStack $requestStack;
 
@@ -58,10 +57,9 @@ class IndexController extends AbstractController
      * Redirection bundle_index route
      * Reset Session
      * @Route("/logout", name="logout")
-     * @param Request $request
      * @return Response
      */
-    public function logout(Request $request): Response
+    public function logout(): Response
     {
         $this->userApi->killSession();
         return $this->redirectToRoute('bundle_index');
@@ -71,12 +69,12 @@ class IndexController extends AbstractController
      * Rendu des données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
      * MarmitsOauth2Identification/bundle_private.html.twig
      * @Route("/bundle_private", name="bundle_private")
-     * @param Request $request
      * @return Response
+     * @throws Exception
      */
-    public function bundlePrivate(Request $request): Response
+    public function bundlePrivate(): Response
     {
-        $user = $this->userApi->fetch($request);
+        $user = $this->userApi->fetch();
         return $this->render('@MarmitsOauth2Identification/privateDefault.html.twig', ['user' => $user]);
     }
 

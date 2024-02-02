@@ -3,10 +3,20 @@ declare(strict_types=1);
 
 namespace Marmits\Oauth2Identification\Providers;
 use Exception;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\Github;
+use League\OAuth2\Client\Provider\GithubResourceOwner;
+use League\OAuth2\Client\Provider\AbstractProvider as LeagueProvider;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Marmits\Oauth2Identification\Services\UserApi;
+
+
 /**
  *
  */
@@ -14,18 +24,25 @@ class GithubProvider extends AbstractProvider implements ProviderInterface
 {
 
     public const PROVIDER_NAME = 'github';
-
+    private RequestStack $requestStack;
+    private UserApi $userApi;
 
     /**
+     * @param RequestStack $requestStack
+     * @param UserApi $userApi
      * @param HttpClientInterface $client
      * @param array $params
      */
     public function __construct(
+        RequestStack $requestStack,
+        UserApi $userApi,
         HttpClientInterface $client, 
         array $params
     )
     {
         parent::__construct($client);
+        $this->requestStack = $requestStack;
+        $this->userApi = $userApi;
         $this->setName(self::PROVIDER_NAME);
         $this->setParams($params['params']);
 
@@ -41,12 +58,81 @@ class GithubProvider extends AbstractProvider implements ProviderInterface
         return $this;
     }
 
-
+    /**
+     * @return Response
+     */
+    public function getauthorize(): Response
+    {
+        $authorizationUrl =  $this->getInstance()->getAuthorizationUrl();
+        header('Location: ' . $authorizationUrl);
+        exit;
+    }
 
     /**
-     * @return Github
+     * @param Request $request
+     * @return JsonResponse
+     * @throws IdentityProviderException
      */
-    public function getInstance(): Github
+    public function getaccesstoken(Request $request): JsonResponse
+    {
+        $this->userApi->setProviderName($this->getName());
+        if ($request->get('code') === null)
+        {
+            $options = [
+                'state' => 'OPTIONAL_CUSTOM_CONFIGURED_STATE',
+                'scope' => ['user','user:email']
+            ];
+            $authorizationUrl = $this->getInstance()->getAuthorizationUrl($options);
+            // If we don't have an authorization code then get one
+            $this->requestStack->getSession()->set('oauth2state', $this->getInstance()->getState());
+            header('Location: ' . $authorizationUrl);
+            exit;
+
+        }
+        elseif (($request->get('state') === null)
+            || (
+                $this->requestStack->getSession()->has('oauth2state') && $request->get('state') !== $this->requestStack->getSession()->get('oauth2state')
+            ))
+        {
+            // State is invalid, possible CSRF attack in progress
+            $this->userApi->killSession();
+            return new jsonResponse(['message' => 'Invalid state'], 500);
+        }
+        else
+        {
+            // Try to get an access token (using the authorization code grant)
+            $accessToken = $this->getInstance()->getAccessToken('authorization_code', [
+                'code' => $request->get('code'),
+                'provider' => 'github'
+            ]);
+            // Optional: Now you have a token you can look up a users profile data
+            try {
+                // We got an access token, let's now get the owner details
+                $ownerDetails = $this->getInstance()->getResourceOwner($accessToken);
+                if ($ownerDetails instanceof GithubResourceOwner) {
+                    $access = [
+                        'ownerDetails' => $ownerDetails,
+                        'accesstoken' => $accessToken->getToken(),
+                        'refreshtoken' => $accessToken->getRefreshToken(),
+                        'email' => $ownerDetails->getEmail(),
+                        'api_user_id' => $ownerDetails->getId()
+                    ];
+                    $this->userApi->setOauthUserIdentifiants($access);
+                }
+                header('Location: ' . 'privat');
+                exit;
+            } catch (Exception|TransportExceptionInterface $e) {
+                // Failed to get user details
+                exit('Something went wrong: ' . $e->getMessage());
+            }
+        }
+    }
+
+    /**
+     * League\OAuth2\Client\Provider\Github
+     * @return LeagueProvider
+     */
+    public function getInstance(): LeagueProvider
     {
 
         return new Github([
@@ -56,7 +142,6 @@ class GithubProvider extends AbstractProvider implements ProviderInterface
         ]);
 
     }
-
 
     /**
      * @param $datas_access
@@ -68,6 +153,7 @@ class GithubProvider extends AbstractProvider implements ProviderInterface
 
         $this->client = $this->client->withOptions([
             'headers' => [
+                'Content-Type' => 'application/json',
                 'Accept' => 'application/vnd.github+json',
                 'Authorization' => 'Bearer '.$datas_access['accesstoken']
             ]
@@ -133,7 +219,5 @@ class GithubProvider extends AbstractProvider implements ProviderInterface
             throw new Exception($e->getMessage());
         }
     }
-
-
 
 }

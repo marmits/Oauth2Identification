@@ -1,6 +1,8 @@
 <?php
+declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Controller;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -8,10 +10,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Marmits\Oauth2Identification\Services\UserApi;
 
+/**
+ *
+ */
 class userApiController extends AbstractController
 {
 
     protected UserApi $userApi;
+
+    /**
+     * @param ContainerInterface $container
+     * @param UserApi $userApi
+     */
     public function __construct(
         ContainerInterface $container,
         UserApi $userApi
@@ -24,12 +34,12 @@ class userApiController extends AbstractController
     /**
      * Renvoi l'utilisateur autorisé son email et l'access renovoyé stocké dans la session
      * @Route("/getuseroauthlogged", options={"expose"=true}, name="getuseroauthlogged", methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
+     * @throws Exception
      */
 
     // getUserOauthLogged
-    public function getUserOauthLogged(Request $request): JsonResponse
+    public function getUserOauthLogged(): JsonResponse
     {
         if(!empty($this->userApi->getOauthUserIdentifiants())){
             return new jsonResponse(

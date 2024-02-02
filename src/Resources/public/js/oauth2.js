@@ -146,7 +146,6 @@ class Oauth2 {
         });
     }
 
-
     BuildBtSocial = function(data){
         let that = this;
         $('<div>').load(that.template_social_connect, function (response, status, xhr) {
@@ -168,7 +167,6 @@ class Oauth2 {
             that.divprivate.append(blocDiv);
         });
     }
-
 
     // click infos user api
     bindPrivateBtUserApiInfo = async function(){

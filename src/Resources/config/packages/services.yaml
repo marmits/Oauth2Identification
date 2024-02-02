@@ -6,7 +6,7 @@ services:
     Marmits\Oauth2Identification\Providers\ProviderInterface:
       tags: [ 'marmits.oauth_provider' ]
 
-  Marmits\Oauth2Identification\Providers\ProviderService:
+  Marmits\Oauth2Identification\Providers\Provider:
     arguments:
       - !tagged_iterator marmits.oauth_provider
 
@@ -16,18 +16,22 @@ services:
 
   Marmits\Oauth2Identification\Providers\GoogleProvider:
     arguments:
+      - '@Symfony\Component\HttpFoundation\RequestStack'
+      - '@Marmits\Oauth2Identification\Services\UserApi'
       - '@Symfony\Contracts\HttpClient\HttpClientInterface'
       - params: '%google_client%'
 
   Marmits\Oauth2Identification\Providers\GithubProvider:
     arguments:
+      - '@Symfony\Component\HttpFoundation\RequestStack'
+      - '@Marmits\Oauth2Identification\Services\UserApi'
       - '@Symfony\Contracts\HttpClient\HttpClientInterface'
       - params: '%github_client%'
 
   Marmits\Oauth2Identification\Services\UserApi:
     arguments: [
       '@Symfony\Component\HttpFoundation\RequestStack',
-      '@Marmits\Oauth2Identification\Providers\ProviderService',
+      '@Marmits\Oauth2Identification\Providers\Provider',
       '@Marmits\Oauth2Identification\Services\Encryption'
     ]
 
@@ -52,24 +56,10 @@ services:
   Marmits\Oauth2Identification\Controller\OauthController:
     arguments: [
       '@service_container',
-      '@Marmits\Oauth2Identification\Providers\AccessTokenProcess',
+      '@Marmits\Oauth2Identification\Providers\Provider',
     ]
     tags:
       - { name: controller.service_arguments }
-
-
-  Marmits\Oauth2Identification\Providers\AccessTokenProcess:
-    arguments: [
-      '@Symfony\Component\HttpFoundation\RequestStack',
-      '@Marmits\Oauth2Identification\Providers\GoogleProvider',
-      '@Marmits\Oauth2Identification\Providers\GithubProvider',
-      '@Marmits\Oauth2Identification\Services\UserApi'
-    ]
-
-
-
-
-
 
 
   Marmits\Oauth2Identification\Services\Encryption:

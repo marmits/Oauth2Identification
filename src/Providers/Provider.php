@@ -7,15 +7,12 @@ namespace Marmits\Oauth2Identification\Providers;
 use Exception;
 
 /**
- *
+ * Definit le provider en fonction de son nom
  */
-class ProviderService
+class Provider
 {
 
-
-
     protected iterable $providers;
-
 
     /**
      * @param iterable $providers
@@ -25,7 +22,6 @@ class ProviderService
     )
     {
         $this->providers = $providers;
-
     }
 
     /**
@@ -37,7 +33,6 @@ class ProviderService
     {
 
         foreach($this->providers as $provider) {
-
             if ($provider->supports($provider_name)) {
                 return $provider->build();
             }

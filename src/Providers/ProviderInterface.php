@@ -2,7 +2,6 @@
 declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Providers;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  *
@@ -14,13 +13,9 @@ interface ProviderInterface
      */
     public function supports(string $type): bool;
 
-
     /**
      * This function contains the actual logic
      */
     public function build(): AbstractProvider;
-
-
-
 
 }

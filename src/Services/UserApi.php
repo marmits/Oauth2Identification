@@ -3,9 +3,8 @@ declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Services;
 
 use Exception;
-use Marmits\Oauth2Identification\Providers\GithubProvider;
-use Marmits\Oauth2Identification\Providers\GoogleProvider;
-use Marmits\Oauth2Identification\Providers\ProviderService;
+
+use Marmits\Oauth2Identification\Providers\Provider;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -14,28 +13,26 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class UserApi
 {
 
-    private ProviderService $providerService;
+    private Provider $provider;
     protected RequestStack $requestStack;
     public Encryption $encryption;
 
 
     /**
      * @param RequestStack $requestStack
-     * @param ProviderService $providerService
+     * @param Provider $provider
      * @param Encryption $encryption
      */
     public function __construct(
         RequestStack $requestStack,
-        ProviderService $providerService,
+        Provider $provider,
         Encryption $encryption
     )
     {
         $this->requestStack = $requestStack;
-        $this->providerService = $providerService;
+        $this->provider = $provider;
         $this->encryption = $encryption;
     }
-
-
 
     /**
      * @param string $providerName
@@ -47,12 +44,16 @@ class UserApi
 
     /**
      * @return string
+     * @throws Exception
      */
-    public function getProvideName(): string
+    public function getProviderName(): string
     {
-        return $this->requestStack->getSession()->get('provider_name');
-    }
+        if($this->requestStack->getSession()->has('provider_name')) {
+            return $this->requestStack->getSession()->get('provider_name');
+        }
+        return '';
 
+    }
 
     /**
      * @param $access
@@ -64,6 +65,7 @@ class UserApi
 
 
     /**
+     * Permet de récupéré dans la session l'email et api_user_id connecté
      * @return array
      * @throws Exception
      */
@@ -84,14 +86,15 @@ class UserApi
      */
     public function fetch() : array{
         $user = [];
-        if($this->requestStack->getSession()->has('oauth_user_infos')){
-            $datas_access = json_decode($this->encryption->decrypt($this->requestStack->getSession()->get('oauth_user_infos')), true);
-            if($this->requestStack->getSession()->has('provider_name')) {
-                $provider = $this->providerService->execute($this->requestStack->getSession()->get('provider_name'));
+        if($this->getProviderName() !== '') {
+            if ($this->requestStack->getSession()->has('oauth_user_infos')) {
+                $provider = $this->provider->execute($this->getProviderName());
+                $datas_access = json_decode($this->encryption->decrypt($this->requestStack->getSession()->get('oauth_user_infos')), true);
                 $user = $provider->fetchUser($datas_access);
             }
         }
         return $user;
+
     }
 
     /**

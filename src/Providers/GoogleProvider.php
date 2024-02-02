@@ -4,7 +4,14 @@ declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Providers;
 use Exception;
 use League\OAuth2\Client\Provider\Google;
+use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Token\AccessToken;
+use League\OAuth2\Client\Provider\AbstractProvider as LeagueProvider;
+use Marmits\Oauth2Identification\Services\UserApi;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -15,18 +22,26 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class GoogleProvider extends AbstractProvider  implements ProviderInterface
 {
     public const PROVIDER_NAME = 'google';
+    private RequestStack $requestStack;
+    private UserApi $userApi;
 
 
     /**
+     * @param RequestStack $requestStack
+     * @param UserApi $userApi
      * @param HttpClientInterface $client
      * @param array $params
      */
     public function __construct(
+        RequestStack $requestStack,
+        UserApi $userApi,
         HttpClientInterface $client,
         array $params
     )
     {
         parent::__construct($client);
+        $this->requestStack = $requestStack;
+        $this->userApi = $userApi;
         $this->setName(self::PROVIDER_NAME);
         $this->setParams($params['params']);
     }
@@ -41,12 +56,79 @@ class GoogleProvider extends AbstractProvider  implements ProviderInterface
         return $this;
     }
 
-
+    /**
+     * Demande d'autorisation a google
+     * @return Response
+     */
+    public function getauthorize(): Response
+    {
+        $authorizationUrl =  $this->getInstance()->getAuthorizationUrl();
+        header('Location: ' . $authorizationUrl);
+        exit;
+    }
 
     /**
-     * @return Google
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
      */
-    public function getInstance(): Google
+    public function getaccesstoken(Request $request): JsonResponse
+    {
+        $this->userApi->setProviderName($this->getName());
+        if ($request->get('code') === null)
+        {
+            $authorizationUrl = $this->getInstance()->getAuthorizationUrl();
+            // If we don't have an authorization code then get one
+            $this->requestStack->getSession()->set('oauth2state', $this->getInstance()->getState());
+            header('Location: ' . $authorizationUrl);
+            exit;
+
+        }
+        elseif (($request->get('state') === null)
+            || (
+                $this->requestStack->getSession()->has('oauth2state') && $request->get('state') !== $this->requestStack->getSession()->get('oauth2state')
+            ))
+        {
+            // State is invalid, possible CSRF attack in progress
+            $this->userApi->killSession();
+            return new jsonResponse(['message' => 'Invalid state'], 500);
+        }
+        else {
+            // Try to get an access token (using the authorization code grant)
+            $accessToken = $this->getInstance()->getAccessToken('authorization_code', [
+                'code' => $request->get('code'),
+                'provider' => 'google'
+            ]);
+            // Optional: Now you have a token you can look up a users profile data
+            try {
+                // We got an access token, let's now get the owner details
+                $ownerDetails = $this->getInstance()->getResourceOwner($accessToken);
+                if ($ownerDetails instanceof GoogleUser) {
+                    $openidinfos = $this->fetchOpenIdInfos($accessToken);
+                    $access =  [
+                        'openidinfos' => $openidinfos,
+                        'ownerDetails' => $ownerDetails->toArray(),
+                        'accesstoken' => $accessToken->getToken(),
+                        'refreshtoken' => $accessToken->getRefreshToken(),
+                        'email' => $ownerDetails->getEmail(),
+                        'api_user_id' => $ownerDetails->getId()
+                    ];
+                    $this->userApi->setOauthUserIdentifiants($access);
+                }
+                header('Location: ' . 'privat');
+                exit;
+            } catch (Exception|TransportExceptionInterface $e) {
+                // Failed to get user details
+                exit('Something went wrong: ' . $e->getMessage());
+            }
+        }
+    }
+
+    /**
+     * League\OAuth2\Client\Provider\Google
+     * @return LeagueProvider
+     */
+    public function getInstance(): LeagueProvider
     {
 
         $params = [
