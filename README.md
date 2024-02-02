@@ -13,7 +13,6 @@ symfony new appli --version="5.4.*"
 ```
 
 
-
 ### COMPOSER
 ```
 lcoal
