@@ -75,7 +75,6 @@ class GithubProvider extends AbstractProvider implements ProviderInterface
      */
     public function getaccesstoken(Request $request): JsonResponse
     {
-        $this->userApi->setProviderName($this->getName());
         if ($request->get('code') === null)
         {
             $options = [
@@ -111,6 +110,7 @@ class GithubProvider extends AbstractProvider implements ProviderInterface
                 $ownerDetails = $this->getInstance()->getResourceOwner($accessToken);
                 if ($ownerDetails instanceof GithubResourceOwner) {
                     $access = [
+                        'provider_name' => $this->getName(),
                         'ownerDetails' => $ownerDetails,
                         'accesstoken' => $accessToken->getToken(),
                         'refreshtoken' => $accessToken->getRefreshToken(),

@@ -4,6 +4,7 @@
 #### GITHUB
 ```
 {
+    'provider_name': 'github',
     "ownerDetails": [],
     "accesstoken": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "refreshtoken": null,
@@ -14,6 +15,7 @@
 #### GOOGLE
 ```
 {
+    'provider_name': 'google',
     "openidinfos": {
         "sub": "10101010101010101010",
         "name": "",

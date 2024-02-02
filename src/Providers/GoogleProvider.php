@@ -74,7 +74,6 @@ class GoogleProvider extends AbstractProvider  implements ProviderInterface
      */
     public function getaccesstoken(Request $request): JsonResponse
     {
-        $this->userApi->setProviderName($this->getName());
         if ($request->get('code') === null)
         {
             $authorizationUrl = $this->getInstance()->getAuthorizationUrl();
@@ -106,6 +105,7 @@ class GoogleProvider extends AbstractProvider  implements ProviderInterface
                 if ($ownerDetails instanceof GoogleUser) {
                     $openidinfos = $this->fetchOpenIdInfos($accessToken);
                     $access =  [
+                        'provider_name' => $this->getName(),
                         'openidinfos' => $openidinfos,
                         'ownerDetails' => $ownerDetails->toArray(),
                         'accesstoken' => $accessToken->getToken(),

@@ -63,7 +63,6 @@ class UserApi
         $this->requestStack->getSession()->set('oauth_user_infos',$this->encryption->encrypt(json_encode($access)));
     }
 
-
     /**
      * Permet de récupéré dans la session l'email et api_user_id connecté
      * @return array
@@ -86,15 +85,12 @@ class UserApi
      */
     public function fetch() : array{
         $user = [];
-        if($this->getProviderName() !== '') {
-            if ($this->requestStack->getSession()->has('oauth_user_infos')) {
-                $provider = $this->provider->execute($this->getProviderName());
-                $datas_access = json_decode($this->encryption->decrypt($this->requestStack->getSession()->get('oauth_user_infos')), true);
-                $user = $provider->fetchUser($datas_access);
-            }
+        if ($this->requestStack->getSession()->has('oauth_user_infos')) {
+            $datas_access = json_decode($this->encryption->decrypt($this->requestStack->getSession()->get('oauth_user_infos')), true);
+            $provider = $this->provider->execute($datas_access['provider_name']);
+            $user = $provider->fetchUser($datas_access);
         }
         return $user;
-
     }
 
     /**
