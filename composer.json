@@ -32,7 +32,7 @@
         "symfony/webpack-encore-bundle": "^1.14",
         "league/oauth2-client": "^2.0",
         "league/oauth2-google": "^4.0.0",
-        "league/oauth2-github": "^3.0",
+        "league/oauth2-github": "^3.0"
 
     },
     "require-dev": {
