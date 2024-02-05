@@ -48,7 +48,7 @@ class OauthController extends AbstractController
      */
     public function githubgetauthorize(): Response
     {
-        $provider = $this->provider->execute(GithubProvider::PROVIDER_NAME);
+        $provider = $this->provider->get(GithubProvider::PROVIDER_NAME);
         return $provider->getauthorize();
     }
 
@@ -62,7 +62,7 @@ class OauthController extends AbstractController
      */
     public function getaccesstokenGithub(Request $request): JsonResponse
     {
-        $provider = $this->provider->execute(GithubProvider::PROVIDER_NAME);
+        $provider = $this->provider->get(GithubProvider::PROVIDER_NAME);
         return $provider->getaccesstoken($request);
     }
 
@@ -74,7 +74,7 @@ class OauthController extends AbstractController
      */
     public function googlegetauthorize(): Response
     {
-        $provider = $this->provider->execute(GoogleProvider::PROVIDER_NAME);
+        $provider = $this->provider->get(GoogleProvider::PROVIDER_NAME);
         return $provider->getauthorize();
     }
 
@@ -87,7 +87,7 @@ class OauthController extends AbstractController
      */
     public function getaccesstokenGoogle(Request $request): JsonResponse
     {
-        $provider = $this->provider->execute(GoogleProvider::PROVIDER_NAME);
+        $provider = $this->provider->get(GoogleProvider::PROVIDER_NAME);
         return $provider->getaccesstoken($request);
     }
 

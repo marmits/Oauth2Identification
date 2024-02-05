@@ -68,7 +68,7 @@ class IndexController extends AbstractController
     /**
      * Rendu des données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
      * MarmitsOauth2Identification/bundle_private.html.twig
-     * @Route("/bundle_private", name="bundle_private")
+     * @Route("/privat", name="privat")
      * @return Response
      * @throws Exception
      */

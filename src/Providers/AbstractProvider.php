@@ -4,10 +4,6 @@ declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Providers;
 
 use Exception;
-use League\OAuth2\Client\Provider\AbstractProvider as LeagueProvider;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -30,36 +26,6 @@ abstract class AbstractProvider
     {
         $this->client = $client;
     }
-
-    /**
-     * @return Response
-     */
-    abstract public function getauthorize(): Response;
-
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    abstract public function getaccesstoken(Request $request): JsonResponse;
-
-    /**
-     * @return LeagueProvider
-     */
-    abstract public function getInstance(): LeagueProvider;
-
-    /**
-     * @param $datas_access
-     *
-     *  1 - les informations du RessourceOwner
-     *  2 - les informations d'identification à l'api et identifiant => obligatoire
-            [accesstoken]
-            [refreshtoken]
-            [email]
-            [api_user_id]
-     * @return array
-     */
-    abstract public function fetchUser($datas_access): array;
-
 
     /**
      * @param string $name

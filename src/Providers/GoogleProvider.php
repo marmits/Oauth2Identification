@@ -7,6 +7,7 @@ use League\OAuth2\Client\Provider\Google;
 use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Token\AccessToken;
 use League\OAuth2\Client\Provider\AbstractProvider as LeagueProvider;
+use Marmits\Oauth2Identification\Dto\AccessInput;
 use Marmits\Oauth2Identification\Services\UserApi;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  *
  */
-class GoogleProvider extends AbstractProvider  implements ProviderInterface
+class GoogleProvider extends AbstractProvider implements ProviderInterface
 {
     public const PROVIDER_NAME = 'google';
     private RequestStack $requestStack;
@@ -104,16 +105,14 @@ class GoogleProvider extends AbstractProvider  implements ProviderInterface
                 $ownerDetails = $this->getInstance()->getResourceOwner($accessToken);
                 if ($ownerDetails instanceof GoogleUser) {
                     $openidinfos = $this->fetchOpenIdInfos($accessToken);
-                    $access =  [
-                        'provider_name' => $this->getName(),
-                        'openidinfos' => $openidinfos,
-                        'ownerDetails' => $ownerDetails->toArray(),
-                        'accesstoken' => $accessToken->getToken(),
-                        'refreshtoken' => $accessToken->getRefreshToken(),
-                        'email' => $ownerDetails->getEmail(),
-                        'api_user_id' => $ownerDetails->getId()
-                    ];
-                    $this->userApi->setOauthUserIdentifiants($access);
+                    $accessInput = new AccessInput();
+                    $accessInput->provider_name = $this->getName();
+                    $accessInput->ownerDetails = $openidinfos;
+                    $accessInput->accesstoken = $accessToken->getToken();
+                    $accessInput->refreshtoken = $accessToken->getRefreshToken();
+                    $accessInput->email = $ownerDetails->getEmail();
+                    $accessInput->api_user_id = strval($ownerDetails->getId());
+                    $this->userApi->setOauthUser($accessInput);
                 }
                 header('Location: ' . 'privat');
                 exit;
@@ -130,7 +129,6 @@ class GoogleProvider extends AbstractProvider  implements ProviderInterface
      */
     public function getInstance(): LeagueProvider
     {
-
         $params = [
             'clientId'     => $this->getParams()['client_id'],
             'clientSecret' => $this->getParams()['client_secret'],
@@ -145,15 +143,14 @@ class GoogleProvider extends AbstractProvider  implements ProviderInterface
 
     }
 
-
     /**
-     * @param $datas_access
+     * @param AccessInput $datas_access
      * @return array
-     * @throws Exception|TransportExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws Exception
      */
-    public function fetchUser($datas_access): array
+    public function fetchUser(AccessInput $datas_access): array
     {
-
         $this->client = $this->client->withOptions([
             'headers' => [
                 'Content-Type' => 'application/json'
@@ -162,12 +159,12 @@ class GoogleProvider extends AbstractProvider  implements ProviderInterface
 
         $response = $this->client->request(
             'GET',
-            'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='.$datas_access['accesstoken']
+            'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='.$datas_access->accesstoken
         );
 
         try {
-            if(array_key_exists('openidinfos',$datas_access)){
-                return array_merge($this->getClientHttpReponse($response), $datas_access['openidinfos']);
+            if(!empty($datas_access->ownerDetails)){
+                return $datas_access->ownerDetails;
             }
             return $this->getClientHttpReponse($response);
         } catch (DecodingExceptionInterface|TransportExceptionInterface $e) {

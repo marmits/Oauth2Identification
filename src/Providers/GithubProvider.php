@@ -7,6 +7,7 @@ use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\Github;
 use League\OAuth2\Client\Provider\GithubResourceOwner;
 use League\OAuth2\Client\Provider\AbstractProvider as LeagueProvider;
+use Marmits\Oauth2Identification\Dto\AccessInput;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -109,15 +110,14 @@ class GithubProvider extends AbstractProvider implements ProviderInterface
                 // We got an access token, let's now get the owner details
                 $ownerDetails = $this->getInstance()->getResourceOwner($accessToken);
                 if ($ownerDetails instanceof GithubResourceOwner) {
-                    $access = [
-                        'provider_name' => $this->getName(),
-                        'ownerDetails' => $ownerDetails,
-                        'accesstoken' => $accessToken->getToken(),
-                        'refreshtoken' => $accessToken->getRefreshToken(),
-                        'email' => $ownerDetails->getEmail(),
-                        'api_user_id' => $ownerDetails->getId()
-                    ];
-                    $this->userApi->setOauthUserIdentifiants($access);
+                    $accessInput = new AccessInput();
+                    $accessInput->provider_name = $this->getName();
+                    $accessInput->ownerDetails = (array)$ownerDetails;
+                    $accessInput->accesstoken = $accessToken->getToken();
+                    $accessInput->refreshtoken = $accessToken->getRefreshToken();
+                    $accessInput->email = $ownerDetails->getEmail();
+                    $accessInput->api_user_id = strval($ownerDetails->getId());
+                    $this->userApi->setOauthUser($accessInput);
                 }
                 header('Location: ' . 'privat');
                 exit;
@@ -144,18 +144,17 @@ class GithubProvider extends AbstractProvider implements ProviderInterface
     }
 
     /**
-     * @param $datas_access
+     * @param AccessInput $datas_access
      * @return array
      * @throws Exception|TransportExceptionInterface
      */
-    public function fetchUser($datas_access): array
+    public function fetchUser(AccessInput $datas_access): array
     {
-
         $this->client = $this->client->withOptions([
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/vnd.github+json',
-                'Authorization' => 'Bearer '.$datas_access['accesstoken']
+                'Authorization' => 'Bearer '.$datas_access->accesstoken
             ]
         ]);
 

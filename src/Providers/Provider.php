@@ -29,9 +29,8 @@ class Provider
      * @return AbstractProvider
      * @throws Exception
      */
-    public function execute($provider_name): AbstractProvider
+    public function get($provider_name): AbstractProvider
     {
-
         foreach($this->providers as $provider) {
             if ($provider->supports($provider_name)) {
                 return $provider->build();
@@ -39,10 +38,6 @@ class Provider
         }
 
         throw new Exception("Unsupported  type $provider_name");
-
     }
-
-
-
 
 }

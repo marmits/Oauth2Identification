@@ -6,7 +6,6 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Marmits\Oauth2Identification\Services\UserApi;
 
@@ -32,7 +31,7 @@ class userApiController extends AbstractController
     }
 
     /**
-     * Renvoi l'utilisateur autorisé son email et l'access renovoyé stocké dans la session
+     * Renvoi les identifiants attendus (email et id_api_user) de l'utlisateur oauth connecté
      * @Route("/getuseroauthlogged", options={"expose"=true}, name="getuseroauthlogged", methods={"GET"})
      * @return JsonResponse
      * @throws Exception
@@ -41,7 +40,7 @@ class userApiController extends AbstractController
     // getUserOauthLogged
     public function getUserOauthLogged(): JsonResponse
     {
-        if(!empty($this->userApi->getOauthUserIdentifiants())){
+        if($this->userApi->getOauthUserIdentifiants() !== null){
             return new jsonResponse(
                 [
                     'code'=> 200, 'message' => 'ok authorisation'

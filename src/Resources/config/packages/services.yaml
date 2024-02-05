@@ -2,6 +2,11 @@ services:
 
   Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
+  Marmits\Oauth2Identification\Entity\UserApi:
+  Marmits\Oauth2Identification\Repository\OauthUserRepository:
+    arguments:
+      - '@Doctrine\Persistence\ManagerRegistry'
+
   _instanceof:
     Marmits\Oauth2Identification\Providers\ProviderInterface:
       tags: [ 'marmits.oauth_provider' ]
@@ -32,9 +37,9 @@ services:
     arguments: [
       '@Symfony\Component\HttpFoundation\RequestStack',
       '@Marmits\Oauth2Identification\Providers\Provider',
+      '@Marmits\Oauth2Identification\Repository\OauthUserRepository',
       '@Marmits\Oauth2Identification\Services\Encryption'
     ]
-
 
   Marmits\Oauth2Identification\Controller\userApiController:
     arguments: [
