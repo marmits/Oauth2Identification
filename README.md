@@ -58,6 +58,11 @@ marmitsoauth2identificationbundle:
 logout:
   path: /logout
   controller: App\Controller\HomeController::logoutAppli
+  
+#surcharge de la route privat du bundle
+privat:
+  path: /privat
+  controller: App\Controller\HomeController::private
 
 when@dev:
   _wdt:
@@ -76,7 +81,7 @@ symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_rout
 
 ### route principale
 ```
-http://localhost/bundle_private
+https://localhost:63630/privat
 ```
 
 ### Clean nodes modules
