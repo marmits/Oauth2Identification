@@ -14,11 +14,6 @@ parameters:
     client_secret: '%env(GITHUB_CLIENT_SECRET)%'
     redirect_uris: '%env(GITHUB_REDIRECT_URIS)%'
 
-  private_access:
-    identifiant: '%env(PRIVATE_IDENTIFIANT)%'
-    passwordfirst: '%env(PRIVATE_PASS_FIRST)%'
-    passwordfull: '%env(PRIVATE_PASSWORD_COMPLETE)%'
-  
   encryption:
     decrypt: true
     method: '%env(DECRYPT_DATAS_METHOD)%'

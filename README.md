@@ -1,4 +1,7 @@
-## INSTALLATION
+## marmits/Oauth2Identification
+
+- [Installation](INSTALL.md)
+- [Documentation](DOC.md)
 
 ### BUNDLES USED
 [thephpleague/oauth2-client](https://github.com/thephpleague/oauth2-client)    
@@ -6,5 +9,4 @@
 [thephpleague/oauth2-github](https://github.com/thephpleague/oauth2-github)  
 [google openid-connect](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters)
 
-### INSTALL:  
-[INSTALL.md](INSTALL.md)
+ 
