@@ -8,7 +8,7 @@
 
 ### BONUS
 [symfony secrets docs](https://symfony.com/doc/5.x/configuration/secrets.html)  
-Fournit un objet pour chiffrer avec SODIUM, une chaine de charactere.
+Fournit un objet pour chiffrer une chaine de caractère avec SODIUM. 
 >Marmits\Oauth2Identification\Services\Encryption
 1. Méthodes: 
    - getParms

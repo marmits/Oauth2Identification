@@ -1,4 +1,4 @@
-## marmits/Oauth2Identification
+## marmits/oauth2identification
 
 1. Déclenche une connexion Oauth2 => Google ou Github via 2 boutons d'une page HTML
 2. Récupère les informations utilisateur avec l'accestoken fourni
