@@ -3,9 +3,7 @@
 - `symfony 5.4`
 
 ### COMPOSER
-``` 
-$ symfony new appli --version="5.4.*" `
-```
+`$ symfony new appli --version="5.4.*"`
 
 edit `composer.json`
 ```
@@ -126,7 +124,7 @@ import '../vendor/marmits/oauth2identification/src/Resources/public/js/marmitsgo
 
 // import JS du bundle => fonctionnement indépendant route :bundle_private
 import Oauth2Lib from "../vendor/marmits/oauth2identification/src/Resources/public/js/Oauth2"
-let Oauth2
+let Oauth2 = new Oauth2Lib();
 ```
    
 ### WEBPACK
@@ -178,7 +176,7 @@ create database testoauth
 ```
 $ composer require symfony/maker-bundle:^1.50 --dev (php 8.0)
 $ symfony console make:migration
-$ symfo
+$ symfony console doctrine:migrations:migrate
 ```
 
 ## launch
