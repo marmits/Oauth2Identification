@@ -43,7 +43,7 @@ GITHUB_REDIRECT_URIS=http://url/getaccesstokengithub
 ```
 
 ### sodium
-`symfony console secrets:set DECRYPT_DATAS_KEY --random`
+`$ symfony console secrets:set DECRYPT_DATAS_KEY --random`
 
 ### npm
 1. replace package.json by
@@ -82,10 +82,10 @@ GITHUB_REDIRECT_URIS=http://url/getaccesstokengithub
     }
     ```
 2. run
-     `npm install` 
+     `$ npm install` 
 
 ### jsrouting-bundle
-`symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json`
+`$ symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json`
 
 ### javascript
 - create & add file custom.js in `assets` folder
@@ -126,9 +126,9 @@ config.resolve.symlinks = false;
 module.exports = config;
 ```
 #### compile
-```
-npm run dev OR npm run watch
-```
+`$ npm run dev`  
+or  
+`$ npm run watch`
 
 ### DOCTRINE
 create database testoauth
@@ -145,13 +145,13 @@ create database testoauth
     ```
 ####  migration   
 ```
-composer require symfony/maker-bundle:^1.50 --dev (php 8.0)
-symfony console make:migration
-symfo
+$ composer require symfony/maker-bundle:^1.50 --dev (php 8.0)
+$ symfony console make:migration
+$ symfo
 ```
 
 ## launch
 http://url/bundle_index
 
 ### bonus dev
-`composer require symfony/web-profiler-bundle --dev`
+`$ composer require symfony/web-profiler-bundle --dev`
