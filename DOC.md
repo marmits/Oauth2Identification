@@ -16,6 +16,7 @@
 
 
 ### BONUS
+[symfony secrets docs](https://symfony.com/doc/5.x/configuration/secrets.html)  
 Fournie un objet pour chiffrer avec SODIUM, une chaine de charactere.
 >Marmits\Oauth2Identification\Services\Encryption
 1. Méthodes: 
@@ -27,3 +28,5 @@ Fournie un objet pour chiffrer avec SODIUM, une chaine de charactere.
    - DECRYPT_DATAS_KEY `$ symfony console secrets`
 3. parameters encryption
    - marmits.clientapi_yaml
+
+
