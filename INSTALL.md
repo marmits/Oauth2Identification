@@ -1,14 +1,14 @@
-### REQUIREMENTS
+### PREREQUISITES
 - `>= php7`
 - `symfony 5.4`
 
 ### COMPOSER
 ``` 
-symfony new appli --version="5.4.*" `
-composer update
-``` 
+$ symfony new appli --version="5.4.*" `
+$ composer update
 or  
-`composer require marmits/oauth2identification`
+$ composer require marmits/oauth2identification
+```
 > execute all recipes to yes
 
 ### routes.yaml
