@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4 || ^8.0",
+        "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -24,20 +24,20 @@
         "symfony/twig-bundle": "5.4.*",
         "symfony/apache-pack": "^1.0",
         "symfony/http-client": "5.4.*",
-        "symfony/web-profiler-bundle": "5.4.*",
         "sensio/framework-extra-bundle": "^6.2",
         "doctrine/annotations": "^1.13",
+        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/orm": "^2.13",
         "symfony/event-dispatcher": "5.4.*",
         "friendsofsymfony/jsrouting-bundle": "^2.8",
         "symfony/webpack-encore-bundle": "^1.14",
         "league/oauth2-client": "^2.0",
         "league/oauth2-google": "^4.0.0",
-        "league/oauth2-github": "^3.0"
-
+        "league/oauth2-github": "^3.0",
+        "paragonie/sodium_compat": "^1.20"
     },
-    "require-dev": {
 
-    },
     "autoload": {
         "psr-4": {
             "Marmits\\Oauth2Identification\\":  "src/"

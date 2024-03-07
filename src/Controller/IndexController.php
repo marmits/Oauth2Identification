@@ -50,7 +50,7 @@ class IndexController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        return $this->redirectToRoute('bundle_private');
+        return $this->redirectToRoute('privat');
     }
 
     /**
