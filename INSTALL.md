@@ -5,10 +5,41 @@
 ### COMPOSER
 ``` 
 $ symfony new appli --version="5.4.*" `
-$ composer update
-or  
-$ composer require marmits/oauth2identification
 ```
+
+edit `composer.json`
+```
+prod
+{
+    "require": {
+        "marmits/oauth2identification": "^1.0"
+    },  
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:marmits/Oauth2Identification.git"
+        }
+    ]
+}
+
+dev/local
+{
+    "require": {
+        "marmits/oauth2identification": "*@dev"
+    },  
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../Bundles/Marmits/Oauth2Identification",
+            "options": {
+                "symlink": true
+            }
+        }
+    ]
+}
+```
+`$ composer update`
+
 > execute all recipes to yes
 
 ### routes.yaml
