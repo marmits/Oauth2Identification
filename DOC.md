@@ -1,3 +1,26 @@
+### Oauth2 apps
+Créer les applications sur Github et Google
+definit avec :  
+[marmits_clientapi.yaml](src/Resources/config/packages/marmits_clientapi.yaml`)
+
+### flux Oauth2
+- La page `/privat` demande une authorisation de connexion avec github ou google.  
+- Puis apres connexion et redirection, elle récupère les infos de l'utlisateur identifié.  
+- L'utilisateur et soit créé ou modifié dans la table `oauth_user`.  
+- L'id utilisateur de la table est enregistré dans la session.
+
+### Packages Requirements
+- PHP
+    - symfony/webpack-encore-bundle
+- NPM
+    - sass-loader
+    - html-loader
+    - file-loader
+    - sass
+    - jquery
+    - bootstrap
+    - @fortawesome/fontawesome-free
+
 ### OUTPUT
 >Marmits\Oauth2Identification\Services\UserApi
 
