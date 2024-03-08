@@ -78,10 +78,11 @@ GITHUB_REDIRECT_URIS=http://url/getaccesstokengithub
 `$ symfony console secrets:set DECRYPT_DATAS_KEY --random`
 
 ### webpack 
-dernière version:   
+#### 1. composer
+deninière version:  
 `$ composer require symfony/webpack-encore-bundle`
 
-### npm
+#### 2. npm
 (les npm s'ajuste avec le package.json généré par webpack)
 ```
 $ npm i sass-loader
@@ -94,7 +95,7 @@ $ npm install @fortawesome/fontawesome-free
 ```
 
 
-#### webpack.config.js
+#### 3. webpack.config.js
 optional: (vhost alias (http://url/alias))
 ```
 .setManifestKeyPrefix(' build/')
@@ -120,7 +121,7 @@ config.resolve.symlinks = false;
 
 module.exports = config;
 ```
-#### webpack compile
+#### 4. webpack compile
 `$ npm run dev`  
 or  
 `$ npm run watch`
