@@ -1,7 +1,9 @@
 ## marmits/oauth2identification
 
-![](https://img.shields.io/badge/Oauth2-red?logo=google&logoColor=f5f5f5)
-![](https://img.shields.io/badge/Oauth2-red?logo=github&logoColor=f5f5f5)
+[![Latest Version](https://img.shields.io/github/release/marmits/Oauth2Identification.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification/releases)
+[![Source Code](https://img.shields.io/badge/source-marmits/oauth2identification-blue.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification)
+[![Source Code](https://img.shields.io/badge/Oauth2-red?logo=google&logoColor=f5f5f5)]()
+[![Source Code](https://img.shields.io/badge/Oauth2-red?logo=github&logoColor=f5f5f5)]()
 
 1. Déclenche une connexion Oauth2 => Google ou Github via 2 boutons d'une page HTML
 2. Récupère les informations utilisateur avec l'accestoken fourni
