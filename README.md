@@ -1,6 +1,6 @@
 ## marmits/oauth2identification
 
-[![Latest Version](https://img.shields.io/github/release/marmits/Oauth2Identification.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification/releases)
+[![Latest Version](https://img.shields.io/github/v/release/marmits/oauth2identification.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification/releases)
 [![Source Code](https://img.shields.io/badge/source-marmits/oauth2identification-blue.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification)
 [![Source Code](https://img.shields.io/badge/Oauth2-red?logo=google&logoColor=f5f5f5)]()
 [![Source Code](https://img.shields.io/badge/Oauth2-red?logo=github&logoColor=f5f5f5)]()
