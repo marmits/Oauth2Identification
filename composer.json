@@ -20,6 +20,7 @@
         "symfony/flex": "^1.17|^2",
         "symfony/framework-bundle": "5.4.*",
         "symfony/runtime": "5.4.*",
+        "symfony/yaml": "5.4.*",
         "symfony/asset": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
         "symfony/apache-pack": "^1.0",
@@ -31,9 +32,8 @@
         "doctrine/orm": "^2.13",
         "symfony/event-dispatcher": "5.4.*",
         "friendsofsymfony/jsrouting-bundle": "^2.8",
-        "symfony/webpack-encore-bundle": "^1.14",
         "league/oauth2-client": "^2.0",
-        "league/oauth2-google": "^4.0.0",
+        "league/oauth2-google": "^4.0",
         "league/oauth2-github": "^3.0",
         "paragonie/sodium_compat": "^1.20"
     },

@@ -40,6 +40,8 @@ dev/local
 
 > execute all recipes to yes
 
+
+
 ### routes.yaml
 ```
 marmitsoauth2identificationbundle:
@@ -56,6 +58,7 @@ marmitsoauth2identificationbundle:
 #    prefix: /_profiler
 
 ```
+
 
 ### .env
 ```
@@ -74,60 +77,23 @@ GITHUB_REDIRECT_URIS=http://url/getaccesstokengithub
 ### sodium
 `$ symfony console secrets:set DECRYPT_DATAS_KEY --random`
 
+### webpack 
+dernière version:   
+`$ composer require symfony/webpack-encore-bundle`
+
 ### npm
-1. replace package.json by
-    ```
-    {
-        "devDependencies": {
-            "@babel/core": "^7.17.0",
-            "@babel/preset-env": "^7.19.3",
-            "@fortawesome/fontawesome-free": "^6.5.1",
-            "@hotwired/stimulus": "^3.0.0",
-            "@popperjs/core": "^2.11.6",
-            "@symfony/stimulus-bridge": "^3.2.0",
-            "@symfony/webpack-encore": "^2.1.0"
-        },
-        "license": "UNLICENSED",
-        "private": true,
-        "scripts": {
-            "dev-server": "encore dev-server",
-            "dev": "encore dev",
-            "watch": "encore dev --watch",
-            "build": "encore production --progress"
-        },
-        "dependencies": {
-            "bootstrap": "^5.2.2",
-            "core-js": "^3.25.5",
-            "jquery": "^3.6.1",
-            "regenerator-runtime": "^0.13.9",
-            "sass": "^1.55.0",
-            "sass-loader": "12.0.0",
-            "webpack": "^5.74.0",
-            "webpack-cli": "^4.10.0",
-            "webpack-notifier": "^1.15.0",
-            "html-loader": "^3.1",
-            "file-loader": "^6.2"
-        }
-    }
-    ```
-2. run
-     `$ npm install` 
-
-### jsrouting-bundle
-`$ symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json`
-
-### javascript
-- create & add file custom.js in `assets` folder
-- custom.js
+(les npm s'ajuste avec le package.json généré par webpack)
 ```
-import '../vendor/marmits/oauth2identification/src/Resources/public/js/marmitsgoogle';
-
-// import JS du bundle => fonctionnement indépendant route :bundle_private
-import Oauth2Lib from "../vendor/marmits/oauth2identification/src/Resources/public/js/Oauth2"
-let Oauth2 = new Oauth2Lib();
+$ npm i sass-loader
+$ npm i html-loader
+$ npm i file-loader
+$ npm i sass
+$ npm i jquery
+$ npm i bootstrap
+$ npm install @fortawesome/fontawesome-free
 ```
-   
-### WEBPACK
+
+
 #### webpack.config.js
 optional: (vhost alias (http://url/alias))
 ```
@@ -154,10 +120,26 @@ config.resolve.symlinks = false;
 
 module.exports = config;
 ```
-#### compile
+#### webpack compile
 `$ npm run dev`  
 or  
 `$ npm run watch`
+
+### jsrouting-bundle
+`$ symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json`
+
+### javascript
+- create & add file custom.js in `assets` folder
+- custom.js
+```
+import '../vendor/marmits/oauth2identification/src/Resources/public/js/marmitsgoogle';
+
+// import JS du bundle => fonctionnement indépendant route :bundle_private
+import Oauth2Lib from "../vendor/marmits/oauth2identification/src/Resources/public/js/Oauth2"
+let Oauth2 = new Oauth2Lib();
+```
+   
+
 
 ### DOCTRINE
 create database testoauth
