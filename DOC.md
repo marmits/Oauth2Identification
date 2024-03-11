@@ -11,8 +11,8 @@ definit avec :
 
 ### Packages Requirements
 - PHP
-    - symfony/webpack-encore-bundle
-- NPM
+    - symfony/webpack-encore-bundle (inclus dans le bundle)
+- NPM (post install)
     - sass-loader
     - html-loader
     - file-loader

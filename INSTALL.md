@@ -77,13 +77,12 @@ GITHUB_REDIRECT_URIS=http://url/getaccesstokengithub
 ### sodium
 `$ symfony console secrets:set DECRYPT_DATAS_KEY --random`
 
-### webpack 
-#### 1. composer
-deninière version:  
-`$ composer require symfony/webpack-encore-bundle`
+### WEBPACK 
+(les npm s'ajustent avec le package.json généré par **symfony/webpack-encore-bundle**)
+#### 1. package.json
+`$ npm install`
 
-#### 2. npm
-(les npm s'ajuste avec le package.json généré par webpack)
+#### 2. npm utlisés dans le projet
 ```
 $ npm i sass-loader
 $ npm i html-loader
@@ -91,9 +90,8 @@ $ npm i file-loader
 $ npm i sass
 $ npm i jquery
 $ npm i bootstrap
-$ npm install @fortawesome/fontawesome-free
+$ npm i @fortawesome/fontawesome-free
 ```
-
 
 #### 3. webpack.config.js
 optional: (vhost alias (http://url/alias))
