@@ -66,6 +66,15 @@ services:
     tags:
       - { name: controller.service_arguments }
 
+  Marmits\Oauth2Identification\Controller\ApiTestController:
+    arguments: [
+      '@service_container',
+      '@Symfony\Component\HttpFoundation\RequestStack',
+      '@Marmits\Oauth2Identification\Services\UserApi',
+    ]
+    tags:
+      - { name: controller.service_arguments }
+
 
   Marmits\Oauth2Identification\Services\Encryption:
     arguments:
