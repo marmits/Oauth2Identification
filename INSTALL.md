@@ -77,6 +77,9 @@ GITHUB_REDIRECT_URIS=http://url/getaccesstokengithub
 ### sodium
 `$ symfony console secrets:set DECRYPT_DATAS_KEY --random`
 
+### jsrouting-bundle
+`$ symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json`
+
 ### WEBPACK 
 (les npm s'ajustent avec le package.json généré par **symfony/webpack-encore-bundle**)
 #### 1. package.json
@@ -124,8 +127,6 @@ module.exports = config;
 or  
 `$ npm run watch`
 
-### jsrouting-bundle
-`$ symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json`
 
 ### javascript
 - create & add file custom.js in `assets` folder
