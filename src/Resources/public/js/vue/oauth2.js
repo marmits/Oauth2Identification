@@ -1,4 +1,10 @@
+
+import BtSocialConnect from "../../templates/SocialConnect.vue";
+
 export default {
+    components: {
+        SocialConnect,
+    },
     data() {
         return {
             name: '',
@@ -14,5 +20,6 @@ export default {
                     .then(result => this.hello = result);
             }
         }
+
     }
 };

@@ -10,40 +10,16 @@
 
 
 
-<div class="container-fluid">
+
+    <div class="container-fluid">
 
     <div class="row g-4 ">
         <div class="col-6 offset-3 align-self-center gy-5">
 
             <div class="private">
-                {% if user.email is defined %}
-                <h1>Private Page</h1>
-
-                    <ul>
-                        {% if user.picture is defined %}
-                            <li><img class="picture" src="{{ user.picture }}" /></li>
-                        {% endif %}
-                    {% if user.name is defined %}
-                        <li><button id="private_info" type="button" class="btn btn-primary mb-3">Infos From API</button></li>
-                        <li>name : {{ user.name }}</li>
-                    {% endif %}
-                    </ul>
-
-                    <div class="infos_user table-responsive hidden">
-                        <table class="table table-bordered table-secondary table-sm">
-                            <tbody>
-                                <tr>
-                                    <td> {{ dump(user) }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                {% endif %}
-
-                <div class="alert alert-danger message" role="alert">
-                    <h4 class="alert-heading"></h4>
+                <div id="app">
                 </div>
+
 
             </div>
         </div>
@@ -54,9 +30,8 @@
         {{ encore_entry_script_tags('marmits') }}
     {% endblock %}
 
-    <div id="vue-app">
-        {# L'appli Vue.js vivra ici #}
-    </div>
+
+
 
 {% endblock %}
 

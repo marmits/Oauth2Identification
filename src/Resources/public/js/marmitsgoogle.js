@@ -2,13 +2,15 @@
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
 
+require('bootstrap');
+require('@fortawesome/fontawesome-free/css/all.min.css');
+require('@fortawesome/fontawesome-free/js/all.js');
 
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import '../css/marmitsgoogle.scss';
 
 import { createApp } from 'vue';
 import App from '../App.vue';
 
-createApp(App).mount('#vue-app');
+createApp(App).mount('#app');
 
 console.log("==============marmitsgoogle.js===================");
