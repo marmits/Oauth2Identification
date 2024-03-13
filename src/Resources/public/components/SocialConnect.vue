@@ -1,37 +1,29 @@
 <template>
 <form>
-
-<div class="row">
-  <div class="col align-self-center gy-2">
-    <div class="d-flex justify-content-center">
-      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-        <a class="btn btn-warning connect_social" href="google_authorize" role="button"><h2><i class="fa-brands fa-google"></i></h2></a>
-      </div>
+  <div class="row">
+    <div class="col align-self-center gy-2">
+      <BoutSocial type="google"></BoutSocial>
+    </div>
+    <div class="col align-self-center gy-2">
+      <BoutSocial type="github"></BoutSocial>
     </div>
   </div>
-
-  <div class="col align-self-center gy-2">
-    <div class="d-flex justify-content-center">
-      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-        <a class="btn btn-warning connect_social" href="github_authorize" role="button"><h2><i class="fa-brands fa-github"></i></h2></a>
-      </div>
-    </div>
-  </div>
-</div>
-
 </form>
-
 </template>
 
 <script>
 
+import BoutSocial from "./ButtonSocial.vue";
+
 export default {
   data() {
     return {
-      who: "World",
+
     };
   },
+  components: {
+    BoutSocial,
+  }
 };
-
 
 </script>
