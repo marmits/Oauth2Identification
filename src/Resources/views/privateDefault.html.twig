@@ -10,16 +10,19 @@
 
 
 
-
     <div class="container-fluid">
 
     <div class="row g-4 ">
         <div class="col-6 offset-3 align-self-center gy-5">
-
             <div class="private">
+
+
+                {% if user.email is defined %}
+                    <input type="text" id="statut_connected" value="on"></input>
+                {% endif %}
+
                 <div id="app">
                 </div>
-
 
             </div>
         </div>

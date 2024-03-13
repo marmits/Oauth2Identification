@@ -13,15 +13,14 @@
 
 <template>
 
-  <Message></Message>
-  <SocialConnect></SocialConnect>
-  <Logout></Logout>
+  <Message v-bind:is-connected="SetConnected()" v-bind:titre="titre"></Message>
+  <SocialConnect v-bind:is-connected="SetConnected()"></SocialConnect>
+  <Logout v-bind:is-connected="SetConnected()"></Logout>
 
-  <input type="text" v-model="name">
+  <input  type="text" v-model="name">
   <button @click="refreshHello">Demander un bonjour !</button>
   <h1 v-show="!!hello">{{ hello }}</h1>
 </template>
-
 
 
 <script>
@@ -39,19 +38,28 @@ export default {
   data() {
     return {
       name: '',
-      hello: ''
+      hello: '',
+      connected: false,
+      titre: 'Sign-in'
     }
   },
   methods: {
     refreshHello() {
-
       if (this.name) {
         fetch("/api/test/" + this.name, {"method": "GET"})
             .then(response => response.json())
             .then(result => this.hello = result);
       }
-    }
+    },
+    SetConnected(){
+      let elConnected = document.getElementById('statut_connected')
 
+      if(elConnected !== null){
+        this.connected = true
+      }
+
+      return this.connected;
+    }
   }
 };
 </script>
