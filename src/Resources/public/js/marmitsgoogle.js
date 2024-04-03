@@ -11,6 +11,6 @@ import '../css/marmitsgoogle.scss';
 import { createApp } from 'vue';
 import App from '../App.vue';
 
-createApp(App).mount('#app');
+export default createApp(App).mount('#Oauth');
 
 console.log("==============marmitsgoogle.js===================");

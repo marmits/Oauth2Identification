@@ -1,7 +1,7 @@
 // assets/js/App.vue
 
 <style>
-#app {
+#Oauth {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -24,7 +24,7 @@ import Message from "./components/Message.vue";
 import InfosUser from "./components/InfosUser.vue";
 
 export default {
-  name: 'app',
+  name: 'Oauth',
   components: {
     SocialConnect,
     Logout,
