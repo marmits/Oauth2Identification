@@ -77,5 +77,11 @@ class IndexController extends AbstractController
         $user = $this->userApi->fetch();
         return $this->render('@MarmitsOauth2Identification/privateDefault.html.twig', ['user' => $user]);
     }
+    /**
+     * @Route("/api/user/datas", name="api_user_datas")")
+     */
+    public function apiUserFetch(): JsonResponse{
+        return new JsonResponse($this->userApi->fetch());
+    }
 
 }
