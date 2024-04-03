@@ -24,6 +24,7 @@
 </template>
 
 <script setup>
+import { store } from '../js/UserDatasStore'
 const props = defineProps(['isConnected'])
 import { ref} from 'vue'
 const datas = ref(null)
@@ -31,15 +32,14 @@ async function fetchData() {
   datas.value = null
   const res = await fetch("/api/user/datas", {"method": "GET"})
   datas.value = await res.json()
+  store.setState(datas.value)
 }
 if(props.isConnected) {
   fetchData()
 }
-
 </script>
 
 <script>
-import { ref } from 'vue'
 export default {
   data() {
     return {

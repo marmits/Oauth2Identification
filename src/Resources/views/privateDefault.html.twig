@@ -10,7 +10,7 @@
 
 
 
-    <div class="container-fluid">
+<div class="container-fluid">
 
     <div class="row g-4 ">
         <div class="col-6 offset-3 align-self-center gy-5">
@@ -18,14 +18,16 @@
                 {% if user.email is defined %}
                     <input type="hidden" id="statut_connected" value="on"></input>
                 {% endif %}
-
+                {% block oauth %}
                 <div id="Oauth">
                 </div>
+                {% endblock %}
 
             </div>
         </div>
     </div>
 </div>
+
 
     {% block javascripts %}
         {{ encore_entry_script_tags('marmits') }}
