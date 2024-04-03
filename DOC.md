@@ -17,9 +17,9 @@ definit avec :
     - html-loader
     - file-loader
     - sass
-    - jquery
     - bootstrap
     - @fortawesome/fontawesome-free
+    - vue
 
 ### OUTPUT
 >Marmits\Oauth2Identification\Services\UserApi
