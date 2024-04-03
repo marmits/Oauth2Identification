@@ -77,8 +77,6 @@ GITHUB_REDIRECT_URIS=http://url/getaccesstokengithub
 ### sodium
 `$ symfony console secrets:set DECRYPT_DATAS_KEY --random`
 
-### jsrouting-bundle
-`$ symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json`
 
 ### WEBPACK 
 (les npm s'ajustent avec le package.json généré par **symfony/webpack-encore-bundle**)
@@ -91,9 +89,9 @@ $ npm i sass-loader
 $ npm i html-loader
 $ npm i file-loader
 $ npm i sass
-$ npm i jquery
 $ npm i bootstrap
 $ npm i @fortawesome/fontawesome-free
+$ npm install vue
 ```
 
 #### 3. webpack.config.js
@@ -115,7 +113,8 @@ optional: (vhost alias (http://url/alias))
     }
 )
 
-.autoProvidejQuery()
+.enableTypeScriptLoader()
+.enableVueLoader(() => {}, { runtimeCompilerBuild: false })
 
 const config = Encore.getWebpackConfig();
 config.resolve.symlinks = false;
@@ -133,10 +132,6 @@ or
 - custom.js
 ```
 import '../vendor/marmits/oauth2identification/src/Resources/public/js/marmitsgoogle';
-
-// import JS du bundle => fonctionnement indépendant route :bundle_private
-import Oauth2Lib from "../vendor/marmits/oauth2identification/src/Resources/public/js/Oauth2"
-let Oauth2 = new Oauth2Lib();
 ```
    
 
