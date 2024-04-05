@@ -1,7 +1,7 @@
 <template>
   <div v-if="isConnected">
     <h1>Private Page</h1>
-    <p v-if="!datas">Chargement...</p>
+    <p v-if="!datas">Chargement infos user...</p>
     <ul v-else>
       <li><img class="picture" :src="`${datas['avatar_url']}`" /></li>
       <li><button @click="setDisplayInfos" id="private_info" type="button" class="btn btn-primary mb-3">Infos From API</button></li>
@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { store } from '../js/UserDatasStore'
+import { UserDatasStore } from '../js/UserDatasStore'
 const props = defineProps(['isConnected'])
 import { ref} from 'vue'
 const datas = ref(null)
@@ -32,7 +32,7 @@ async function fetchData() {
   datas.value = null
   const res = await fetch("/api/user/datas", {"method": "GET"})
   datas.value = await res.json()
-  store.setState(datas.value)
+  UserDatasStore.setUserInfos(datas.value)
 }
 if(props.isConnected) {
   fetchData()

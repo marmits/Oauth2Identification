@@ -1,22 +1,29 @@
 import { reactive } from 'vue'
 
-class UserDatasStore{
+class UserDatas{
 
     constructor() {
         this.state = {
-            'userInfos': ''
+            'userInfos': '',
+            'valid': false,
+            'options' : []
         }
-    }
-
-    setState(value){
-        this.state.userInfos = value
-        return this;
     }
 
     getState(){
         return this.state;
     }
-}
-let userDatas = new UserDatasStore();
 
-export const store = reactive(userDatas)
+    setUserInfos(value){
+        this.state.userInfos = value
+        return this;
+    }
+
+    getUserInfos(){
+        return this.state.userInfos;
+    }
+
+
+}
+
+export const UserDatasStore = reactive(new UserDatas())

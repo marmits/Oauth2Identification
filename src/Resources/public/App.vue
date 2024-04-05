@@ -10,7 +10,7 @@
 
 
 <template>
-  <Message v-bind:is-connected="SetConnected()" v-bind:titre="titre"></Message>
+  <Message v-bind:is-connected="SetConnected()" v-bind:titre="titre" v-bind:type="type"></Message>
   <SocialConnect v-bind:is-connected="SetConnected()"></SocialConnect>
   <InfosUser v-bind:is-connected="SetConnected()"> </InfosUser>
   <Logout v-bind:is-connected="SetConnected()"></Logout>
@@ -33,6 +33,7 @@ export default {
   },
   data() {
     return {
+      type:'success',
       connected: false,
       titre: 'Sign-in',
     }

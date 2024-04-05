@@ -6,7 +6,7 @@
 
 
 <script setup>
-const props = defineProps(['isConnected', 'titre'])
+const props = defineProps(['isConnected', 'titre', 'type'])
 
 </script>
 
@@ -21,7 +21,8 @@ export default {
       typeAlert: 'success',
       props:{
         titre: String,
-        isConnected: Boolean
+        isConnected: Boolean,
+        type: String
       }
     }
   },
@@ -34,11 +35,15 @@ export default {
       return this
     },
     setTypeAlert(){
+      if(this.type === "danger"){
+        this.setError(true)
+      }
       if(this.checkError() === true){
         this.typeAlert = 'danger'
         if(this.isConnected === false){
           this.typeAlert = 'success'
         }
+
       }
       return this
     }
@@ -51,6 +56,7 @@ export default {
     else {
       this.setError(false)
     }
+
     this.setTypeAlert()
   }
 };
