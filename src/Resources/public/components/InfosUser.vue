@@ -1,7 +1,8 @@
 <template>
+
   <div v-if="isConnected">
     <h1>Private Page</h1>
-    <p v-if="!datas">Chargement infos user...</p>
+    <p v-if="!datas">Loading Oauth user informations...</p>
     <ul v-else>
       <li><img class="picture" :src="`${datas['avatar_url']}`" /></li>
       <li><button @click="setDisplayInfos" id="private_info" type="button" class="btn btn-primary mb-3">Infos From API</button></li>
@@ -24,19 +25,19 @@
 </template>
 
 <script setup>
-import { UserDatasStore } from '../js/UserDatasStore'
+import { UserOauth } from '../js/User'
 const props = defineProps(['isConnected'])
-import { ref} from 'vue'
+import {ref} from 'vue'
 const datas = ref(null)
-async function fetchData() {
-  datas.value = null
-  const res = await fetch("/api/user/datas", {"method": "GET"})
-  datas.value = await res.json()
-  UserDatasStore.setUserInfos(datas.value)
-}
-if(props.isConnected) {
-  fetchData()
-}
+  if (props.isConnected) {
+    const getUserInfos = async() => {
+      const response = await UserOauth.setUserInfos()
+      datas.value = response
+      const event = new CustomEvent("oauthUserInfos", { detail: response });
+      document.dispatchEvent(event);
+    }
+    getUserInfos()
+  }
 </script>
 
 <script>
@@ -52,15 +53,10 @@ export default {
   methods: {
     setDisplayInfos(){
       let that = this
-      if(that.displayInfos === false){
-        that.displayInfos = true
-      } else {
-        that.displayInfos = false
-      }
+      that.displayInfos = that.displayInfos === false;
       return this
     }
   }
-
 }
 </script>
 
