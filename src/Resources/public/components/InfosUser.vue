@@ -2,7 +2,12 @@
 
   <div v-if="isConnected">
     <h1>Private Page</h1>
-    <p v-if="!datas">Loading Oauth user informations...</p>
+    <div v-if="!datas" class="loadingspinner">
+      <div class="spinner-border text-primary m-2" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading Oauth user informations..</span>
+      </div>
+    </div>
+
     <ul v-else>
       <li><img class="picture" :src="`${datas['avatar_url']}`" /></li>
       <li><button @click="setDisplayInfos" id="private_info" type="button" class="btn btn-primary mb-3">Infos From API</button></li>
