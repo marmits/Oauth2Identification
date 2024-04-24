@@ -6,7 +6,7 @@ class User{
     }
 
     async setUserInfos(){
-        const response = await fetch("/api/user/datas", {"method": "GET"});
+        const response = await fetch("api/user/datas", {"method": "GET"});
         return await response.json();
     }
 

@@ -69,6 +69,26 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
     }
 
     /**
+     * League\OAuth2\Client\Provider\Google
+     * @return LeagueProvider
+     */
+    public function getInstance(): LeagueProvider
+    {
+        $params = [
+            'clientId'     => $this->getParams()['client_id'],
+            'clientSecret' => $this->getParams()['client_secret'],
+            'redirectUri'  => $this->getParams()['redirect_uris'],
+            'scope' => ['https://www.googleapis.com/auth/userinfo.profile']
+        ];
+        if($this->getParams()['google_origins'] !== ''){
+            $params['hostedDomain'] = $this->getParams()['google_origins'];
+        }
+
+        return new Google($params);
+
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      * @throws Exception
@@ -111,8 +131,9 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
                     $accessInput->accesstoken = $accessToken->getToken();
                     $accessInput->refreshtoken = $accessToken->getRefreshToken();
                     $accessInput->email = $ownerDetails->getEmail();
-                    $accessInput->api_user_id = strval($ownerDetails->getId());
+                    $accessInput->api_user_id = strval($openidinfos['sub']);
                     $this->userApi->setOauthUser($accessInput);
+
                 }
                 header('Location: ' . 'privat');
                 exit;
@@ -124,26 +145,6 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
     }
 
     /**
-     * League\OAuth2\Client\Provider\Google
-     * @return LeagueProvider
-     */
-    public function getInstance(): LeagueProvider
-    {
-        $params = [
-            'clientId'     => $this->getParams()['client_id'],
-            'clientSecret' => $this->getParams()['client_secret'],
-            'redirectUri'  => $this->getParams()['redirect_uris'],
-            'scope' => ['https://www.googleapis.com/auth/userinfo.profile']
-        ];
-        if($this->getParams()['google_origins'] !== ''){
-            $params['hostedDomain'] = $this->getParams()['google_origins'];
-        }
-
-        return new Google($params);
-
-    }
-
-    /**
      * @param AccessInput $datas_access
      * @return array
      * @throws TransportExceptionInterface
@@ -151,26 +152,13 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
      */
     public function fetchUser(AccessInput $datas_access): array
     {
-        $this->client = $this->client->withOptions([
-            'headers' => [
-                'Content-Type' => 'application/json'
-            ]
-        ]);
-
-        $response = $this->client->request(
-            'GET',
-            'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='.$datas_access->accesstoken
-        );
-
-        try {
             if(!empty($datas_access->ownerDetails)){
+                //sinon le id renvoyé dans l'interface est celui de l'application et non de openid
+                //mystère
+                $datas_access->ownerDetails['id'] .= '';
                 return $datas_access->ownerDetails;
             }
-            return $this->getClientHttpReponse($response);
-        } catch (DecodingExceptionInterface|TransportExceptionInterface $e) {
-            throw new Exception($e->getMessage());
-        }
-
+        throw new Exception('Pas de données trouvées');
     }
 
     /**
@@ -192,13 +180,11 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
                 ]
             ]);
 
-
             $options = [
                 'token' => $datas_access->getToken(),
                 'refreshtoken' => $datas_access->getRefreshToken(),
                 'ResourceOwnerId' => $datas_access->getResourceOwnerId()
             ];
-
 
             $openidInfo = $this->getInstance()->getResourceOwnerDetailsUrl($datas_access);
             $response = $this->client->request(
@@ -206,7 +192,7 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
                 $openidInfo
             );
             try {
-                return array_merge($this->getClientHttpReponse($response), $options);
+                return array_merge($this->formatOutPout($this->getClientHttpReponse($response)), $options);
             } catch (DecodingExceptionInterface|TransportExceptionInterface $e) {
                 throw new Exception($e->getMessage());
             }

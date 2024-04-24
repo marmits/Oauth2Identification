@@ -9,7 +9,7 @@
     </div>
 
     <ul v-else>
-      <li><img class="picture" :src="`${datas['avatar_url']}`" /></li>
+      <li><img class="picture" :src="`${datas['picture']}`" /></li>
       <li><button @click="setDisplayInfos" id="private_info" type="button" class="btn btn-primary mb-3">Infos From API</button></li>
       <li><span>{{ datas['name'] }}</span></li>
       <li><span>{{ datas['email'] }}</span></li>
