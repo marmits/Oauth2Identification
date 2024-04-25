@@ -13,9 +13,6 @@ body {
 .hidden{
   display: none !important;
 }
-div.loadingspinner{
-  margin: 0 0 1em 0;
-}
 
 div.private{
   text-align: center;
@@ -36,6 +33,10 @@ div.private{
         }
       }
     }
+  }
+
+  a[href="logout"]{
+    margin-top:1em;
   }
 
   div.infos_user{
