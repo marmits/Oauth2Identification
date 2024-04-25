@@ -103,8 +103,7 @@ abstract class AbstractProvider
             $output['picture'] = $datas['avatar_url'];
         }
         if(array_key_exists('sub', $datas)){
-            $output['sub'] = intval($datas['sub']);
-            $output['id'] = intval($datas['sub']);
+            $output['id'] = $datas['sub'];
         }
         return $output;
     }

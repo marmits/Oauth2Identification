@@ -153,9 +153,6 @@ class GoogleProvider extends AbstractProvider implements ProviderInterface
     public function fetchUser(AccessInput $datas_access): array
     {
             if(!empty($datas_access->ownerDetails)){
-                //sinon le id renvoyé dans l'interface est celui de l'application et non de openid
-                //mystère
-                $datas_access->ownerDetails['id'] .= '';
                 return $datas_access->ownerDetails;
             }
         throw new Exception('Pas de données trouvées');
