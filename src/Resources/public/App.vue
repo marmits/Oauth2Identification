@@ -10,44 +10,35 @@
 
 
 <template>
-  <Message v-bind:is-connected="SetConnected()" v-bind:titre="titre" v-bind:type="type"></Message>
-  <SocialConnect v-bind:is-connected="SetConnected()"></SocialConnect>
-  <InfosUser v-bind:is-connected="SetConnected()"> </InfosUser>
-  <Logout v-bind:is-connected="SetConnected()"></Logout>
+  <div v-if="!connected">
+    <Message v-bind:titre="titre" v-bind:type="type"></Message>
+  </div>
+  <SocialConnect v-bind:is-connected="connected"></SocialConnect>
+  <InfosUser v-bind:is-connected="connected"> </InfosUser>
+  <Logout v-bind:is-connected="connected"></Logout>
 </template>
 
-
-<script>
+<script setup>
+import {computed, ref } from 'vue'
 import SocialConnect from "./components/SocialConnect.vue";
 import Logout from "./components/Logout.vue";
 import Message from "./components/Message.vue";
 import InfosUser from "./components/InfosUser.vue";
 
-export default {
-  name: 'Oauth',
-  components: {
-    SocialConnect,
-    Logout,
-    Message,
-    InfosUser
-  },
-  data() {
-    return {
-      type:'success',
-      connected: false,
-      titre: 'Sign-in',
-    }
-  },
-  methods: {
-    SetConnected(){
-      let elConnected = document.getElementById('statut_connected')
-      if(elConnected !== null){
-        this.connected = true
-      }
-      return this.connected;
-    }
+const titre = 'Sign-in'
+const type = ref('secondary')
+const connected = computed(() => {
+  let elConnected = document.getElementById('statut_connected')
+  if(elConnected !== null){
+    return true
   }
-};
+  return false
+
+});
+
 </script>
+
+
+
 
 

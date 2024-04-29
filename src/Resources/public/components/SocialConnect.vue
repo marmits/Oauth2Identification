@@ -1,42 +1,28 @@
 <template>
+
+
+
 <form v-if="display">
   <div class="row">
     <div class="col align-self-center gy-2">
-      <BoutSocial type="google"></BoutSocial>
+      <ButtonSocial v-bind:type="'google'"></ButtonSocial>
     </div>
     <div class="col align-self-center gy-2">
-      <BoutSocial type="github"></BoutSocial>
+      <ButtonSocial v-bind:type="'github'"></ButtonSocial>
     </div>
   </div>
 </form>
 </template>
 
 <script setup>
+import ButtonSocial from "./ButtonSocial.vue";
 const props = defineProps(['isConnected'])
+import {computed, ref, onMounted  } from 'vue'
 
-</script>
-
-<script>
-
-import BoutSocial from "./ButtonSocial.vue";
-
-export default {
-  data() {
-    return {
-      display:true,
-      props:{
-        isConnected: Boolean
-      }
-    };
-  },
-  components: {
-    BoutSocial,
+const display = computed(() => {
+  if(props.isConnected){
+    return false
   }
-  ,mounted() {
-    if(this.isConnected === true){
-      this.display = false
-    }
-  }
-};
-
+  return true
+})
 </script>

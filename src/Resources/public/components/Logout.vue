@@ -12,21 +12,4 @@
 
 <script setup>
 const props = defineProps(['isConnected'])
-
-</script>
-
-<script>
-
-export default {
-  data() {
-    return {
-      who: "World",
-      props:{
-        isConnected: Boolean
-      }
-    };
-  },
-};
-
-
 </script>

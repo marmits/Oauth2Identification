@@ -12,15 +12,3 @@
 const props = defineProps(['type'])
 </script>
 
-<script>
-export default {
-  data() {
-    return {
-      name: "ButtonSocial",
-      props:{
-        type: String
-      }
-    }
-  }
-};
-</script>
