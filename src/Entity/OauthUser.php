@@ -43,7 +43,7 @@ class OauthUser
     #[ORM\Column (type: 'string', length: 255)]
     private ?string $idApiUser;
 
-    #[ORM\Column (type: 'string', length: 255)]
+    #[ORM\Column (type: 'datetime')]
     private ?DateTimeInterface $dateConnexion;
 
     /**
