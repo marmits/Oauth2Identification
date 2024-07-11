@@ -97,7 +97,8 @@ $ npm install vue
 #### 3. webpack.config.js
 optional: (vhost alias (http://url/alias))
 ```
-.setManifestKeyPrefix(' build/')
+.setPublicPath('/unrep/build') // si alias vhost unrep
+.setManifestKeyPrefix(' build/') // si alias
 ```
 
 ```
