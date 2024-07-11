@@ -2,7 +2,7 @@ services:
 
   Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
-  Marmits\Oauth2Identification\Entity\UserApi:
+  Marmits\Oauth2Identification\Entity\OauthUser:
   Marmits\Oauth2Identification\Repository\OauthUserRepository:
     arguments:
       - '@Doctrine\Persistence\ManagerRegistry'

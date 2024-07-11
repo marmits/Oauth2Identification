@@ -3,12 +3,9 @@ declare(strict_types=1);
 namespace Marmits\Oauth2Identification\Controller;
 
 use Exception;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,10 +41,10 @@ class IndexController extends AbstractController
 
     /**
      * Redirection privat route
-     * @Route("/bundle_index", name="bundle_index")
      * @param Request $request
      * @return Response
      */
+    #[Route('bundle_index', name: 'bundle_index')]
     public function index(Request $request): Response
     {
         return $this->redirectToRoute('privat');
@@ -56,9 +53,9 @@ class IndexController extends AbstractController
     /**
      * Redirection bundle_index route
      * Reset Session
-     * @Route("/logout", name="logout")
      * @return Response
      */
+    #[Route('logout', name: 'logout')]
     public function logout(): Response
     {
         $this->userApi->killSession();
@@ -68,18 +65,22 @@ class IndexController extends AbstractController
     /**
      * Rendu des données de base fournies par le provider enregistrées dans la session de l'utlisateur, une fois connecté.
      * MarmitsOauth2Identification/bundle_private.html.twig
-     * @Route("/privat", name="privat")
      * @return Response
      * @throws Exception
      */
+    #[Route('privat', name: 'privat')]
     public function bundlePrivate(): Response
     {
         $user = $this->userApi->fetch();
         return $this->render('@MarmitsOauth2Identification/privateDefault.html.twig', ['user' => $user]);
     }
+
+
     /**
-     * @Route("api/user/datas", name="api_user_datas")")
+     * @return JsonResponse
+     * @throws Exception
      */
+    #[Route('api/user/datas', name: 'api_user_datas')]
     public function apiUserFetch(): JsonResponse{
         return new JsonResponse($this->userApi->fetch());
     }
