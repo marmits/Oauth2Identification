@@ -1,7 +1,7 @@
 ### Oauth2 apps
 Créer les applications sur Github et Google
 definit avec :  
-[marmits_clientapi.yaml](src/Resources/config/packages/marmits_clientapi.yaml`)
+[marmits_clientapi.yaml](src/Resources/config/packages/marmits_clientapi.yaml)
 
 ### flux Oauth2
 - La page `/privat` demande une authorisation de connexion avec github ou google.  
