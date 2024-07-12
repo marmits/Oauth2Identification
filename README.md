@@ -1,9 +1,9 @@
 ## marmits/oauth2identification 
 ![](https://img.shields.io/badge/symfony-5.4-blue)
 ![](https://img.shields.io/badge/-Webpack-blue?style=flat&logo=webpack&logoColor=%23FFF)
-[![Source Code](https://img.shields.io/badge/source-marmits/Oauth2Identification-blue.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification)
+[![Source Code](https://img.shields.io/badge/source-marmits/Oauth2Identification-blue.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification/tree/vuejs)
 
-[![release](https://img.shields.io/badge/Oauth2Identification-v2.0.0-blue)](https://github.com/marmits/Oauth2Identification/releases/tag/v2.0.0)
+[![release](https://img.shields.io/badge/Oauth2Identification-v2.0.1-blue)](https://github.com/marmits/Oauth2Identification/releases/tag/v2.0.1)
 
 
 
