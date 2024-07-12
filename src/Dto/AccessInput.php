@@ -9,7 +9,7 @@ namespace Marmits\Oauth2Identification\Dto;
 class AccessInput
 {
     public string $provider_name;
-    public array $ownerDetails;
+    public ?array $ownerDetails;
     public string $accesstoken;
     public ?string $refreshtoken;
     public string $email;

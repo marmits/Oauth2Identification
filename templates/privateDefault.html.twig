@@ -1,0 +1,41 @@
+{% extends '@MarmitsOauth2Identification/index.html.twig' %}
+
+ {% block css %}
+
+     {{ encore_entry_link_tags('marmits') }}
+
+ {% endblock %}
+
+{% block body %}
+
+
+<div class="container-fluid">
+    <div class="row g-4">
+        <div class="col">
+            <div class="private">
+                <div class="row">
+                    <div class="col-6 offset-3 align-self-center gy-4">
+                        {% if user.email is defined %}
+                            <input type="hidden" id="statut_connected" value="on">
+                        {% endif %}
+                        {% block oauth %}
+                        <div id="Oauth">
+                        </div>
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('marmits') }}
+    {% endblock %}
+
+
+
+
+{% endblock %}
+

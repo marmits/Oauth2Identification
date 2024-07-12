@@ -1,16 +1,16 @@
 ### PREREQUISITES
-- `>= php7`
-- `symfony 5.4`
+- `>= php8.1`
+- `symfony 6.4`
 
 ### COMPOSER
-`$ symfony new appli --version="5.4.*"`
+`$ symfony new appli --version="6.4.*"`
 
 edit `composer.json`
 ```
 prod
 {
     "require": {
-        "marmits/oauth2identification": "^1.0"
+        "marmits/oauth2identification": "^3.0"
     },  
     "repositories": [
         {
@@ -45,8 +45,8 @@ dev/local
 ### routes.yaml
 ```
 marmitsoauth2identificationbundle:
-  resource: "@MarmitsOauth2IdentificationBundle/Resources/config/packages/routing/"
-  type:     directory
+    resource: "@MarmitsOauth2IdentificationBundle"
+    type:     attribute
 
 #when@dev:
 #  _wdt:
@@ -77,8 +77,6 @@ GITHUB_REDIRECT_URIS=http://url/getaccesstokengithub
 ### sodium
 `$ symfony console secrets:set DECRYPT_DATAS_KEY --random`
 
-### jsrouting-bundle
-`$ symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json`
 
 ### WEBPACK 
 (les npm s'ajustent avec le package.json généré par **symfony/webpack-encore-bundle**)
@@ -91,15 +89,16 @@ $ npm i sass-loader
 $ npm i html-loader
 $ npm i file-loader
 $ npm i sass
-$ npm i jquery
 $ npm i bootstrap
 $ npm i @fortawesome/fontawesome-free
+$ npm install vue
 ```
 
 #### 3. webpack.config.js
 optional: (vhost alias (http://url/alias))
 ```
 .setManifestKeyPrefix(' build/')
+.setPublicPath('/directory/build') => directory de l'alias
 ```
 
 ```
@@ -115,7 +114,8 @@ optional: (vhost alias (http://url/alias))
     }
 )
 
-.autoProvidejQuery()
+.enableTypeScriptLoader()
+.enableVueLoader(() => {}, { runtimeCompilerBuild: false })
 
 const config = Encore.getWebpackConfig();
 config.resolve.symlinks = false;
@@ -132,11 +132,7 @@ or
 - create & add file custom.js in `assets` folder
 - custom.js
 ```
-import '../vendor/marmits/oauth2identification/src/Resources/public/js/marmitsgoogle';
-
-// import JS du bundle => fonctionnement indépendant route :bundle_private
-import Oauth2Lib from "../vendor/marmits/oauth2identification/src/Resources/public/js/Oauth2"
-let Oauth2 = new Oauth2Lib();
+import '../vendor/marmits/oauth2identification/public/js/marmitsgoogle';
 ```
    
 
@@ -156,7 +152,7 @@ create database testoauth
     ```
 ####  migration   
 ```
-$ composer require symfony/maker-bundle:^1.50 --dev (php 8.0)
+$ composer require symfony/maker-bundle:^1.60 --dev (php 8.1)
 $ symfony console make:migration
 $ symfony console doctrine:migrations:migrate
 ```

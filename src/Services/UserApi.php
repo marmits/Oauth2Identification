@@ -82,6 +82,7 @@ class UserApi
             $idoauthUser = $this->requestStack->getSession()->get('oauthUserId');
             $userOauth = $this->oauthUserRepository->find($idoauthUser);
             $accessInput = new AccessInput();
+            $accessInput->ownerDetails = [];
             $accessInput->accesstoken = $userOauth->getAccessToken();
             $accessInput->refreshtoken = $userOauth->getRefreshToken();
             $accessInput->api_user_id = $userOauth->getIdApiUser();

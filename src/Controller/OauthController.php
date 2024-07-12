@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 
 /**
@@ -42,10 +42,10 @@ class OauthController extends AbstractController
      */
     /**
      * Demande d'autorisation a github
-     * @Route("/github_authorize", name="github_authorize")
      * @return Response
      * @throws Exception
      */
+    #[Route('github_authorize', name: 'github_authorize')]
     public function githubgetauthorize(): Response
     {
         $provider = $this->provider->get(GithubProvider::PROVIDER_NAME);
@@ -54,12 +54,12 @@ class OauthController extends AbstractController
 
     /**
      * Processus Authorization Code Grant
-     * @Route("/getaccesstokengithub", name="getaccesstokengithub")
      *
      * @param Request $request
      * @return JsonResponse
      * @throws Exception
      */
+    #[Route('getaccesstokengithub', name: 'getaccesstokengithub')]
     public function getaccesstokenGithub(Request $request): JsonResponse
     {
         $provider = $this->provider->get(GithubProvider::PROVIDER_NAME);
@@ -68,10 +68,10 @@ class OauthController extends AbstractController
 
     /**
      * Demande d'autorisation a google
-     * @Route("/google_authorize", name="google_authorize")
      * @return Response
      * @throws Exception
      */
+    #[Route('google_authorize', name: 'google_authorize')]
     public function googlegetauthorize(): Response
     {
         $provider = $this->provider->get(GoogleProvider::PROVIDER_NAME);
@@ -80,11 +80,11 @@ class OauthController extends AbstractController
 
     /**
      * Processus Authorization Code Grant
-     * @Route("/getaccesstokengoogle", name="getaccesstokengoogle")
      * @param Request $request
      * @return JsonResponse
      * @throws Exception
      */
+    #[Route('getaccesstokengoogle', name: 'getaccesstokengoogle')]
     public function getaccesstokenGoogle(Request $request): JsonResponse
     {
         $provider = $this->provider->get(GoogleProvider::PROVIDER_NAME);

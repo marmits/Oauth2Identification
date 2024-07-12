@@ -1,4 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
+
+
 $enable-cssgrid: true;
 $main_dark : #3b5998;
 
@@ -33,20 +35,12 @@ div.private{
     }
   }
 
+  a[href="logout"]{
+    margin-top:1em;
+  }
+
   div.infos_user{
     text-align: left;
-  }
-
-  div.login{
-    text-align: center;
-  }
-  input#inputPassword{
-   
-    display:inline;
-  }
-
-  button#private_connect, input#inputPassword{
-    width: 14em;
   }
 
   div.goodlogincontenu{

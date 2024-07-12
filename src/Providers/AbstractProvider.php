@@ -102,6 +102,9 @@ abstract class AbstractProvider
         if(array_key_exists('avatar_url', $datas)){
             $output['picture'] = $datas['avatar_url'];
         }
+        if(array_key_exists('sub', $datas)){
+            $output['id'] = $datas['sub'];
+        }
         return $output;
     }
 

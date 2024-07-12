@@ -2,7 +2,7 @@ services:
 
   Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
-  Marmits\Oauth2Identification\Entity\UserApi:
+  Marmits\Oauth2Identification\Entity\OauthUser:
   Marmits\Oauth2Identification\Repository\OauthUserRepository:
     arguments:
       - '@Doctrine\Persistence\ManagerRegistry'
@@ -46,8 +46,9 @@ services:
       '@service_container',
       '@Marmits\Oauth2Identification\Services\UserApi',
     ]
-    tags:
-      - { name: controller.service_arguments }
+    tags: [ 'controller.service_arguments','container.service_subscriber' ]
+    calls:
+      - [ setContainer, [ '@Psr\Container\ContainerInterface' ] ]
 
   Marmits\Oauth2Identification\Controller\IndexController:
     arguments: [
@@ -55,16 +56,19 @@ services:
         '@Symfony\Component\HttpFoundation\RequestStack',
         '@Marmits\Oauth2Identification\Services\UserApi',
     ]
-    tags:
-      - { name: controller.service_arguments }
+    tags: [ 'controller.service_arguments','container.service_subscriber' ]
+    calls:
+      - [ setContainer, [ '@Psr\Container\ContainerInterface' ] ]
 
   Marmits\Oauth2Identification\Controller\OauthController:
     arguments: [
       '@service_container',
       '@Marmits\Oauth2Identification\Providers\Provider',
     ]
-    tags:
-      - { name: controller.service_arguments }
+    tags: [ 'controller.service_arguments','container.service_subscriber' ]
+    calls:
+      - [ setContainer, [ '@Psr\Container\ContainerInterface' ] ]
+
 
 
   Marmits\Oauth2Identification\Services\Encryption:

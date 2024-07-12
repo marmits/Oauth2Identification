@@ -1,7 +1,7 @@
 ### Oauth2 apps
 Créer les applications sur Github et Google
 definit avec :  
-[marmits_clientapi.yaml](src/Resources/config/packages/marmits_clientapi.yaml`)
+[marmits_clientapi.yaml](src/Resources/config/packages/marmits_clientapi.yaml)
 
 ### flux Oauth2
 - La page `/privat` demande une authorisation de connexion avec github ou google.  
@@ -17,17 +17,22 @@ definit avec :
     - html-loader
     - file-loader
     - sass
-    - jquery
     - bootstrap
     - @fortawesome/fontawesome-free
+    - vue
 
 ### OUTPUT
 >Marmits\Oauth2Identification\Services\UserApi
 
-- ``userApi->getOauthUserIdentifiants()``  
-  - Renvoie un objet provenant de BDD en session de type:  
-  `Marmits\Oauth2Identification\Dto\IdentifiantsOutput`
+Le bundle renvoie 2 éléménts pour être uriliser au choix dans une application
 
+1. en PHP:   
+    `userApi->getOauthUserIdentifiants()`  
+   - Renvoie un objet provenant de BDD en session de type:  
+   `Marmits\Oauth2Identification\Dto\IdentifiantsOutput`
+
+2. En Javascript:  
+   Un événement dispatché `oauthUserInfos` qui contient la réponse de l'api tierce
 
 ### BONUS
 [symfony secrets docs](https://symfony.com/doc/5.x/configuration/secrets.html)  

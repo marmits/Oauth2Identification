@@ -1,6 +1,7 @@
 ## marmits/oauth2identification
-![](https://img.shields.io/badge/symfony-5.4-blue)
+![](https://img.shields.io/badge/symfony-6.4-blue)
 ![](https://img.shields.io/badge/-Webpack-blue?style=flat&logo=webpack&logoColor=%23FFF)
+
 
 [![Latest Version](https://img.shields.io/github/v/release/marmits/Oauth2Identification.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification/releases)
 [![Source Code](https://img.shields.io/badge/source-marmits/Oauth2Identification-blue.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification)
@@ -18,7 +19,7 @@
 
 ### BUNDLES USED
 
-[thephpleague/oauth2-client](httpgit branchs://github.com/thephpleague/oauth2-client)    
+[thephpleague/oauth2-client](https://github.com/thephpleague/oauth2-client)    
 [thephpleague/oauth2-google](https://github.com/thephpleague/oauth2-google)  
 [thephpleague/oauth2-github](https://github.com/thephpleague/oauth2-github)  
 
@@ -29,7 +30,7 @@
 ![](https://img.shields.io/badge/Symfony-blue?logo=symfony&logoColor=f5f5f5)
 ![](https://img.shields.io/badge/JavaScript-blue?logo=javascript&logoColor=f5f5f5)
 ![](https://img.shields.io/badge/npm-blue?logo=npm&logoColor=f5f5f5)
-![](https://img.shields.io/badge/jQuery-blue?logo=jquery&logoColor=f5f5f5)
+![](https://img.shields.io/badge/vue.js-blue?logo=vue.js&logoColor=f5f5f5)
 ![](https://img.shields.io/badge/Bootstrap-blue?logo=bootstrap&logoColor=f5f5f5)
 ![](https://img.shields.io/badge/Sass-blue?logo=sass&logoColor=f5f5f5)
 ![](https://img.shields.io/badge/FontAwesome-blue?logo=fontawesome&logoColor=f5f5f5)
