@@ -18,7 +18,7 @@
 
 ### BUNDLES USED
 
-[thephpleague/oauth2-client](https://github.com/thephpleague/oauth2-client)    
+[thephpleague/oauth2-client](httpgit branchs://github.com/thephpleague/oauth2-client)    
 [thephpleague/oauth2-google](https://github.com/thephpleague/oauth2-google)  
 [thephpleague/oauth2-github](https://github.com/thephpleague/oauth2-github)  
 
