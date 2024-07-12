@@ -1,9 +1,9 @@
 ### PREREQUISITES
-- `>= php7`
-- `symfony 5.4`
+- `>= php8.1`
+- `symfony 6.4`
 
 ### COMPOSER
-`$ symfony new appli --version="5.4.*"`
+`$ symfony new appli --version="6.4.*"`
 
 edit `composer.json`
 ```
@@ -151,7 +151,7 @@ create database testoauth
     ```
 ####  migration   
 ```
-$ composer require symfony/maker-bundle:^1.50 --dev (php 8.0)
+$ composer require symfony/maker-bundle:^1.50 --dev (php 8.1)
 $ symfony console make:migration
 $ symfony console doctrine:migrations:migrate
 ```
