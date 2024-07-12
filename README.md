@@ -1,4 +1,5 @@
-## marmits/oauth2identification
+## marmits/oauth2identification 
+![](https://img.shields.io/badge/symfony-5.4-blue)
 
 [![Latest Version](https://img.shields.io/github/v/release/marmits/Oauth2Identification.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification/releases)
 [![Source Code](https://img.shields.io/badge/source-marmits/Oauth2Identification-blue.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification)
