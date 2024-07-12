@@ -32,7 +32,6 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
         "symfony/event-dispatcher": "5.4.*",
-        "friendsofsymfony/jsrouting-bundle": "^2.8",
         "league/oauth2-client": "^2.0",
         "league/oauth2-google": "^4.0",
         "league/oauth2-github": "^3.0",

@@ -1,10 +1,5 @@
 import {loadingStart, loadingStop} from "./loader";
 
-const routes = require('../../../../../../../public/js/fos_js_routes.json');
-const Routing = require('../../../../../../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min');
-Routing.setRoutingData(routes);
-
-
 
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
@@ -104,7 +99,7 @@ class Oauth2 {
         let that = this;
         return new Promise(function(resolve,reject) {
             $.ajax({
-                url: Routing.generate("getuseroauthlogged"),
+                url: 'getuseroauthlogged',
                 method: "GET",
                 beforeSend : function(){
                     loadingStop($('body'));

@@ -77,8 +77,6 @@ GITHUB_REDIRECT_URIS=http://url/getaccesstokengithub
 ### sodium
 `$ symfony console secrets:set DECRYPT_DATAS_KEY --random`
 
-### jsrouting-bundle
-`$ symfony console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json`
 
 ### WEBPACK 
 (les npm s'ajustent avec le package.json généré par **symfony/webpack-encore-bundle**)
@@ -99,7 +97,9 @@ $ npm i @fortawesome/fontawesome-free
 #### 3. webpack.config.js
 optional: (vhost alias (http://url/alias))
 ```
-.setManifestKeyPrefix(' build/')
+.setPublicPath('/alias/build') // si alias
+
+.setManifestKeyPrefix('build/')
 ```
 
 ```
