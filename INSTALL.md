@@ -10,7 +10,7 @@ edit `composer.json`
 prod
 {
     "require": {
-        "marmits/oauth2identification": "^1.0"
+        "marmits/oauth2identification": "^2.0"
     },  
     "repositories": [
         {
