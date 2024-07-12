@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -23,7 +23,6 @@
         "symfony/yaml": "5.4.*",
         "symfony/asset": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
-        "symfony/apache-pack": "^1.0",
         "symfony/http-client": "5.4.*",
         "symfony/webpack-encore-bundle": "^2.1",
         "sensio/framework-extra-bundle": "^6.2",

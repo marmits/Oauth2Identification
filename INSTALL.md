@@ -1,5 +1,5 @@
 ### PREREQUISITES
-- `>= php7`
+- `>= php8.1`
 - `symfony 5.4`
 
 ### COMPOSER
