@@ -10,7 +10,7 @@ edit `composer.json`
 prod
 {
     "require": {
-        "marmits/oauth2identification": "^1.0"
+        "marmits/oauth2identification": "^3.0"
     },  
     "repositories": [
         {
@@ -45,8 +45,8 @@ dev/local
 ### routes.yaml
 ```
 marmitsoauth2identificationbundle:
-  resource: "@MarmitsOauth2IdentificationBundle/Resources/config/packages/routing/"
-  type:     directory
+    resource: "@MarmitsOauth2IdentificationBundle"
+    type:     attribute
 
 #when@dev:
 #  _wdt:
@@ -98,6 +98,7 @@ $ npm install vue
 optional: (vhost alias (http://url/alias))
 ```
 .setManifestKeyPrefix(' build/')
+.setPublicPath('/directory/build') => directory de l'alias
 ```
 
 ```
@@ -131,7 +132,7 @@ or
 - create & add file custom.js in `assets` folder
 - custom.js
 ```
-import '../vendor/marmits/oauth2identification/src/Resources/public/js/marmitsgoogle';
+import '../vendor/marmits/oauth2identification/public/js/marmitsgoogle';
 ```
    
 
@@ -151,7 +152,7 @@ create database testoauth
     ```
 ####  migration   
 ```
-$ composer require symfony/maker-bundle:^1.50 --dev (php 8.1)
+$ composer require symfony/maker-bundle:^1.60 --dev (php 8.1)
 $ symfony console make:migration
 $ symfony console doctrine:migrations:migrate
 ```
