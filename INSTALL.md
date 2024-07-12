@@ -98,7 +98,7 @@ $ npm install vue
 optional: (vhost alias (http://url/alias))
 ```
 .setManifestKeyPrefix(' build/')
-.setPublicPath('/directory/build') => directory de l'alias
+.setPublicPath('/alias/build') => directory de l'alias
 ```
 
 ```
