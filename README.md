@@ -27,11 +27,10 @@
 [google openid-connect](https://developers.google.com/identity/protocols/oauth2/openid-connect#authenticationuriparameters)
 
 ### Stack
-[![Tests](https://img.shields.io/badge/Symfony-blue?logo=symfony&logoColor=f5f5f5)](#)
-![](https://img.shields.io/badge/Symfony-blue?logo=symfony&logoColor=f5f5f5)
-![](https://img.shields.io/badge/JavaScript-blue?logo=javascript&logoColor=f5f5f5)
-![](https://img.shields.io/badge/npm-blue?logo=npm&logoColor=f5f5f5)
-![](https://img.shields.io/badge/jQuery-blue?logo=jquery&logoColor=f5f5f5)
-![](https://img.shields.io/badge/Bootstrap-blue?logo=bootstrap&logoColor=f5f5f5)
-![](https://img.shields.io/badge/Sass-blue?logo=sass&logoColor=f5f5f5)
-![](https://img.shields.io/badge/FontAwesome-blue?logo=fontawesome&logoColor=f5f5f5)
+[![](https://img.shields.io/badge/Symfony-blue?logo=symfony&logoColor=f5f5f5)](#)
+[![](https://img.shields.io/badge/JavaScript-blue?logo=javascript&logoColor=f5f5f5)](#)
+[![](https://img.shields.io/badge/npm-blue?logo=npm&logoColor=f5f5f5)](#)
+[![](https://img.shields.io/badge/jQuery-blue?logo=jquery&logoColor=f5f5f5)](#)
+[![](https://img.shields.io/badge/Bootstrap-blue?logo=bootstrap&logoColor=f5f5f5)](#)
+[![](https://img.shields.io/badge/Sass-blue?logo=sass&logoColor=f5f5f5)](#)
+[![](https://img.shields.io/badge/FontAwesome-blue?logo=fontawesome&logoColor=f5f5f5)](#)
