@@ -1,9 +1,9 @@
 ## marmits/oauth2identification
-![](https://img.shields.io/badge/symfony-5.4-blue)
-![](https://img.shields.io/badge/-Webpack-blue?style=flat&logo=webpack&logoColor=%23FFF)
+![](https://img.shields.io/badge/symfony-5.4-FF0)
+![](https://img.shields.io/badge/-Webpack-FF0?style=flat&logo=webpack&logoColor=%23000)
 [![Source Code](https://img.shields.io/badge/source-marmits/Oauth2Identification-blue.svg?style=flat-square)](https://github.com/marmits/Oauth2Identification)
 
-[![release](https://img.shields.io/badge/Oauth2Identification-v1.0.1-blue)](https://github.com/marmits/Oauth2Identification/releases/tag/v1.0.1)
+[![release](https://img.shields.io/badge/Oauth2Identification-v1.0.1-FF0)](https://github.com/marmits/Oauth2Identification/releases/tag/v1.0.1)
 
 [![Source Code](https://img.shields.io/badge/Oauth2-red?logo=google&logoColor=f5f5f5)]()
 [![Source Code](https://img.shields.io/badge/Oauth2-red?logo=github&logoColor=f5f5f5)]()
@@ -30,7 +30,7 @@
 [![](https://img.shields.io/badge/npm-blue?logo=npm&logoColor=f5f5f5)](#)
 [![](https://img.shields.io/badge/Symfony-blue?logo=symfony&logoColor=f5f5f5)](#)
 [![](https://img.shields.io/badge/JavaScript-blue?logo=javascript&logoColor=f5f5f5)](#)
-[![](https://img.shields.io/badge/jQuery-blue?logo=jquery&logoColor=f5f5f5)](#)
+[![](https://img.shields.io/badge/jQuery-FF0?logo=jquery&logoColor=000)](#)
 [![](https://img.shields.io/badge/Bootstrap-blue?logo=bootstrap&logoColor=f5f5f5)](#)
 [![](https://img.shields.io/badge/Sass-blue?logo=sass&logoColor=f5f5f5)](#)
 [![](https://img.shields.io/badge/FontAwesome-blue?logo=fontawesome&logoColor=f5f5f5)](#)
